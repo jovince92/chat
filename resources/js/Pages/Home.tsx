@@ -49,11 +49,11 @@ const Home = () => {
         <>
             <Head title='Chat' />
                 <ConversationProvider>
-                        <Layout>
-                            <ServerIdLayout>
-                                <ChannelLayout />
-                            </ServerIdLayout>
-                        </Layout>
+                    <Layout>
+                        <ServerIdLayout>
+                            <ChannelLayout />
+                        </ServerIdLayout>
+                    </Layout>
                 </ConversationProvider>
         </>
     )

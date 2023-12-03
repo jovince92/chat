@@ -6,6 +6,7 @@ use App\Http\Controllers\LiveKitController;
 use App\Http\Controllers\MemberController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\ServerController;
+use App\Http\Controllers\SupportController;
 use App\Models\Member;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -23,7 +24,7 @@ use Inertia\Inertia;
 */
 
 
-Route::middleware(['auth'])->group(function(){
+Route::prefix('backend')->middleware(['auth'])->group(function(){
     
     Route::get('/', function () {
         $server = Member::where('user_id',Auth::id())->first();
@@ -101,6 +102,15 @@ Route::prefix('livekit')->name('livekit.')->group(function(){
 });
 
 
-Route::get('/test', [MessageController::class, 'test'])->name('test');
+
+Route::get('/', function(){
+    return Inertia::render('Landing');
+})->name('landing');
+
+
+Route::middleware(['auth'])->prefix('support')->name('support.')->group(function(){
+    Route::post('/enter', [SupportController::class, 'enter'])->name('enter');
+    Route::post('/message-store', [SupportController::class, 'message_store'])->name('message_store');
+});
 
 require __DIR__.'/auth.php';

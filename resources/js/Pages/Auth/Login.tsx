@@ -105,7 +105,7 @@ export default function Login({ status, canResetPassword }: { status?: string, c
                             </div>
                         </div>
                     </div>
-                    <p className="px-8 text-center text-sm text-muted-foreground">
+                    {/* <p className="px-8 text-center text-sm text-muted-foreground">
                     New User?
                     <Link
                         href={route('register')}
@@ -114,7 +114,7 @@ export default function Login({ status, canResetPassword }: { status?: string, c
                         Register
                     </Link>
                     .
-                    </p>
+                    </p> */}
                 </div>
             </div>
         </>
