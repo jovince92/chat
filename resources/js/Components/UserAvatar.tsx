@@ -9,7 +9,7 @@ interface UserAvatarProps{
 }
 
 const UserAvatar:FC<UserAvatarProps> = ({user,className}) => {
-        
+
     if(!user){
         return null;
     }
