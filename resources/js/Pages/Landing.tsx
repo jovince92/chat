@@ -16,7 +16,8 @@ interface Props{
     user:User;
 }
 
-const Landing:FC<Props> = ({channel}) => {
+const Landing:FC<Props> = ({channel,user}) => {
+    console.log([channel,user]);
     return (
         <>
             <Head title='Welcome to Chat Support' />
@@ -84,7 +85,7 @@ const Landing:FC<Props> = ({channel}) => {
                     </div>
                 </section>
             </div>
-            <ChatSheet isOpen={!!channel} onClose={()=>{}} channel={channel} />
+            <ChatSheet isOpen={!!channel} onClose={()=>{}} channel={channel} user={user} />
         </>
     )
 }
@@ -93,7 +94,7 @@ export default Landing;
 
 const EntryDialog:FC<{children:ReactNode}> = ({children}) =>{
 
-    const {data,setData,post,processing} = useForm({name:""})
+    const {data,setData,post,processing} = useForm({name:"",email:""})
     const onSubmit:FormEventHandler<HTMLFormElement> = (e) =>{
         e.preventDefault();
         post(route('support.enter'),{
@@ -110,13 +111,17 @@ const EntryDialog:FC<{children:ReactNode}> = ({children}) =>{
                 <DialogHeader>
                     <DialogTitle>Welcome to Chat Support</DialogTitle>
                     <DialogDescription>
-                        Please Enter Your Name Below:
+                        Please Enter Your Contact Details Below:
                     </DialogDescription>
                 </DialogHeader>
-                <form onSubmit={onSubmit} id='form' className="flex items-center space-x-2">
+                <form onSubmit={onSubmit} id='form' className="flex flex-col space-y-2">
                     <div className="grid flex-1 gap-2">
                         <Label htmlFor="name" >Your Name:</Label>
                         <Input required autoFocus autoComplete='off' disabled={processing} value={data.name} onChange={({target})=>setData('name',target.value)} id="name" />
+                    </div>
+                    <div className="grid flex-1 gap-2">
+                        <Label htmlFor="email" >Your Email:</Label>
+                        <Input required type='email' autoComplete='off' disabled={processing} value={data.email} onChange={({target})=>setData('email',target.value)} id="email" />
                     </div>
                 </form>
                 <DialogFooter className="sm:justify-start">

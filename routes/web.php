@@ -106,10 +106,14 @@ Route::prefix('livekit')->name('livekit.')->group(function(){
 Route::get('/', function(){
     return Inertia::render('Landing');
 })->name('landing');
+Route::post('/enter', [SupportController::class, 'enter'])->name('support.enter');
+Route::get('/enter', function(){
+    if(Auth::check()) Auth::logout();
+    return redirect()->to(route('landing'));
+});
 
 
 Route::middleware(['auth'])->prefix('support')->name('support.')->group(function(){
-    Route::post('/enter', [SupportController::class, 'enter'])->name('enter');
     Route::post('/message-store', [SupportController::class, 'message_store'])->name('message_store');
 });
 

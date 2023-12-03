@@ -13,8 +13,9 @@ const Home = () => {
     
     const {current_channel} = usePage<PageProps>().props;
     const queryClient = useQueryClient();
-
+    
     useEffect(()=>{
+        
         if(!current_channel){return;}
         window.Echo.join('channel_'+current_channel.id.toString())
         .listen('NewChatMessageEvent',({message}:{message:Message})=>{

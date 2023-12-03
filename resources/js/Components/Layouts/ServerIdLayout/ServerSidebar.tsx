@@ -1,6 +1,6 @@
 import { ChannelType, PageProps } from '@/types';
 import { usePage } from '@inertiajs/react';
-import React, { FC,  useMemo } from 'react'
+import React, { FC,  useEffect,  useMemo } from 'react'
 import ServerHeader from './ServerHeader';
 import { ScrollArea } from '@/Components/ui/scroll-area';
 import ServerSearch from './ServerSearch';
@@ -35,7 +35,8 @@ const ServerSidebar:FC = () => {
     const videoChannels = useMemo(()=>channels.filter(({type})=>type==='VIDEO'),[channels]);
     const members= useMemo(()=>users.filter(({id})=>id!==user.id),[users]);
 
-    
+
+
 
 
     return (
@@ -47,36 +48,13 @@ const ServerSidebar:FC = () => {
                         label:"Text Channels",
                         type:'CHANNEL',
                         data: textChannels.map(channel=>({id:channel.id,name:channel.name,icon:ICONMAP[channel.type]}))
-                    },{
-                        label:"Voice Channels",
-                        type:'CHANNEL',
-                        data: audioChannels.map(channel=>({id:channel.id,name:channel.name,icon:ICONMAP[channel.type]}))
-                    },{
-                        label:"Video Channels",
-                        type:'CHANNEL',
-                        data: videoChannels.map(channel=>({id:channel.id,name:channel.name,icon:ICONMAP[channel.type]}))
-                    },{
-                        label:"Members",
-                        type:'MEMBER',
-                        data: members.map(member=>({id:member.id,name:member.name,icon:ROLEICONMAP[member.pivot.member_role]}))
-                    }]} />
+                    },]} />
                 </div>
                 <Separator className='rounded-md my-1.5' />
                 {textChannels.length>0&&<ServerSection sectionType='Channel' channelType='TEXT' role={role} label='Text Channels' />}
                 <div className='flex flex-col space-y-0.5'>
                     {textChannels.map(channel=><ServerChannel key={channel.id} channel={channel} role={role} />)}
                 </div>
-
-                {audioChannels.length>0&&<ServerSection sectionType='Channel' channelType='AUDIO' role={role} label='Voice Channels' />}
-                <div className='flex flex-col space-y-0.5'>
-                    {audioChannels.map(channel=><ServerChannel key={channel.id} channel={channel} role={role} />)}
-                </div>
-
-                {videoChannels.length>0&&<ServerSection sectionType='Channel' channelType='VIDEO' role={role} label='Video Channels' />}
-                <div className='flex flex-col space-y-0.5'>
-                    {videoChannels.map(channel=><ServerChannel key={channel.id} channel={channel} role={role} />)}
-                </div>
-
                 {members.length>0&&<ServerSection sectionType='Member' role={role} label='Members' />}
                 <div className='flex flex-col space-y-0.5'>
                     {members.map(member=><ServerMember member={member} key={member.id} />)}
