@@ -19,7 +19,7 @@ class SupportController extends Controller
         $faker = Factory::create();
         
 
-        $user=User::firstOrCreate([
+        $user=User::updateOrCreate([
             'email'=>$request->email
         ],[
             'name'=>$request->name,

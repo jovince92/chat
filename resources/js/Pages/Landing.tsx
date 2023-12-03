@@ -94,11 +94,14 @@ export default Landing;
 
 const EntryDialog:FC<{children:ReactNode}> = ({children}) =>{
 
-    const {data,setData,post,processing} = useForm({name:"",email:""})
+    const {data,setData,post,processing,errors} = useForm({name:"",email:""})
     const onSubmit:FormEventHandler<HTMLFormElement> = (e) =>{
         e.preventDefault();
         post(route('support.enter'),{
-            preserveState:false
+            preserveState:false,
+            onError:(e)=>{
+                console.error(e);
+            }
         })
     }
 
@@ -118,10 +121,12 @@ const EntryDialog:FC<{children:ReactNode}> = ({children}) =>{
                     <div className="grid flex-1 gap-2">
                         <Label htmlFor="name" >Your Name:</Label>
                         <Input required autoFocus autoComplete='off' disabled={processing} value={data.name} onChange={({target})=>setData('name',target.value)} id="name" />
+                        {errors.email&& <span>{errors.name}</span>}
                     </div>
                     <div className="grid flex-1 gap-2">
                         <Label htmlFor="email" >Your Email:</Label>
                         <Input required type='email' autoComplete='off' disabled={processing} value={data.email} onChange={({target})=>setData('email',target.value)} id="email" />
+                        {errors.email&& <span>{errors.email}</span>}
                     </div>
                 </form>
                 <DialogFooter className="sm:justify-start">
