@@ -10,81 +10,103 @@ import { DialogClose } from '@radix-ui/react-dialog';
 import { Loader2 } from 'lucide-react';
 import { FC, FormEventHandler, ReactNode, useEffect } from 'react';
 
-
 interface Props{
     channel:Channel;
     user:User;
 }
 
 const Landing:FC<Props> = ({channel}) => {
+
+    const { data, setData, post, processing, errors, reset } = useForm({
+        name: '',
+        email: '',
+        password: '',
+        password_confirmation: '',
+    });
+
+    const submit: FormEventHandler = (e) => {
+        e.preventDefault();
+
+        post(route('register'));
+    };
+
     return (
         <>
             <Head title='Welcome to Chat Support' />
-            <div className="bg-background h-full">
-            {/* Header Section */}
-                <header className="bg-secondary text-primary py-10">
-                    <div className="container mx-auto text-center">
-                        <h1 className="text-4xl font-extrabold mb-4">
-                            Elevate Your Customer Support with Chat
-                        </h1>
-                        <p className="text-lg">
-                            Connect with your customers in real-time and provide excellent
-                            support with our chat solutions.
-                        </p>
+            <div className="flex flex-col h-screen">
+
+            <header className="bg-secondary/50 text-primary py-4 text-center md:text-left shadow-md">
+                <div className="container flex items-center mx-auto ">
+                    <h1 className="text-xl font-extrabold w-full">
+                        International College
+                    </h1>
+                    <button className="hidden md:block bg-primary rounded text-secondary text-sm ml-auto w-28 p-2">
+                        Contact Us
+                    </button>
+                </div>
+            </header>
+
+            <section className="py-10 bg-gray-300 flex-1">
+                <div className='container flex flex-col-reverse md:flex-row items-center'>
+                    <div className='w-full p-5 bg-gray-100/50 rounded-md shadow-md
+                                    md:w-1/3'>
+                        <h1 className='font-bold'>For inquiry or support</h1>
+                        <p className='text-sm mt-1 mb-5'>Send us a message by providing contact details</p>
+                        <form onSubmit={submit}>
+                            <div>
+                                <Label htmlFor="name" >Name</Label>
+                                <Input
+                                    id="name"
+                                    name="name"
+                                    value={data.name}
+                                    className="mt-1 block w-full"
+                                    autoComplete="off"
+                                    autoFocus
+                                    onChange={(e) => setData('name', e.target.value)}
+                                    required
+                                />
+                                {errors.email&& <p className='text-xs text-destructive'>{errors.name}</p> }
+                            </div>
+
+                            <div className="mt-4">
+                                <Label htmlFor="email" >Email</Label>
+
+                                <Input
+                                    id="email"
+                                    type="email"
+                                    name="email"
+                                    value={data.email}
+                                    className="mt-1 block w-full"
+                                    autoComplete="off"
+                                    onChange={(e) => setData('email', e.target.value)}
+                                    required
+                                />
+
+                                {errors.email&& <p className='text-xs text-destructive'>{errors.name}</p> }
+                            </div>
+
+                            <div className="flex items-center justify-center mt-4">
+                                <Button className="ml-4" disabled={processing}>
+                                    Send Message
+                                </Button>
+                            </div>
+                        </form>
                     </div>
-                </header>
 
-                {/* Features Section */}
-                <section className="py-16">
-                    <div className="container mx-auto">
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                            {/* Feature 1 */}
-                            <Card>
-                                <CardHeader>
-                                    <CardTitle>Real-time Chat</CardTitle>
-                                    <CardDescription>Engage with your customers instantly through real-time chat,fostering better communication and satisfaction.</CardDescription>
-                                </CardHeader>
-                            </Card>
-
-                            {/* Feature 2 */}
-                            <Card>
-                                <CardHeader>
-                                    <CardTitle>24/7 Support</CardTitle>
-                                    <CardDescription>Provide round-the-clock support, ensuring your customers get assistance whenever they need it.</CardDescription>
-                                </CardHeader>
-                            </Card>
-
-                            <Card>
-                                <CardHeader>
-                                    <CardTitle>Customizable Solutions</CardTitle>
-                                    <CardDescription>Tailor our chat solutions to meet the unique needs of your business and customers.</CardDescription>
-                                </CardHeader>
-                            </Card>
-
-                        </div>
+                    <div className='mb-5 md:mb-0 md:ml-auto'>
+                        <img src={`${route('landing')}/images/school.svg`} className='w-full h-[15rem] md:h-[30rem]'/>
                     </div>
-                </section>
+                </div>
+            </section>
 
-                {/* Call-to-Action Section */}
-                <section className="bg-muted text-primary py-16">
-                    <div className="container mx-auto text-center">
-                    <h2 className="text-3xl font-bold mb-4">
-                        Ready to Enhance Your Customer Support?
-                    </h2>
-                    <p className="text-lg mb-8">
-                        Contact us today to get started with our chat support solutions.
-                    </p>
-                    
-                    <EntryDialog>
-                        <Button >
-                            Contact Us
-                        </Button>
-                    </EntryDialog>
-                    
-                    </div>
-                </section>
             </div>
             <ChatSheet isOpen={!!channel} onClose={()=>{}} channel={channel} />
+
+            <EntryDialog>
+                <Button >
+                    Contact Us
+                </Button>
+            </EntryDialog>
         </>
     )
 }
