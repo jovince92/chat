@@ -1,6 +1,6 @@
 import { useEffect, FormEventHandler } from 'react';
 
-import { Head, Link, useForm } from '@inertiajs/react';
+import { Head, Link, router, useForm } from '@inertiajs/react';
 import { Label } from '@/Components/ui/label';
 import { Input } from '@/Components/ui/input';
 import { Button } from '@/Components/ui/button';
@@ -23,7 +23,9 @@ export default function Login({ status, canResetPassword }: { status?: string, c
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
 
-        post(route('login'));
+        post(route('login'),{
+            onSuccess:()=>router.get(route('home'))
+        });
     };
 
     return (

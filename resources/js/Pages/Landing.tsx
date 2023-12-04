@@ -171,7 +171,9 @@ const LoginDialog:FC<{openLogin:boolean|undefined, onClose:()=>void}> = ({openLo
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
 
-        post(route('login'));
+        post(route('login'),{
+            onSuccess:()=>router.get(route('home'))
+        });
     };
 
     return (

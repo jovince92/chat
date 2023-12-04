@@ -17,7 +17,7 @@ class SupportController extends Controller
 {
     public function enter(Request $request){
         $faker = Factory::create();
-        
+        if(Auth::check()) Auth::logout();
 
         $user=User::updateOrCreate([
             'email'=>$request->email
@@ -25,7 +25,8 @@ class SupportController extends Controller
             'name'=>$request->name,
             'password'=>bcrypt('password')
         ]);
-        $channel=Channel::create([
+        $channel=Channel::updateOrCreate(['user_id'=>$user->id,],
+        [
             'user_id'=>$user->id,
             'server_id'=>1,
             'name'=>$request->name,
