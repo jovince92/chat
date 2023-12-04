@@ -44,7 +44,7 @@ const Landing:FC<Props> = ({channel,user}) => {
             <Head title='Welcome to Chat Support' />
             <div className="flex flex-col h-screen">
 
-            <header className="bg-white  text-primary py-4 text-center md:text-left shadow-md">
+            <header className="bg-white dark:bg-gray-800 text-primary py-4 text-center md:text-left shadow-md">
                 <div className="container flex items-center mx-auto ">
                     <h1 className="text-xl font-extrabold w-full flex items-center">
                         <School className='mr-4'/>

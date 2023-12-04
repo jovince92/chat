@@ -27,6 +27,8 @@ const ChatSheetMessages:FC<{channel:Channel;getMsgsRoute:string;}> = ({channel,g
     });
     
     const paginatedMessages=data?.pages;
+
+    console.log(data?.pages);
     
 
     

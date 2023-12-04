@@ -7,6 +7,7 @@ use App\Http\Controllers\MemberController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\ServerController;
 use App\Http\Controllers\SupportController;
+use App\Http\Controllers\SystemMessageController;
 use App\Models\Member;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -41,7 +42,10 @@ Route::prefix('backend')->middleware(['auth'])->group(function(){
     })->name('setup');
 
     
-
+    Route::prefix('sys_message')->name('sys_message.')->group(function(){
+        Route::get('/', [SystemMessageController::class, 'index'])->name('index');
+        Route::post('/store', [SystemMessageController::class, 'store'])->name('store');
+    });
 
     Route::prefix('server')->name('server.')->group(function(){
         Route::prefix('/{server_id}')->group(function(){

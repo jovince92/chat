@@ -17,11 +17,17 @@ interface Props{
 const ChatSheet:FC<Props> = ({isOpen,channel,onClose,user}) => {
     
     
-    const apiRoute=useMemo(()=>route('server.channel.message.store',{server_id:channel?.server_id||"",channel_id:channel?.id||""}),[channel]);
-    const getMsgsRoute=useMemo(()=>route('server.channel.message.index',{server_id:channel?.server_id||"",channel_id:channel?.id||""}),[channel]);
+    const apiRoute=useMemo(()=>
+        route('server.channel.message.store',{server_id:channel?.server_id||"",channel_id:channel?.id||""})
+    ,[channel]);
+
+    const getMsgsRoute=useMemo(()=>
+        route('server.channel.message.index',{server_id:channel?.server_id||"",channel_id:channel?.id||""})
+    ,[channel]);
+    
     const queryClient = useQueryClient();
+
     useEffect(()=>{
-        
         if(!channel){return;}
         window.Echo.join('channel_'+channel.id.toString())
         .listen('NewChatMessageEvent',({message}:{message:Message})=>{
@@ -65,12 +71,11 @@ const ChatSheet:FC<Props> = ({isOpen,channel,onClose,user}) => {
                     </SheetDescription>
                 </SheetHeader>
                 <div className='flex-1 flex flex-col overflow-y-hidden'>
-                        <div className='flex-1 bg-secondary'>
-                            <ChatSheetMessages getMsgsRoute={getMsgsRoute} channel={channel} />
-                        </div>
-                    
-                        <ChatInput name={user.name} type='Channel' apiRoute={apiRoute}  />
+                    <div className='flex-1 mb-2'>
+                        <ChatSheetMessages getMsgsRoute={getMsgsRoute} channel={channel} />
                     </div>
+                    <ChatInput name={user.name} type='Channel' apiRoute={apiRoute}  />
+                </div>
             </SheetContent>
         </Sheet>
         

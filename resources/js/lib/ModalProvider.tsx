@@ -11,6 +11,7 @@ import InviteModal from '@/Components/Modals/InviteModal';
 import LeaveConfirmationModal from '@/Components/Modals/LeaveConfirmationModal';
 import MembersModal from '@/Components/Modals/MembersModal';
 import MessageFileModal from '@/Components/Modals/MessageFileModal';
+import SystemMessageModal from '@/Components/Modals/SystemMessageModal';
 
 const ModalProvider = () => {
     return (
@@ -26,6 +27,7 @@ const ModalProvider = () => {
             <EditChannelModal />
             <MessageFileModal />
             <DeleteMessageConfirmationModal />
+            <SystemMessageModal />
         </>
     )
 }
