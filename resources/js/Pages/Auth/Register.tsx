@@ -1,6 +1,6 @@
 import { useEffect, FormEventHandler } from 'react';
 
-import { Head, Link, useForm } from '@inertiajs/react';
+import { Head, Link, router, useForm } from '@inertiajs/react';
 import { Alert, AlertDescription, AlertTitle } from '@/Components/ui/alert';
 import { AlertCircle, Loader } from 'lucide-react';
 import { Label } from '@/Components/ui/label';
@@ -24,7 +24,9 @@ export default function Register() {
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
 
-        post(route('register'));
+        post(route('register'),{
+            onSuccess:()=>router.get(route('home'))
+        });
     };
 
     return (

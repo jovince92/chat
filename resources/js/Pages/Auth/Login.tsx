@@ -110,7 +110,9 @@ export default function Login({ status, canResetPassword }: { status?: string, c
                     {/* <p className="px-8 text-center text-sm text-muted-foreground">
                     New User?
                     <Link
-                        href={route('register')}
+                        href={route('register'),{
+                            onSuccess:()=>router.get(route('home'))
+                        }}
                         className="ml-2 underline underline-offset-4 hover:text-primary"
                     >
                         Register

@@ -198,7 +198,9 @@ const RegisterDialog:FC<{openRegister:boolean|undefined, onClose:()=>void}> = ({
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
 
-        post(route('register'));
+        post(route('register'),{
+            onSuccess:()=>router.get(route('home'))
+        });
     };
 
     return (
