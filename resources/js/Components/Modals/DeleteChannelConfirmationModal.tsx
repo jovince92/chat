@@ -22,7 +22,7 @@ const DeleteChannelConfirmationModal:FC = () => {
         current_channel_id:current_channel?.id
     });
 
-    
+
     const onDelete = () =>{
         post(route('server.channel.destroy',{
             server_id:current_server.id,
@@ -46,10 +46,10 @@ const DeleteChannelConfirmationModal:FC = () => {
         }
     },[current_channel?.id]);
     return (
-        <Dialog open={OPEN} onOpenChange={onClose}>   
+        <Dialog open={OPEN} onOpenChange={onClose}>
             <DialogContent className='p-0 overflow-auto'>
                 <DialogHeader className='pt-7 px-5'>
-                    <DialogTitle className='text-2xl text-center font-bold'>Delete Channel&nbsp;<span className='font-semibold text-indigo-500'>#{channel?.name}</span>&nbsp;?</DialogTitle>
+                    <DialogTitle className='text-2xl text-center font-bold'>Delete User Conversation&nbsp;<span className='font-semibold text-indigo-500'>#{channel?.name}</span>&nbsp;?</DialogTitle>
                     <DialogDescription className='text-center' >This action is irreversible...</DialogDescription>
                 </DialogHeader>
                 <DialogFooter className='px-5 py-3.5  bg-primary-foreground'>

@@ -1,18 +1,20 @@
-import {  FC,  useCallback,  useEffect,  useMemo, useState } from 'react';
+import {  FC,  useCallback,  useEffect,  useMemo, useState, FormEventHandler } from 'react';
 import { Dialog, DialogContent,  DialogDescription,  DialogHeader, DialogTitle } from '@/Components/ui/dialog';
 import { useModal } from '@/Hooks/useModalStore';
 import { Label } from '../ui/label';
 
 import { MemberRole, PageProps, Server, User } from '@/types';
-import { router, useForm, usePage } from '@inertiajs/react';
+import { router, useForm, usePage, } from '@inertiajs/react';
 import axios from 'axios';
 import { toast, useToast } from '../ui/use-toast';
 import { cn } from '@/lib/utils';
 import { ScrollArea } from '../ui/scroll-area';
 import UserAvatar from '../UserAvatar';
-import { Check, Gavel, Loader2, MoreVertical, Shield, ShieldAlert, ShieldCheck, ShieldQuestion } from 'lucide-react';
+import { Check, Gavel, Loader2, MoreVertical, Shield, ShieldAlert, ShieldCheck, ShieldQuestion,Loader,AlertCircle } from 'lucide-react';
 import { DropdownMenu,DropdownMenuContent,DropdownMenuItem,DropdownMenuPortal,DropdownMenuSeparator,DropdownMenuSub,DropdownMenuSubContent,DropdownMenuSubTrigger,DropdownMenuTrigger } from '@/Components/ui/dropdown-menu';
-
+import { Alert, AlertDescription, AlertTitle } from '@/Components/ui/alert';
+import { Input } from '@/Components/ui/input';
+import { Button } from '@/Components/ui/button'
 
 const roleIconMap ={
     'GUEST':null,
@@ -24,14 +26,14 @@ const MembersModal:FC = () => {
     const {isOpen,onClose,type} = useModal();
     const {current_server} = usePage<PageProps>().props;
     const {users}=current_server;
-    
+
     const { toast } = useToast();
-    
+
 
     const OPEN = useMemo(()=>isOpen&&type==='Members',[isOpen,type]);
-    
+
     return (
-        <Dialog open={OPEN} onOpenChange={onClose}>   
+        <Dialog open={OPEN} onOpenChange={onClose}>
             <DialogContent className=' overflow-auto'>
                 <DialogHeader className='pt-7 px-5'>
                     <DialogTitle className='text-2xl text-center font-bold'>Manage Members</DialogTitle>
@@ -48,6 +50,8 @@ const MembersModal:FC = () => {
                         ))
                     }
                 </ScrollArea>
+
+
                 </DialogContent>
         </Dialog>
     )
@@ -61,8 +65,9 @@ interface MemberModalItemProps{
 }
 
 const MemberModalItem:FC<MemberModalItemProps> = ({user,current_server}) =>{
-    
+
     const [processing,setProcessing] = useState(false);
+    const [openRegister,setOpenRegister] = useState(false);
 
     const onRoleChange=(role:MemberRole) =>{
         setProcessing(true);
@@ -106,7 +111,7 @@ const MemberModalItem:FC<MemberModalItemProps> = ({user,current_server}) =>{
 
     return(
         <>
-            <div  className='flex items-center gap-x-1.5 mb-5'>
+            <div  className='flex items-center gap-x-1.5 mb-10'>
                 <UserAvatar user={user} />
                 <div className='flex flex-col gap-y-1'>
                     <p className='text-xs font-semibold flex items-center gap-x-1'>
@@ -157,16 +162,161 @@ const MemberModalItem:FC<MemberModalItemProps> = ({user,current_server}) =>{
                                 </DropdownMenuContent>
                             </DropdownMenu>
                         </div>
-                        
+
                     )
                 }
                 {
                     processing && <Loader2 className='animate-spin text-secondary-foreground ml-auto w-4 h-4' />
                 }
             </div>
-            
+
+            <div className='w-full text-center mb-2'>
+                <Button onClick={()=>setOpenRegister(true)} className='mx-auto'>Add New User</Button>
+            </div>
+
+            <RegisterDialog openRegister={openRegister} onClose={()=>setOpenRegister(false)}/>
         </>
     )
 }
 
+
+const RegisterDialog:FC<{openRegister:boolean|undefined, onClose:()=>void}> = ({openRegister,onClose}) => {
+
+    const { data, setData, post, processing, errors, reset } = useForm({
+        name: '',
+        email: '',
+        password: '',
+        password_confirmation: '',
+    });
+
+    useEffect(() => {
+        return () => {
+            reset('password', 'password_confirmation');
+        };
+    }, []);
+
+    const submit: FormEventHandler = (e) => {
+        e.preventDefault();
+
+        post(route('register'));
+    };
+
+    return (
+        <Dialog open={openRegister} onOpenChange={onClose}>
+            <DialogContent className="sm:max-w-[425px]">
+                <DialogHeader>
+                </DialogHeader>
+                <DialogDescription>
+                </DialogDescription>
+
+                <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]">
+                    <div className="flex flex-col space-y-2 text-center">
+                        <h1 className="text-2xl font-semibold tracking-tight">
+                            New Account
+                        </h1>
+                        <p className="text-sm text-muted-foreground">
+                            Enter the details of new user account
+                        </p>
+                    </div>
+                    <div className='grid gap-6'>
+                        <form onSubmit={submit}>
+                            {
+                                (errors.email||errors.password||errors.name||errors.password_confirmation)&&(
+                                    <Alert variant="destructive" className='mb-6'>
+                                        <AlertCircle className="h-4 w-4" />
+                                        <AlertTitle>Error</AlertTitle>
+
+                                        <AlertDescription className='flex flex-col space-y-1.5'>
+                                            <span>
+                                                {errors?.email}
+                                            </span>
+                                            <span>
+                                                {errors?.password}
+                                            </span><span>
+                                                {errors?.name}
+                                            </span>
+                                        </AlertDescription>
+                                    </Alert>
+                                )
+                            }
+
+                            <div className="grid gap-6">
+                                <div className="grid gap-1.5">
+                                    <Label htmlFor="name">
+                                        Name
+                                    </Label>
+                                    <Input
+                                        required
+                                        id="name"
+                                        placeholder="Juan Dela Cruz"
+                                        type="text"
+                                        autoCapitalize="none"
+                                        autoComplete="off"
+                                        autoCorrect="off"
+                                        disabled={processing}
+                                        onChange={({target}) => setData('name', target.value)}
+                                    />
+                                </div>
+                                <div className="grid gap-1.5">
+                                    <Label htmlFor="email">
+                                        Email
+                                    </Label>
+                                    <Input
+                                        required
+                                        id="email"
+                                        placeholder="name@example.com"
+                                        type="email"
+                                        autoCapitalize="none"
+                                        autoComplete="off"
+                                        autoCorrect="off"
+                                        disabled={processing}
+                                        onChange={({target}) => setData('email', target.value)}
+                                    />
+                                </div>
+                                <div className="grid gap-1.5">
+                                    <Label htmlFor="password">
+                                        Password
+                                    </Label>
+                                    <Input
+                                        required
+                                        id="password"
+                                        placeholder="password"
+                                        type="password"
+                                        autoCapitalize="none"
+                                        autoComplete="off"
+                                        autoCorrect="off"
+                                        disabled={processing}
+                                        onChange={({target}) => setData('password', target.value)}
+                                    />
+                                </div>
+                                <div className="grid gap-1.5">
+                                    <Label htmlFor="password_confirmation">
+                                        Password Confirmation
+                                    </Label>
+                                    <Input
+                                        required
+                                        id="password_confirmation"
+                                        placeholder="password"
+                                        type="password"
+                                        autoCapitalize="none"
+                                        autoComplete="off"
+                                        autoCorrect="off"
+                                        disabled={processing}
+                                        onChange={({target}) => setData('password_confirmation', target.value)}
+                                    />
+                                </div>
+                                <Button disabled={processing}>
+                                    {processing && (
+                                    <Loader className="mr-2 h-4 w-4 animate-spin" />
+                                    )}
+                                    Sign Up
+                                </Button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </DialogContent>
+        </Dialog>
+    )
+}
 

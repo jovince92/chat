@@ -36,12 +36,14 @@ class HandleInertiaRequests extends Middleware
             'auth' => [
                 'user' => $request->user(),
             ],
-            'servers'=>Auth::check()?$request->user()->servers:[],
+            'servers' => Auth::check() ? $request->user()->servers : [],
             'ziggy' => fn () => [
                 ...(new Ziggy)->toArray(),
                 'location' => $request->url(),
             ],
-            
+
+            //
+
         ];
     }
 }

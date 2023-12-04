@@ -23,7 +23,7 @@ const ServerHeader:FC<ServerHeaderProps> = ({role,server}) => {
             </DropdownMenuTrigger>
             <DropdownMenuContent className='w-56 text-xs font-medium text-black dark:text-neutral-400 space-y-[0.125rem]'>
                 {
-                    isMod&&<DropdownMenuItem onClick={()=>onOpen('Invite',{server})} className='text-indigo-600 dark:text-indigo-400 px-2.5 py-1.5 text-sm cursor-pointer'>Invite People <UserPlus className='h-4 w-4 ml-auto' /> </DropdownMenuItem>
+                    // isMod&&<DropdownMenuItem onClick={()=>onOpen('Invite',{server})} className='text-indigo-600 dark:text-indigo-400 px-2.5 py-1.5 text-sm cursor-pointer'>Invite People <UserPlus className='h-4 w-4 ml-auto' /> </DropdownMenuItem>
                 }
                 {
                     isAdmin&&<DropdownMenuItem onClick={()=>onOpen('EditServer',{server})}  className='px-2.5 py-1.5 text-sm cursor-pointer'>Server Settings <Settings className='h-4 w-4 ml-auto' /> </DropdownMenuItem>
@@ -32,13 +32,13 @@ const ServerHeader:FC<ServerHeaderProps> = ({role,server}) => {
                     isAdmin&&<DropdownMenuItem onClick={()=>onOpen('Members',{server})} className='px-2.5 py-1.5 text-sm cursor-pointer'>Manage Members<Users className='h-4 w-4 ml-auto' /> </DropdownMenuItem>
                 }
                 {
-                    isMod&&<DropdownMenuItem onClick={()=>onOpen('CreateChannel',{server})} className='px-2.5 py-1.5 text-sm cursor-pointer'>Create Channel<PlusCircle className='h-4 w-4 ml-auto' /> </DropdownMenuItem>
+                    // isMod&&<DropdownMenuItem onClick={()=>onOpen('CreateChannel',{server})} className='px-2.5 py-1.5 text-sm cursor-pointer'>Create Channel<PlusCircle className='h-4 w-4 ml-auto' /> </DropdownMenuItem>
                 }
                 {
                     isMod&&<DropdownMenuSeparator />
                 }
                 {
-                    isAdmin&&<DropdownMenuItem onClick={()=>onOpen('DeleteServer',{server})} className='text-destructive px-2.5 py-1.5 text-sm cursor-pointer'>Delete Server<Trash className='h-4 w-4 ml-auto' /> </DropdownMenuItem>
+                    // isAdmin&&<DropdownMenuItem onClick={()=>onOpen('DeleteServer',{server})} className='text-destructive px-2.5 py-1.5 text-sm cursor-pointer'>Delete Server<Trash className='h-4 w-4 ml-auto' /> </DropdownMenuItem>
                 }
                 {
                     !isAdmin&&<DropdownMenuItem onClick={()=>onOpen('LeaveServer',{server})} className='text-destructive px-2.5 py-1.5 text-sm cursor-pointer'>Leave Server<LogOut className='h-4 w-4 ml-auto' /> </DropdownMenuItem>

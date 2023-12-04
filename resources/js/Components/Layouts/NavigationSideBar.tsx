@@ -17,8 +17,8 @@ const NavigationSideBar:FC = () => {
 
     return (
         <div className='flex flex-col space-y-3.5 items-center h-full text-primary w-full bg-neutral-200 dark:bg-neutral-900  py-2.5'>
-            <NavigationAction />
-            <Separator className='h-[0.12rem] bg-zinc-300 dark:bg-zinc-700 rounded-md w-10 mx-auto' />
+            {/* <NavigationAction /> */}
+            {/* <Separator className='h-[0.12rem] bg-zinc-300 dark:bg-zinc-700 rounded-md w-10 mx-auto' /> */}
             <ScrollArea className='flex-1 w-full'>
                 {
                     servers.map(server=>(

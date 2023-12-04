@@ -18,7 +18,7 @@ const ServerSection:FC<ServerSectionProps> = ({label,role,sectionType,channelTyp
     return (
         <div className='flex items-center justify-between py-1.5'>
             <p className='text-xs uppercase font-bold'>{label}</p>
-            {
+            {/* {
                 (role!=='GUEST' && sectionType==='Channel')&&(
                     <ActionTooltip label='Create Channel' side='top'>
                         <Button onClick={()=>onOpen('CreateChannel',{channelType})} className='!h-8 !w-8' size='icon' variant='outline'> <Plus className='h-4 w-4' /> </Button>
@@ -31,7 +31,7 @@ const ServerSection:FC<ServerSectionProps> = ({label,role,sectionType,channelTyp
                         <Button onClick={()=>onOpen('Members')} className='!h-8 !w-8' size='icon' variant='outline'> <Settings className='h-4 w-4' /> </Button>
                     </ActionTooltip>
                 )
-            }
+            } */}
         </div>
     )
 }

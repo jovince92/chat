@@ -1,4 +1,4 @@
-import { Message, PageProps } from '@/types';
+import { Channel, Message, PageProps } from '@/types';
 import {FC,FormEventHandler,useEffect,useMemo, useState,useRef, useCallback} from 'react';
 import UserAvatar from '../UserAvatar';
 import ActionTooltip from '../Layouts/ActionToolTip';
@@ -15,85 +15,44 @@ import { useModal } from '@/Hooks/useModalStore';
 interface ChatItemProps{
     message:Message;
     type:"Channel"|"Conversation";
+    channel:Channel;
 }
 
 const DATE_FORMAT = "d MMMM yyyy HH:mm"
 
-const ChatItem:FC<ChatItemProps> = ({message,type}) => {
-    const {current_server,current_channel,auth,current_conversation} = usePage<PageProps>().props;
+const ChatSheetItem:FC<ChatItemProps> = ({message,type,channel}) => {
     const [newContent,setNewContent] = useState(message.content);
     const [loading,setLoading]  = useState(false);
     const [isEditing,setIsEditing]  = useState(false);
-
     const {user} = message;
-    const {user:currentUser} = auth;
-    const role=useMemo(()=>current_server.users.find(({id})=>id===user.id)?.pivot.member_role,[current_server,user]);
     const fileType=message.file?.split(".").pop();
 
-    const canDeleteMsg = useMemo(()=>!message.deleted_at &&((type==='Channel'&&(role==='ADMIN'||role==='MODERATOR'))||currentUser.id===message.user_id),[message,role]);
-    const canEditMsg = useMemo(()=>!message.deleted_at &&(currentUser.id===message.user_id) && !message.file,[message,role]);
     const fileImage = fileType==='pdf'?route('home')+'/uploads/pdf/pdf.png':message.file;
 
-    const {onOpen,data:ModalData} = useModal();
+
 
     const input = useRef<HTMLInputElement>(null);
 
     const {post} =useForm({user_id:message.user_id});
-    const onInitiate = () =>{
-        if(message.user_id===currentUser.id){
-            return null;
-        }
-        post(route('server.conversation.initiate',{server_id:current_server.id}));
-    }
+
     const onSubmit:FormEventHandler<HTMLFormElement> = useCallback((e) => {
         e.preventDefault();
-        if(!current_channel&&type=='Channel'){
-            return;
-        }
-        if(!current_conversation&&type==='Conversation'){
-            return;
-        }
-        setLoading(true);
-        const updateRoute = type==='Channel'?route('server.channel.message.update',{
-            server_id:current_server.id,
-            channel_id:current_channel!.id,
-        }):route('server.conversation.update',{
-            server_id:current_server.id,
-            conversation_id:current_conversation!.id,
-        });
 
-        axios.post(updateRoute,{
+        setLoading(true);
+
+
+        axios.post(route('server.channel.message.update',{
+            server_id:channel.server_id,
+            channel_id:channel.id
+        }),{
             message:newContent,
             message_id:message.id
         })
         .then(()=>setIsEditing(false))
         .catch(()=>toast({title:'Internal Error',description:'Please Try Again'}))
         .finally(()=>setLoading(false));
-    },[current_channel,current_server,newContent,message.id,type,current_conversation]);
+    },[channel,newContent,message.id,type]);
 
-    const onDelete = useCallback(() =>{
-        if(!current_channel&&type=='Channel'){
-            return;
-        }
-        if(!current_conversation&&type==='Conversation'){
-            return;
-        }
-        const deleteRoute = type==='Channel'? route('server.channel.message.destroy',{
-            server_id:current_server.id,
-            channel_id:current_channel!.id,
-            message_id:message.id
-        }):route('server.conversation.destroy',{
-            server_id:current_server.id,
-            conversation_id:current_conversation!.id,
-            direct_message_id:message.id
-        });
-
-        onOpen('DeleteMessage',{
-            apiRoute:deleteRoute
-        });
-
-
-    },[current_channel,current_server,message.id,type,current_conversation]);
 
     useEffect(()=>{
 
@@ -118,17 +77,17 @@ const ChatItem:FC<ChatItemProps> = ({message,type}) => {
     return (
         <div className='relative group flex items-center hover:bg-neutral-300 dark:hover:bg-neutral-900 p-3.5 transition w-full'>
             <div className='group flex gap-x-1.5 items-start w-full'>
-                <div onClick={onInitiate} className='cursor-pointer hover:drop-shadow-md transition'>
+                <div  className='cursor-pointer hover:drop-shadow-md transition'>
                     <UserAvatar user={user} />
                 </div>
                 <div className='flex flex-col w-full'>
                     <div className='flex items-center gap-x-1.5'>
                         <div className='flex items-center'>
-                            <p onClick={onInitiate} className={cn('font-semibold text-sm transition mr-1',message.user_id!==currentUser.id&&'cursor-pointer hover:underline')}>
+                            <p  className={cn('font-semibold text-sm transition mr-1')}>
                                 {user.name}
                             </p>
-                            <ActionTooltip label={role||""}>
-                                <p>{ROLEICONMAP[role||"GUEST"]}</p>
+                            <ActionTooltip label={'Admin'}>
+                                <p>{ROLEICONMAP['ADMIN']}</p>
                             </ActionTooltip>
                         </div>
                         <span className='text-xs text-neutral-500 dark:text-neutral-400'>{format(new Date(message.created_at),DATE_FORMAT)}</span>
@@ -176,24 +135,8 @@ const ChatItem:FC<ChatItemProps> = ({message,type}) => {
                     }
                 </div>
             </div>
-            {
-                canDeleteMsg && (
-                    <div className='hidden group-hover:flex items-center gap-x-1.5 absolute p-1 -top-2 right-5 bg-white dark:bg-neutral-800 border rounded-sm'>
-                        {
-                            // canEditMsg && (
-                            //     <ActionTooltip label='Edit'>
-                            //         <Edit onClick={()=>setIsEditing(true)} className='cursor-pointer ml-auto w-4 h-4 text-neutral-500 hover:text-neutral-600 dark:hover:text-neutral-300 transition' />
-                            //     </ActionTooltip>
-                            // )
-                        }
-                        <ActionTooltip label='Delete'>
-                            <Trash onClick={onDelete} className='cursor-pointer ml-auto w-4 h-4 text-neutral-500 hover:text-neutral-600 dark:hover:text-neutral-300 transition' />
-                        </ActionTooltip>
-                    </div>
-                )
-            }
         </div>
     )
 }
 
-export default ChatItem
+export default ChatSheetItem;

@@ -9,9 +9,14 @@ class Channel extends Model
 {
     use HasFactory;
     protected $guarded=[];
+    protected $with=['user'];
     
 
     public function message(){
         return $this->hasMany(Message::class);
+    }
+
+    public function user(){
+        return $this->belongsTo(User::class);
     }
 }
