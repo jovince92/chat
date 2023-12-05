@@ -42,10 +42,13 @@ const CaseClosedModal:FC = () => {
         <Dialog open={OPEN} onOpenChange={onClose}>
             <DialogContent className=' overflow-auto'>
                 <DialogHeader className='pt-7 px-5'>
-                    <DialogTitle className='text-2xl text-center font-bold'>Case Closed</DialogTitle>
+                    <DialogTitle className='text-2xl text-center font-bold'>Close this user's case?</DialogTitle>
                     <DialogDescription className='text-center text-muted-foreground'>
+                        after closing this case, user unable to reply anymore and 
+                        system will automatically send a score / rating choices for user to choose based on agent's assistance
                     </DialogDescription>
                 </DialogHeader>
+                <Button>Yes, close this case</Button>
                 </DialogContent>
         </Dialog>
     )
