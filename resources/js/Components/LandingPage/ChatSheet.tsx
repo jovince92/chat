@@ -20,7 +20,7 @@ interface Props{
 
 const ChatSheet:FC<Props> = ({isOpen,channel,onClose,user}) => {
     const [hasClickedReply,setHasClickedReply]   = useState(false);
-    const {reply} = usePage<PageProps>().props;
+    const {replies} = usePage<PageProps>().props;
     const apiRoute=useMemo(()=>
         route('server.channel.message.store',{server_id:channel?.server_id||"",channel_id:channel?.id||""})
     ,[channel]);
@@ -31,7 +31,7 @@ const ChatSheet:FC<Props> = ({isOpen,channel,onClose,user}) => {
     
     const queryClient = useQueryClient();
 
-    const onReply = ()=>{
+    const onReply = (reply:string)=>{
         setHasClickedReply(true);
         
         axios.post(apiRoute,{
@@ -91,8 +91,11 @@ const ChatSheet:FC<Props> = ({isOpen,channel,onClose,user}) => {
                     </div>
                     {
                         !hasClickedReply ?(
-                            <div className='w-full  flex  items-center justify-end px-5 pb-3.5'>
-                                <Button onClick={onReply}>{reply}</Button>
+                            <div className='w-full  flex  items-center space-x-2 justify-end px-5 pb-3.5'>
+                                {
+                                    replies.map(reply=><Button onClick={()=>onReply(reply)}>{reply}</Button>)
+                                }
+                                
                             </div>
                         ):<ChatInput name={user.name} type='Channel' apiRoute={apiRoute}  />
                     }

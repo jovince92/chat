@@ -67,7 +67,7 @@ export type PageProps<T extends Record<string, unknown> = Record<string, unknown
     current_channel?:Channel;
     current_conversation?:Conversation;
     base_url:string;
-    reply:string;
+    replies:string[];
 };
 
 export interface PaginatedMessage{

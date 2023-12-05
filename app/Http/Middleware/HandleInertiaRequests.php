@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\SystemMenu;
 use App\Models\SystemMessage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -32,12 +33,13 @@ class HandleInertiaRequests extends Middleware
      */
     public function share(Request $request): array
     {
+        $rs=SystemMenu::all();
         return [
             ...parent::share($request),
             'auth' => [
                 'user' => $request->user(),
             ],
-            'reply'=>SystemMessage::find(2)->message ?? 'Yes Please!',
+            'replies'=>$rs->pluck('name')->toArray(),
             'servers' => Auth::check() ? $request->user()->servers : [],
             'ziggy' => fn () => [
                 ...(new Ziggy)->toArray(),
