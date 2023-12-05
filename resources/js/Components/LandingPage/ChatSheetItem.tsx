@@ -16,11 +16,14 @@ interface ChatItemProps{
     message:Message;
     type:"Channel"|"Conversation";
     channel:Channel;
+    onReply?:(reply:string)=>void
 }
 
 const DATE_FORMAT = "d MMMM yyyy HH:mm"
 
-const ChatSheetItem:FC<ChatItemProps> = ({message,type,channel}) => {
+const ChatSheetItem:FC<ChatItemProps> = ({message,type,channel,onReply}) => {
+    const [hasClickedReply,setHasClickedReply]   = useState(false);
+    const {replies} = usePage<PageProps>().props;
     const [newContent,setNewContent] = useState(message.content);
     const [loading,setLoading]  = useState(false);
     const [isEditing,setIsEditing]  = useState(false);
@@ -68,6 +71,13 @@ const ChatSheetItem:FC<ChatItemProps> = ({message,type,channel}) => {
         return () => window.removeEventListener('keydown',handleKeyDown);
     },[]);
 
+
+
+    const onClick = (reply:string) =>{
+        if(onReply) onReply(reply);
+        setHasClickedReply(true);
+    } 
+
     useEffect(()=>{
         if(input.current&&isEditing){
             input.current.focus();
@@ -79,27 +89,27 @@ const ChatSheetItem:FC<ChatItemProps> = ({message,type,channel}) => {
             <div className='group flex gap-x-1.5 items-start w-full'>
                 <div  className='cursor-pointer hover:drop-shadow-md transition'>
                     {message.is_system_msg===0?
-                    <UserAvatar user={user} />
-                    :
-                    ''
+                        <UserAvatar user={user} />
+                        :
+                        ''
                     }
                 </div>
                 <div className='flex flex-col w-full'>
                     <div className='flex items-center gap-x-1.5'>
                         <div className='flex items-center'>
                             {message.is_system_msg===0?
-                            <>
+                                <>
+                                    <p  className={cn('font-semibold text-sm transition')}>
+                                        {user.name}
+                                    </p>
+                                    <ActionTooltip label={'Admin'}>
+                                        <p>{ROLEICONMAP['ADMIN']}</p>
+                                    </ActionTooltip>
+                                </>
+                                :
                                 <p  className={cn('font-semibold text-sm transition')}>
-                                    {user.name}
+                                    System
                                 </p>
-                                <ActionTooltip label={'Admin'}>
-                                    <p>{ROLEICONMAP['ADMIN']}</p>
-                                </ActionTooltip>
-                            </>
-                            :
-                            <p  className={cn('font-semibold text-sm transition')}>
-                                System
-                            </p>
                             }
 
                         </div>
@@ -148,6 +158,16 @@ const ChatSheetItem:FC<ChatItemProps> = ({message,type,channel}) => {
                                     Press ESC to cancel. Press Enter to save.
                                 </span>
                             </>
+                        )
+                    }
+                    {
+                        (message.is_system_msg===1 && !hasClickedReply) && (
+                            <div className='w-full  grid grid-cols-2 gap-3  pb-3.5'>
+                                {
+                                    replies.map(reply=><Button variant='outline' size='sm' onClick={()=>onClick(reply)}>{reply}</Button>)
+                                }
+                                
+                            </div>
                         )
                     }
                 </div>

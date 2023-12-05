@@ -87,18 +87,9 @@ const ChatSheet:FC<Props> = ({isOpen,channel,onClose,user}) => {
                 </SheetHeader>
                 <div className='flex-1 flex flex-col overflow-y-hidden'>
                     <div className='flex-1 mb-2'>
-                        <ChatSheetMessages getMsgsRoute={getMsgsRoute} channel={channel} />
+                        <ChatSheetMessages onReply={onReply} getMsgsRoute={getMsgsRoute} channel={channel} />
                     </div>
-                    {
-                        !hasClickedReply ?(
-                            <div className='w-full  flex  items-center space-x-2 justify-end px-5 pb-3.5'>
-                                {
-                                    replies.map(reply=><Button onClick={()=>onReply(reply)}>{reply}</Button>)
-                                }
-                                
-                            </div>
-                        ):<ChatInput name={user.name} type='Channel' apiRoute={apiRoute}  />
-                    }
+                    
                     
                 </div>
             </SheetContent>

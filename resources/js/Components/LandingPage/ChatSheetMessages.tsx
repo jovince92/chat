@@ -9,7 +9,13 @@ import ChatItem from '../Chat/ChatItem';
 import ChatSheetItem from './ChatSheetItem';
 import { log } from 'console';
 
-const ChatSheetMessages:FC<{channel:Channel;getMsgsRoute:string;}> = ({channel,getMsgsRoute}) => {
+interface Props{
+    channel:Channel;
+    getMsgsRoute:string;
+    onReply?:(reply:string)=>void;
+}
+
+const ChatSheetMessages:FC<Props> = ({channel,getMsgsRoute,onReply}) => {
     
     const chatRef = useRef<HTMLDivElement>(null);
     const bottomRef = useRef<HTMLDivElement>(null);
@@ -30,7 +36,6 @@ const ChatSheetMessages:FC<{channel:Channel;getMsgsRoute:string;}> = ({channel,g
     const paginatedMessages=data?.pages;
 
     
-    console.log(paginatedMessages)
     
     
     if(status==='loading'){
@@ -78,7 +83,7 @@ const ChatSheetMessages:FC<{channel:Channel;getMsgsRoute:string;}> = ({channel,g
                         <Fragment key={_idx}>
                             {
                                 paginatedmessage.data?.map(message=>(
-                                    <ChatSheetItem channel={channel} type='Channel' key={message.id} message={message} />
+                                    <ChatSheetItem onReply={(reply)=>onReply&&onReply(reply)} channel={channel} type='Channel' key={message.id} message={message} />
                                 ))
                             }
                         </Fragment>
