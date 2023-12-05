@@ -41,6 +41,7 @@ class SupportController extends Controller
             'user_id'=>1,
             'channel_id'=>$channel->id,
             'content'=>SystemMessage::find(1)->message ??  'Hi! How Can We Help You?',
+            'is_system_msg'=>1
         ]);
 
         broadcast(new NewChatMessageEvent($new_msg->load(['user'])));

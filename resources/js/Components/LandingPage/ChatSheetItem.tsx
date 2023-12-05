@@ -78,28 +78,39 @@ const ChatSheetItem:FC<ChatItemProps> = ({message,type,channel}) => {
         <div className='relative group flex items-center hover:bg-neutral-300 dark:hover:bg-neutral-900 p-3.5 transition w-full'>
             <div className='group flex gap-x-1.5 items-start w-full'>
                 <div  className='cursor-pointer hover:drop-shadow-md transition'>
+                    {message.is_system_msg===0?
                     <UserAvatar user={user} />
+                    :
+                    ''
+                    }
                 </div>
                 <div className='flex flex-col w-full'>
                     <div className='flex items-center gap-x-1.5'>
                         <div className='flex items-center'>
+                            {message.is_system_msg===0?
+                            <>
+                                <p  className={cn('font-semibold text-sm transition')}>
+                                    {user.name}
+                                </p>
+                                <ActionTooltip label={'Admin'}>
+                                    <p>{ROLEICONMAP['ADMIN']}</p>
+                                </ActionTooltip>
+                            </>
+                            :
                             <p  className={cn('font-semibold text-sm transition')}>
-                                {user.name}
+                                System
                             </p>
-                            <ActionTooltip label={'Admin'}>
-                                <p>{ROLEICONMAP['ADMIN']}</p>
-                            </ActionTooltip>
+                            }
+
                         </div>
                         <span className='text-xs text-neutral-500 dark:text-neutral-400'>{format(new Date(message.created_at),DATE_FORMAT)}</span>
                     </div>
                     {
-                        
                         (message.file&&!message.deleted_at)&&(
                             <a href={message.file} target='_blank' rel='noopener noreferrer' className={cn('relative aspect-square rounded-md mt-1.5 overflow-hidden border flex items-center bg-secondary ',
                                 fileType==='pdf'?'h-10 w-10':'h-48 w-48')}  >
                                 <img src={fileImage} alt='file' className='object-cover' />
                             </a>
-                            
                         )
                     }
                     <p className={cn('text-xs',fileType==='pdf'&&!message.deleted_at?'block':'hidden')}>PDF File</p>
@@ -107,7 +118,13 @@ const ChatSheetItem:FC<ChatItemProps> = ({message,type,channel}) => {
                         ( !isEditing) && (
                             <p className={cn('text-sm text-neutral-600 dark:text-neutral-300',
                                 message.deleted_at && 'italic text-neutral-500 dark:text-neutral-400 text-xs mt-1')}>
-                                {!message.deleted_at?message.content:'Message Deleted'}
+                                {!message.deleted_at?
+                                    message.is_system_msg===0?
+                                        message.content
+                                        :
+                                        message.content
+                                    :'Message Deleted'
+                                }
                                 {
                                     ((message.created_at!==message.updated_at)&&!message.deleted_at) &&(
                                         <span className='text-[0.625rem] mx-1.5 text-neutral-500 dark:text-neutral-400'>

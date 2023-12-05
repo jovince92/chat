@@ -48,6 +48,7 @@ export interface Message{
     created_at:string;
     updated_at:string;
     deleted_at:string;
+    is_system_msg:number;
 }
 
 export interface Conversation{

@@ -7,6 +7,7 @@ import React, { FC, Fragment, useRef } from 'react'
 import ChatWelcome from '../Chat/ChatWelcome';
 import ChatItem from '../Chat/ChatItem';
 import ChatSheetItem from './ChatSheetItem';
+import { log } from 'console';
 
 const ChatSheetMessages:FC<{channel:Channel;getMsgsRoute:string;}> = ({channel,getMsgsRoute}) => {
     
@@ -29,7 +30,7 @@ const ChatSheetMessages:FC<{channel:Channel;getMsgsRoute:string;}> = ({channel,g
     const paginatedMessages=data?.pages;
 
     
-
+    console.log(paginatedMessages)
     
     
     if(status==='loading'){
