@@ -1,11 +1,15 @@
-import React, { FC, useEffect, useMemo } from 'react'
+import React, { FC, useEffect, useMemo, useState } from 'react'
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from '@/Components/ui/sheet';
-import { Channel, Message, PaginatedMessage, User } from '@/types';
+import { Channel, Message, PageProps, PaginatedMessage, User } from '@/types';
 import ChatMessages from '../Chat/ChatMessages';
 import ChatInput from '../Chat/ChatInput';
 import { QueryClientProvider, useQueryClient } from '@tanstack/react-query';
 import QueryProvider from '@/Providers/QueryProvider';
 import ChatSheetMessages from './ChatSheetMessages';
+import { Button } from '../ui/button';
+import { usePage } from '@inertiajs/react';
+import axios from 'axios';
+import { toast } from '../ui/use-toast';
 
 interface Props{
     isOpen?:boolean;
@@ -15,8 +19,8 @@ interface Props{
 }
 
 const ChatSheet:FC<Props> = ({isOpen,channel,onClose,user}) => {
-    
-    
+    const [hasClickedReply,setHasClickedReply]   = useState(false);
+    const {reply} = usePage<PageProps>().props;
     const apiRoute=useMemo(()=>
         route('server.channel.message.store',{server_id:channel?.server_id||"",channel_id:channel?.id||""})
     ,[channel]);
@@ -26,6 +30,17 @@ const ChatSheet:FC<Props> = ({isOpen,channel,onClose,user}) => {
     ,[channel]);
     
     const queryClient = useQueryClient();
+
+    const onReply = ()=>{
+        setHasClickedReply(true);
+        
+        axios.post(apiRoute,{
+            message:reply
+        })
+        .then(()=>setHasClickedReply(true))
+        .catch(()=>toast({title:'Internal Error',description:`Can't send message. Please try again!`}))
+        //.finally(()=>setSending(false));
+    }
 
     useEffect(()=>{
         if(!channel){return;}
@@ -74,7 +89,14 @@ const ChatSheet:FC<Props> = ({isOpen,channel,onClose,user}) => {
                     <div className='flex-1 mb-2'>
                         <ChatSheetMessages getMsgsRoute={getMsgsRoute} channel={channel} />
                     </div>
-                    <ChatInput name={user.name} type='Channel' apiRoute={apiRoute}  />
+                    {
+                        !hasClickedReply ?(
+                            <div className='w-full  flex  items-center justify-end px-5 pb-3.5'>
+                                <Button onClick={onReply}>{reply}</Button>
+                            </div>
+                        ):<ChatInput name={user.name} type='Channel' apiRoute={apiRoute}  />
+                    }
+                    
                 </div>
             </SheetContent>
         </Sheet>

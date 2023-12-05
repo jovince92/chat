@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\SystemMessage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Middleware;
@@ -36,6 +37,7 @@ class HandleInertiaRequests extends Middleware
             'auth' => [
                 'user' => $request->user(),
             ],
+            'reply'=>SystemMessage::find(2)->message ?? 'Yes Please!',
             'servers' => Auth::check() ? $request->user()->servers : [],
             'ziggy' => fn () => [
                 ...(new Ziggy)->toArray(),

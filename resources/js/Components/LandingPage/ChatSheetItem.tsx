@@ -26,20 +26,20 @@ const ChatSheetItem:FC<ChatItemProps> = ({message,type,channel}) => {
     const [isEditing,setIsEditing]  = useState(false);
     const {user} = message;
     const fileType=message.file?.split(".").pop();
-
+    
     const fileImage = fileType==='pdf'?route('home')+'/uploads/pdf/pdf.png':message.file;
-
-
+    
+    
 
     const input = useRef<HTMLInputElement>(null);
 
     const {post} =useForm({user_id:message.user_id});
-
+    
     const onSubmit:FormEventHandler<HTMLFormElement> = useCallback((e) => {
         e.preventDefault();
-
+        
         setLoading(true);
-
+        
 
         axios.post(route('server.channel.message.update',{
             server_id:channel.server_id,
@@ -55,7 +55,7 @@ const ChatSheetItem:FC<ChatItemProps> = ({message,type,channel}) => {
 
 
     useEffect(()=>{
-
+        
         if(input.current){
             input.current.focus();
         }
@@ -83,7 +83,7 @@ const ChatSheetItem:FC<ChatItemProps> = ({message,type,channel}) => {
                 <div className='flex flex-col w-full'>
                     <div className='flex items-center gap-x-1.5'>
                         <div className='flex items-center'>
-                            <p  className={cn('font-semibold text-sm transition mr-1')}>
+                            <p  className={cn('font-semibold text-sm transition')}>
                                 {user.name}
                             </p>
                             <ActionTooltip label={'Admin'}>
@@ -93,13 +93,13 @@ const ChatSheetItem:FC<ChatItemProps> = ({message,type,channel}) => {
                         <span className='text-xs text-neutral-500 dark:text-neutral-400'>{format(new Date(message.created_at),DATE_FORMAT)}</span>
                     </div>
                     {
-
+                        
                         (message.file&&!message.deleted_at)&&(
                             <a href={message.file} target='_blank' rel='noopener noreferrer' className={cn('relative aspect-square rounded-md mt-1.5 overflow-hidden border flex items-center bg-secondary ',
                                 fileType==='pdf'?'h-10 w-10':'h-48 w-48')}  >
                                 <img src={fileImage} alt='file' className='object-cover' />
                             </a>
-
+                            
                         )
                     }
                     <p className={cn('text-xs',fileType==='pdf'&&!message.deleted_at?'block':'hidden')}>PDF File</p>

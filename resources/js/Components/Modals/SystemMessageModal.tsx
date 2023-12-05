@@ -64,7 +64,7 @@ const SystemMessageModal:FC = () => {
                                 Initial message when user sends a message
                             </Label>
 
-                            <textarea className='rounded resize-none'
+                            <textarea className='rounded resize-none text-primary   bg-background'
                                 required
                                 id="initial_message"
                                 placeholder="Hello! Welcome to Chat Support. What can we do for you?"

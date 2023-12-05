@@ -29,12 +29,16 @@ class SystemMessageController extends Controller
      */
     public function store(Request $request)
     {
-        $newSysMessage = SystemMessage::create([
+        $newSysMessage = SystemMessage::updateOrCreate([
+            'id'=>1
+        ],[
             'sys_menu_id' => null,
             'message' => $request->initial_message
         ]);
 
-        $newReply = SystemMessage::create([
+        $newReply = SystemMessage::updateOrCreate([
+            'id'=>2
+        ],[
             'sys_menu_id' => null,
             'message' => $request->reply1
         ]);

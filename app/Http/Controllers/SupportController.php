@@ -6,6 +6,7 @@ use App\Events\NewChatMessageEvent;
 use App\Events\NewCustomerEvent;
 use App\Models\Channel;
 use App\Models\Message;
+use App\Models\SystemMessage;
 use App\Models\User;
 use Faker\Factory;
 use Illuminate\Http\Request;
@@ -35,6 +36,14 @@ class SupportController extends Controller
         broadcast(new NewCustomerEvent($channel,$user));
 
         Auth::login($user);
+
+        $new_msg=Message::create([
+            'user_id'=>1,
+            'channel_id'=>$channel->id,
+            'content'=>SystemMessage::find(1)->message ??  'Hi! How Can We Help You?',
+        ]);
+
+        broadcast(new NewChatMessageEvent($new_msg->load(['user'])));
 
         return Inertia::render('Landing',[
             'channel'=>$channel,
