@@ -10,7 +10,7 @@ import { toast, useToast } from '../ui/use-toast';
 import { cn } from '@/lib/utils';
 import { ScrollArea } from '../ui/scroll-area';
 import UserAvatar from '../UserAvatar';
-import { Check, Gavel, Loader2, MoreVertical, Shield, ShieldAlert, ShieldCheck, ShieldQuestion,Loader,AlertCircle } from 'lucide-react';
+import { Check, Gavel, Loader2, MoreVertical, Shield, ShieldAlert, ShieldCheck, ShieldQuestion,Loader,AlertCircle, PlusCircle, Delete, XCircle, Plus, X, PlusSquare, XSquare } from 'lucide-react';
 import { DropdownMenu,DropdownMenuContent,DropdownMenuItem,DropdownMenuPortal,DropdownMenuSeparator,DropdownMenuSub,DropdownMenuSubContent,DropdownMenuSubTrigger,DropdownMenuTrigger } from '@/Components/ui/dropdown-menu';
 import { Alert, AlertDescription, AlertTitle } from '@/Components/ui/alert';
 import { Input } from '@/Components/ui/input';
@@ -33,11 +33,85 @@ const SystemMessageModal:FC = () => {
 
     const OPEN = useMemo(()=>isOpen&&type==='SystemMessage',[isOpen,type]);
 
+    useEffect(()=>{
+        if (isOpen === true){
+            console.log('modal opened')
+        }
+    },[isOpen])
+
     const { data, setData, post, processing, errors, reset } = useForm({
         initial_message: '',
-        menu1: '',
-        reply1: '',
+        menus: [{ name:'', reply:'' }],
     });
+
+    const addMenu = () => {
+        setData((prevData) => ({
+            ...prevData,
+            menus: [...prevData.menus, { name: '', reply: '' }],
+        }));
+    };
+
+    const removeMenu = () => {
+        setData((prevData) => {
+            const updatedMenus = [...prevData.menus];
+            if (updatedMenus.length===1) {return { ...prevData, menus: updatedMenus }; }
+            updatedMenus.splice(updatedMenus.length-1, 1);
+            return { ...prevData, menus: updatedMenus };
+        });
+    };
+
+    const updateFields = (index:number, fieldName:string, value:string) => {
+        setData((prevData) => {
+            const updatedMenus = [...prevData.menus];
+            if (fieldName === 'name'){
+                updatedMenus[index].name = value;
+            }else{
+                updatedMenus[index].reply = value;
+            }
+            return { ...prevData, menus: updatedMenus };
+        });
+    };
+
+    const renderFields = () => {
+        return data.menus.map((menu,index) => (
+            <div key={index} className='grid gap-3 p-5 mb-5 bg-white dark:bg-neutral-950 rounded-md shadow'>
+                <div className="grid gap-1.5">
+                    <Label htmlFor={'name' + index}>
+                        Menu button {index+1}
+                    </Label>
+                    <Input
+                        required
+                        id={'name' + index}
+                        placeholder="Can I speak to one of your agents?"
+                        type="text"
+                        autoCapitalize="none"
+                        autoComplete="off"
+                        autoCorrect="off"
+                        disabled={processing}
+                        // onChange={({target}) => setData(menu, target.value)}
+                        onChange={(e) => updateFields(index, 'name', e.target.value)}
+                    />
+                </div>
+                <div className="grid gap-1.5">
+                    <Label htmlFor={'reply' + index}>
+                        Reply for menu button {index+1}
+                    </Label>
+                    <Input
+                        required
+                        id={'reply' + index}
+                        placeholder="Sure! Please wait..."
+                        type="text"
+                        autoCapitalize="none"
+                        autoComplete="off"
+                        autoCorrect="off"
+                        disabled={processing}
+                        // onChange={({target}) => setData(menu, target.value)}
+                        onChange={(e) => updateFields(index, 'reply', e.target.value)}
+                    />
+                </div>
+            </div>
+        ))
+    }
 
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
@@ -64,7 +138,7 @@ const SystemMessageModal:FC = () => {
                                 Initial message when user sends a message
                             </Label>
 
-                            <textarea className='rounded resize-none'
+                            <textarea className='rounded resize-none dark:bg-neutral-950'
                                 required
                                 id="initial_message"
                                 placeholder="Hello! Welcome to Chat Support. What can we do for you?"
@@ -76,41 +150,21 @@ const SystemMessageModal:FC = () => {
                             />
                         </div>
 
-                        <div className='grid gap-6 px-5'>
-                            <div className="grid gap-1.5">
-                                <Label htmlFor="menu1">
-                                    Menu button 1
-                                </Label>
-                                <Input
-                                    required
-                                    id="menu1"
-                                    placeholder="Can I speak to one of your agents?"
-                                    type="text"
-                                    autoCapitalize="none"
-                                    autoComplete="off"
-                                    autoCorrect="off"
-                                    disabled={processing}
-                                    onChange={({target}) => setData('menu1', target.value)}
-                                />
+                        <div className='max-h-[20rem] bg-gray-100 dark:bg-neutral-900 p-4 rounded overflow-auto'>
+                            <div className='flex items-center mb-4'>
+                                <p className='font-bold text-xs'>MENUS</p>
+                                <div className='flex items-center ml-auto'>
+                                    <button onClick={addMenu} className='text-green-600 mr-0.5'>
+                                        <PlusSquare/>
+                                    </button>
+                                    <button onClick={removeMenu} className='text-red-600'>
+                                        <XSquare/>
+                                    </button>
+                                </div>
                             </div>
-                            <div className="grid gap-1.5">
-                                <Label htmlFor="reply1">
-                                    Reply for menu button 1
-                                </Label>
-                                <Input
-                                    required
-                                    id="reply1"
-                                    placeholder="Sure! Please wait..."
-                                    type="text"
-                                    autoCapitalize="none"
-                                    autoComplete="off"
-                                    autoCorrect="off"
-                                    disabled={processing}
-                                    onChange={({target}) => setData('reply1', target.value)}
-                                />
-                            </div>
-                        </div>
 
+                            {renderFields()}
+                        </div>
 
                         <Button disabled={processing}>
                             {processing && (<Loader className="mr-2 h-4 w-4 animate-spin" />)}

@@ -34,20 +34,19 @@ class SystemMessageController extends Controller
             'message' => $request->initial_message
         ]);
 
-        $newReply = SystemMessage::create([
-            'sys_menu_id' => null,
-            'message' => $request->reply1
-        ]);
+        foreach ($request->menus as $menu) {
+            $newReply = SystemMessage::create([
+                'sys_menu_id' => null,
+                'message' => $menu['reply']
+            ]);
+            SystemMenu::create([
+                'sys_message_id' => $newSysMessage->id,
+                'sys_message_reply_id' => $newReply->id,
+                'name' => $menu['name']
+            ]);
+        }
 
-        $newMenuButton = SystemMenu::create([
-            'sys_message_id' => $newSysMessage->id,
-            'sys_message_reply_id' => $newReply->id,
-            'name' => $request->menu1
-        ]);
-
-        return dd($request);
-
-        // return $newSysMessage;
+        return "stored complete";
     }
 
     /**
