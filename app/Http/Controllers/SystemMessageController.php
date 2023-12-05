@@ -13,7 +13,7 @@ class SystemMessageController extends Controller
      */
     public function index()
     {
-        return SystemMessage::get();
+        return SystemMessage::with(['menus', 'menus.replies'])->get();
     }
 
     /**
@@ -30,25 +30,28 @@ class SystemMessageController extends Controller
     public function store(Request $request)
     {
         $newSysMessage = SystemMessage::updateOrCreate([
-            'id'=>1
+            'id'=>1,
         ],[
             'sys_menu_id' => null,
             'message' => $request->initial_message
         ]);
 
         foreach ($request->menus as $menu) {
-            $newReply = SystemMessage::create([
+            $newReply = SystemMessage::updateOrCreate([
+                'id' => $menu['reply_id']
+            ],[
                 'sys_menu_id' => null,
                 'message' => $menu['reply']
             ]);
-            SystemMenu::create([
+
+            SystemMenu::updateOrCreate([
+                'sys_message_id' => $menu['id']
+            ],[
                 'sys_message_id' => $newSysMessage->id,
                 'sys_message_reply_id' => $newReply->id,
                 'name' => $menu['name']
             ]);
         }
-
-        return "stored complete";
     }
 
     /**

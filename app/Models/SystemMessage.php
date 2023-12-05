@@ -9,4 +9,8 @@ class SystemMessage extends Model
 {
     use HasFactory;
     protected $guarded=[];
+
+    public function menus(){
+        return $this->hasMany(SystemMenu::class,'sys_message_id','id');
+    }
 }

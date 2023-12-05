@@ -32,8 +32,6 @@ const ChatSheetItem:FC<ChatItemProps> = ({message,type,channel,onReply}) => {
     
     const fileImage = fileType==='pdf'?route('home')+'/uploads/pdf/pdf.png':message.file;
     
-    
-
     const input = useRef<HTMLInputElement>(null);
 
     const {post} =useForm({user_id:message.user_id});
@@ -126,15 +124,9 @@ const ChatSheetItem:FC<ChatItemProps> = ({message,type,channel,onReply}) => {
                     <p className={cn('text-xs',fileType==='pdf'&&!message.deleted_at?'block':'hidden')}>PDF File</p>
                     {
                         ( !isEditing) && (
-                            <p className={cn('text-sm text-neutral-600 dark:text-neutral-300',
+                            <p className={cn('text-sm my-4 text-neutral-600 dark:text-neutral-300',
                                 message.deleted_at && 'italic text-neutral-500 dark:text-neutral-400 text-xs mt-1')}>
-                                {!message.deleted_at?
-                                    message.is_system_msg===0?
-                                        message.content
-                                        :
-                                        message.content
-                                    :'Message Deleted'
-                                }
+                                {!message.deleted_at?message.content:'Message Deleted'}
                                 {
                                     ((message.created_at!==message.updated_at)&&!message.deleted_at) &&(
                                         <span className='text-[0.625rem] mx-1.5 text-neutral-500 dark:text-neutral-400'>
@@ -162,11 +154,10 @@ const ChatSheetItem:FC<ChatItemProps> = ({message,type,channel,onReply}) => {
                     }
                     {
                         (message.is_system_msg===1 && !hasClickedReply) && (
-                            <div className='w-full  grid grid-cols-2 gap-3  pb-3.5'>
+                            <div className='w-full grid grid-cols-2 gap-3 pb-3.5'>
                                 {
                                     replies.map(reply=><Button variant='outline' size='sm' onClick={()=>onClick(reply)}>{reply}</Button>)
                                 }
-                                
                             </div>
                         )
                     }

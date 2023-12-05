@@ -14,6 +14,18 @@ export interface User {
     }
 }
 
+export interface SystemMessage {
+    id: number;
+    message: string;
+    menus:SystemMenu[]
+}
+
+export interface SystemMenu {
+    id: number;
+    name: string;
+    replies: SystemMessage
+}
+
 export interface Server{
     id:number;
     name:string;
@@ -69,6 +81,7 @@ export type PageProps<T extends Record<string, unknown> = Record<string, unknown
     current_conversation?:Conversation;
     base_url:string;
     replies:string[];
+    system_message:SystemMessage[];
 };
 
 export interface PaginatedMessage{

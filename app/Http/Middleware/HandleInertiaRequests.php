@@ -41,6 +41,7 @@ class HandleInertiaRequests extends Middleware
             ],
             'replies'=>$rs->pluck('name')->toArray(),
             'servers' => Auth::check() ? $request->user()->servers : [],
+            'system_message' => SystemMessage::with(['menus', 'menus.replies'])->get(),
             'ziggy' => fn () => [
                 ...(new Ziggy)->toArray(),
                 'location' => $request->url(),

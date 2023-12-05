@@ -33,10 +33,7 @@ const ChatSheetMessages:FC<Props> = ({channel,getMsgsRoute,onReply}) => {
         chatRef,bottomRef,loadMore:loadPreviousMsgs,shouldLoadMore:!isFetchingNextPage && !!hasNextPage,count:data?.pages?.[0]?.data.length ??0
     });
     
-    const paginatedMessages=data?.pages;
-
-    
-    
+    const paginatedMessages=data?.pages;   
     
     if(status==='loading'){
         return(

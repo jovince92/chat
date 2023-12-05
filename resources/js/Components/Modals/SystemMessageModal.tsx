@@ -3,7 +3,7 @@ import { Dialog, DialogContent,  DialogDescription,  DialogHeader, DialogTitle }
 import { useModal } from '@/Hooks/useModalStore';
 import { Label } from '../ui/label';
 
-import { MemberRole, PageProps, Server, User } from '@/types';
+import { MemberRole, PageProps, Server, User, SystemMessage } from '@/types';
 import { router, useForm, usePage, } from '@inertiajs/react';
 import axios from 'axios';
 import { toast, useToast } from '../ui/use-toast';
@@ -24,30 +24,58 @@ const roleIconMap ={
 
 const SystemMessageModal:FC = () => {
     const {isOpen,onClose,type} = useModal();
-    const {current_server} = usePage<PageProps>().props;
+    const {current_server,system_message} = usePage<PageProps>().props;
     const {users}=current_server;
 
     const { toast } = useToast();
 
-    console.log(type);
-
     const OPEN = useMemo(()=>isOpen&&type==='SystemMessage',[isOpen,type]);
 
+    const [sysMessageState, setSysMessageState] = useState<SystemMessage[]>(system_message);
+    
+    const { data, setData, post, get, processing, errors, reset } = useForm({
+        initial_message: '',
+        menus: [{ id:0, reply_id:0, name:'', reply:'' }],
+    });
+
     useEffect(()=>{
-        if (isOpen === true){
-            console.log('modal opened')
+        if (isOpen === true && sysMessageState.length > 0){
+            axios
+            .get(route('sys_message.index'))
+            .then(function(response){
+                setSysMessageState(response.data);
+            })
+        }else{
+            reset()
         }
     },[isOpen])
 
-    const { data, setData, post, processing, errors, reset } = useForm({
-        initial_message: '',
-        menus: [{ name:'', reply:'' }],
-    });
+    useEffect(()=>{
+        if (isOpen === true && sysMessageState.length > 0){
+            var initial = sysMessageState[0]
+            reset()
+
+            setData('initial_message', initial.message);
+
+            setData((prevData) => ({
+                ...prevData,
+                menus: initial.menus.map((m) => ({
+                    id: m.id,
+                    reply_id: m.replies.id,
+                    name: m.name,
+                    reply: m.replies.message,
+                })),
+            }))
+        }else{
+            reset()
+        }
+    }, [sysMessageState])
 
     const addMenu = () => {
         setData((prevData) => ({
             ...prevData,
-            menus: [...prevData.menus, { name: '', reply: '' }],
+            menus: [...prevData.menus, 
+                { id:prevData.menus.length, reply_id:prevData.menus.length+1, name: '', reply: '' }],
         }));
     };
 
@@ -63,6 +91,10 @@ const SystemMessageModal:FC = () => {
     const updateFields = (index:number, fieldName:string, value:string) => {
         setData((prevData) => {
             const updatedMenus = [...prevData.menus];
+
+            updatedMenus[index].id = index+1;
+            updatedMenus[index].reply_id = index+2;
+
             if (fieldName === 'name'){
                 updatedMenus[index].name = value;
             }else{
@@ -90,6 +122,7 @@ const SystemMessageModal:FC = () => {
                         disabled={processing}
                         // onChange={({target}) => setData(menu, target.value)}
                         onChange={(e) => updateFields(index, 'name', e.target.value)}
+                        value={menu.name}
                     />
                 </div>
                 <div className="grid gap-1.5">
@@ -107,6 +140,7 @@ const SystemMessageModal:FC = () => {
                         disabled={processing}
                         // onChange={({target}) => setData(menu, target.value)}
                         onChange={(e) => updateFields(index, 'reply', e.target.value)}
+                        value={menu.reply}
                     />
                 </div>
             </div>
@@ -147,6 +181,7 @@ const SystemMessageModal:FC = () => {
                                 autoCorrect="off"
                                 disabled={processing}
                                 onChange={({target}) => setData('initial_message', target.value)}
+                                value={data.initial_message}
                             />
                         </div>
 
