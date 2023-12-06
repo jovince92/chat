@@ -86,7 +86,6 @@ const ChatSheet:FC<Props> = ({isOpen,channel:OriginalChannel,onClose,user}) => {
         //return ()=>window.Echo.leaveAllChannels();
     },[channel?.id,queryClient]);
     if(!channel || !user) return null;
-
     return (
         <>
             
@@ -113,7 +112,7 @@ const ChatSheet:FC<Props> = ({isOpen,channel:OriginalChannel,onClose,user}) => {
                                     This Case Has Been Closed. You Can Not Reply To This Thread Anymore
                                 </p>
                                 {
-                                    channel.rating<0?(
+                                    (channel.rating<0||!channel?.rating)&&(
                                         <>
                                             <p className='font-semibold text-lg tracking-tight'>
                                                 Would You Like To Give a Feedback?
@@ -121,7 +120,10 @@ const ChatSheet:FC<Props> = ({isOpen,channel:OriginalChannel,onClose,user}) => {
                                             
                                             <Button onClick={()=>setShowFeedbackModal(true)}>Give Feedback</Button>
                                         </>
-                                    ):(
+                                    )
+                                }
+                                {
+                                    channel.rating>-1&&(
                                         <p className='font-semibold text-lg tracking-tight'>Thank You For Your Feedback</p>
                                     )
                                 }
