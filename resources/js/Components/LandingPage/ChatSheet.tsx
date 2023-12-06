@@ -92,6 +92,7 @@ const ChatSheet:FC<Props> = ({isOpen,channel,onClose,user}) => {
                     
                     
                 </div>
+                <ChatInput apiRoute={apiRoute} type='Channel' name='Chat Support' />
             </SheetContent>
         </Sheet>
         

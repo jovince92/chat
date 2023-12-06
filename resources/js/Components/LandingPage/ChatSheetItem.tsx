@@ -22,7 +22,7 @@ interface ChatItemProps{
 const DATE_FORMAT = "d MMMM yyyy HH:mm"
 
 const ChatSheetItem:FC<ChatItemProps> = ({message,type,channel,onReply}) => {
-    const [hasClickedReply,setHasClickedReply]   = useState(false);
+    //const [hasClickedReply,setHasClickedReply]   = useState(false);
     const {replies} = usePage<PageProps>().props;
     const [newContent,setNewContent] = useState(message.content);
     const [loading,setLoading]  = useState(false);
@@ -73,7 +73,6 @@ const ChatSheetItem:FC<ChatItemProps> = ({message,type,channel,onReply}) => {
 
     const onClick = (reply:string) =>{
         if(onReply) onReply(reply);
-        setHasClickedReply(true);
     } 
 
     useEffect(()=>{
@@ -153,7 +152,7 @@ const ChatSheetItem:FC<ChatItemProps> = ({message,type,channel,onReply}) => {
                         )
                     }
                     {
-                        (message.is_system_msg===1 && !hasClickedReply) && (
+                        message.is_system_msg===1 && (
                             <div className='w-full grid grid-cols-2 gap-3 pb-3.5'>
                                 {
                                     replies.map(reply=><Button variant='outline' size='sm' onClick={()=>onClick(reply)}>{reply}</Button>)
