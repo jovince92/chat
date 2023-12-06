@@ -123,4 +123,8 @@ Route::middleware(['auth'])->prefix('support')->name('support.')->group(function
     Route::post('/message-store', [SupportController::class, 'message_store'])->name('message_store');
 });
 
+Route::get('/phpinfo', function(){
+    phpinfo();
+});
+
 require __DIR__.'/auth.php';
