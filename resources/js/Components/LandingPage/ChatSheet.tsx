@@ -32,10 +32,9 @@ const ChatSheet:FC<Props> = ({isOpen,channel,onClose,user}) => {
     const queryClient = useQueryClient();
 
     const onReply = (reply:string)=>{
-        setHasClickedReply(true);
         
         axios.post(apiRoute,{
-            message:reply
+            message:reply,
         })
         .then(()=>setHasClickedReply(true))
         .catch(()=>toast({title:'Internal Error',description:`Can't send message. Please try again!`}))

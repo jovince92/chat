@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Events\MessageUpdateEvent;
 use App\Events\NewChatMessageEvent;
 use App\Models\Message;
+use App\Models\SystemMenu;
+use App\Models\SystemMessage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
@@ -60,6 +62,21 @@ class MessageController extends Controller
         
 
         broadcast(new NewChatMessageEvent($new_msg->load(['user'])));
+        $response = SystemMenu::where('name',$request->message)->first();
+        if($response){
+            $response_reply=SystemMessage::find($response->sys_message_reply_id);
+            
+            
+            $response_reply->message;
+
+            $response_msg=Message::create([
+                'is_system_msg'=>1,
+                'user_id'=>1,
+                'channel_id'=>$channel_id,
+                'content'=>$response_reply->message,
+            ]);
+            broadcast(new NewChatMessageEvent($response_msg->load(['user'])));
+        }
     }
 
     /**

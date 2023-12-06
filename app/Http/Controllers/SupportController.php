@@ -6,6 +6,7 @@ use App\Events\NewChatMessageEvent;
 use App\Events\NewCustomerEvent;
 use App\Models\Channel;
 use App\Models\Message;
+use App\Models\SystemMenu;
 use App\Models\SystemMessage;
 use App\Models\User;
 use Faker\Factory;
@@ -77,7 +78,8 @@ class SupportController extends Controller
             ]);
         }
 
-
+        
+        
         broadcast(new NewChatMessageEvent($new_msg->load(['user'])));
     }
 }
