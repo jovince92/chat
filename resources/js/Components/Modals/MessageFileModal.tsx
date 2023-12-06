@@ -7,6 +7,7 @@ import { Alert, AlertDescription, AlertTitle } from '../ui/alert';
 import { FileUploader } from 'react-drag-drop-files';
 import { useModal } from '@/Hooks/useModalStore';
 import { toast } from '../ui/use-toast';
+import axios from 'axios';
 
 const fileTypes = ["JPG", "PNG", "WEBP",'JPEG','PDF'];
 
@@ -24,12 +25,18 @@ const MessageFileModal:FC = () => {
         if(!ModalData.apiRoute){
             return null;
         }
-        post(ModalData.apiRoute,{
-            preserveScroll:true,
-            preserveState:true,
-            onSuccess:handleClose,
-            onError:()=>toast({title:'Internal Error',description:`Can't upload image/PDF. Please try again!`})
-        });
+        let formData = new FormData();
+        //@ts-ignore
+        formData.append('image',data.image);
+        formData.append('message',data.message);
+        axios.post(ModalData.apiRoute,formData).then(()=>onClose());
+
+        // post(ModalData.apiRoute,{
+        //     preserveScroll:true,
+        //     preserveState:true,
+        //     onSuccess:handleClose,
+        //     onError:()=>toast({title:'Internal Error',description:`Can't upload image/PDF. Please try again!`})
+        // });
     }
 
     const onImageSelect:ChangeEventHandler<HTMLInputElement> = (e) =>{
