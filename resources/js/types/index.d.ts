@@ -47,6 +47,8 @@ export interface Channel{
     name:string;
     type:ChannelType;
     created_at:string;
+    is_closed:1|0;
+    rating: number;
 }
 
 export interface Message{

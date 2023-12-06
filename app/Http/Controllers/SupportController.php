@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\CloseCaseEvent;
 use App\Events\NewChatMessageEvent;
 use App\Events\NewCustomerEvent;
 use App\Models\Channel;
@@ -81,5 +82,21 @@ class SupportController extends Controller
         
         
         broadcast(new NewChatMessageEvent($new_msg->load(['user'])));
+    }
+
+    public function close_case(Request $request){
+        $channel = Channel::find($request->channel_id);
+        $channel->update([
+            'is_closed'=>1
+        ]);
+        broadcast(new CloseCaseEvent($channel));
+    }
+
+    public function feedback(Request $request){
+        $channel = Channel::find($request->channel_id);
+        $channel->update([
+            'rating'=>$request->rating
+        ]);
+        broadcast(new NewCustomerEvent($channel,User::find($channel->user_id)));
     }
 }

@@ -111,6 +111,8 @@ Route::get('/', function(){
     return Inertia::render('Landing');
 })->name('landing');
 Route::post('/enter', [SupportController::class, 'enter'])->name('support.enter');
+Route::get('/close_case', [SupportController::class, 'close_case'])->name('support.close');
+Route::post('/feedback', [SupportController::class, 'feedback'])->name('support.feedback');
 Route::get('/enter', function(){
     if(Auth::check()) Auth::logout();
     return redirect()->to(route('landing'));

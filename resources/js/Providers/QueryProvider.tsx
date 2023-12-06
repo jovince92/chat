@@ -8,10 +8,8 @@ const QueryProvider:FC<{children:ReactNode}> = ({children}) => {
    
     useEffect(()=>{
         const e=window.Echo.join('global_channel')
-                .listen('NewCustomerEvent',(e:any)=>router.reload(),
-                
-        );
-        console.log('subbed',e)
+                .listen('NewCustomerEvent',(e:any)=>router.reload(),    
+            )       ;
     },[]);
     return (
         <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>

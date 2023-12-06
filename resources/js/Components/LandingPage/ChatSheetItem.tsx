@@ -153,10 +153,10 @@ const ChatSheetItem:FC<ChatItemProps> = ({message,type,channel,onReply}) => {
                         )
                     }
                     {
-                        (message.is_system_msg===1 && !hasClickedReply) && (
+                        (message.is_system_msg===1 && !hasClickedReply && channel.is_closed!==1) && (
                             <div className='w-full grid grid-cols-2 gap-3 pb-3.5'>
                                 {
-                                    replies.map(reply=><Button variant='outline' size='sm' onClick={()=>onClick(reply)}>{reply}</Button>)
+                                    replies.map(reply=><Button key={reply} variant='outline' size='sm' onClick={()=>onClick(reply)}>{reply}</Button>)
                                 }
                             </div>
                         )

@@ -1,10 +1,11 @@
 import { cn } from '@/lib/utils';
 import { Channel, MemberRole, PageProps } from '@/types'
 import { router, usePage } from '@inertiajs/react';
-import { Check, Edit, Hash, Lock, Mic, Trash, Video } from 'lucide-react';
+import { Check, Edit, FileLock, FolderLock, Hash, Lock, LockIcon, Mic, Trash, Video } from 'lucide-react';
 import React, { FC, MouseEventHandler } from 'react'
 import ActionTooltip from '../ActionToolTip';
 import { useModal } from '@/Hooks/useModalStore';
+import { Rating } from 'react-simple-star-rating';
 
 interface ServerChannelProps{
     channel:Channel;
@@ -32,7 +33,7 @@ const ServerChannel:FC<ServerChannelProps> = ({channel,role}) => {
                 )}>
                 <span>{channel.user.name}</span>
                 <span className='text-xs'>{channel.user.email}</span>
-
+                { channel.rating!=-1 && <Rating initialValue={channel.rating} SVGclassName='inline-block' readonly size={17} />}
             </p>
             {
                 (channel.name !=='general' && role!=='GUEST')&&(
@@ -40,9 +41,17 @@ const ServerChannel:FC<ServerChannelProps> = ({channel,role}) => {
                         {/* <ActionTooltip label='Edit'>
                             <Edit onClick={(e)=>{e.stopPropagation();onOpen('EditChannel',{channel})}} className='hidden group-hover:block w-4 h-4 text-neutral-500 hover:text-neutral-600 dark:text-neutral-400 dark:hover:text-neutral-300 transition' />
                         </ActionTooltip> */}
-                        <ActionTooltip label='Case Closed'>
-                            <Check onClick={(e)=>{e.stopPropagation();onOpen('CaseClosed',{channel})}} className='hidden group-hover:block w-4 h-4 text-green-500 hover:text-neutral-600 dark:text-neutral-400 dark:hover:text-neutral-300 transition' />
-                        </ActionTooltip>
+                        {
+                            channel.is_closed===1?(
+                            <ActionTooltip label='Case Closed'>
+                                <LockIcon onClick={(e)=>{e.stopPropagation();onOpen('CaseClosed',{channel})}} className='w-4 h-4 text-destructive' />
+                            </ActionTooltip>):(
+                                <ActionTooltip label='Close Case'>
+                                    <Check onClick={(e)=>{e.stopPropagation();onOpen('CaseClosed',{channel})}} className='hidden group-hover:block w-4 h-4 text-green-500 hover:text-neutral-600 dark:text-neutral-400 dark:hover:text-neutral-300 transition' />
+                                </ActionTooltip>
+                            )
+                        }
+                        
                         <ActionTooltip label='Delete'>
                             <Trash onClick={(e)=>{e.stopPropagation();onOpen('DeleteChannel',{channel})}} className='hidden group-hover:block w-4 h-4 text-neutral-500 hover:text-neutral-600 dark:text-neutral-400 dark:hover:text-neutral-300 transition' />
                         </ActionTooltip>

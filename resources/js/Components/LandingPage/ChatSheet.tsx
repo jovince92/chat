@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useMemo, useState } from 'react'
+import React, { FC, ReactNode, useEffect, useMemo, useState } from 'react'
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from '@/Components/ui/sheet';
 import { Channel, Message, PageProps, PaginatedMessage, User } from '@/types';
 import ChatMessages from '../Chat/ChatMessages';
@@ -7,10 +7,12 @@ import { QueryClientProvider, useQueryClient } from '@tanstack/react-query';
 import QueryProvider from '@/Providers/QueryProvider';
 import ChatSheetMessages from './ChatSheetMessages';
 import { Button } from '../ui/button';
-import { usePage } from '@inertiajs/react';
+import { router, usePage } from '@inertiajs/react';
 import axios from 'axios';
 import { toast } from '../ui/use-toast';
-
+import { Separator } from '../ui/separator';
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '../ui/alert-dialog';
+import { Rating } from 'react-simple-star-rating'
 interface Props{
     isOpen?:boolean;
     channel?:Channel;
@@ -18,7 +20,8 @@ interface Props{
     user?:User;
 }
 
-const ChatSheet:FC<Props> = ({isOpen,channel,onClose,user}) => {
+const ChatSheet:FC<Props> = ({isOpen,channel:OriginalChannel,onClose,user}) => {
+    const [channel,setChannel] = useState(OriginalChannel);
     const [hasClickedReply,setHasClickedReply]   = useState(false);
     const {replies} = usePage<PageProps>().props;
     const apiRoute=useMemo(()=>
@@ -30,6 +33,9 @@ const ChatSheet:FC<Props> = ({isOpen,channel,onClose,user}) => {
     ,[channel]);
     
     const queryClient = useQueryClient();
+
+
+    const [showFeedbackModal,setShowFeedbackModal] = useState(false);
 
     const onReply = (reply:string)=>{
         
@@ -69,33 +75,117 @@ const ChatSheet:FC<Props> = ({isOpen,channel,onClose,user}) => {
                 const updated={...oldData,pages:newData};
                 return updated;
             });
+        }).listen('CloseCaseEvent',(e:{channel:Channel})=>{
+            if(!channel) return;
+            setChannel(val=>({...val!,is_closed:1}))
         });
-        return ()=>window.Echo.leaveAllChannels();
+
+
+        //return ()=>window.Echo.leaveAllChannels();
     },[channel?.id,queryClient]);
     if(!channel || !user) return null;
 
     return (
-        
-        <Sheet open={isOpen}>
-            <SheetContent className='h-full flex flex-col overflow-y-hidden space-y-2'>
-                <SheetHeader className='h-auto'>
-                    <SheetTitle>Welcome to Chat Support</SheetTitle>
-                    <SheetDescription>
-                        You Are Now Connected to Chat Support. Please be patient while we assign an agent
-                    </SheetDescription>
-                </SheetHeader>
-                <div className='flex-1 flex flex-col overflow-y-hidden'>
-                    <div className='flex-1 mb-2'>
-                        <ChatSheetMessages onReply={onReply} getMsgsRoute={getMsgsRoute} channel={channel} />
+        <>
+            
+            <Sheet open={isOpen}>
+                <SheetContent className='h-full flex flex-col overflow-y-hidden space-y-2'>
+                    <SheetHeader className='h-auto'>
+                        <SheetTitle>Welcome to Chat Support</SheetTitle>
+                        <SheetDescription>
+                            You Are Now Connected to Chat Support. Please be patient while we assign an agent
+                        </SheetDescription>
+                    </SheetHeader>
+                    <div className='flex-1 flex flex-col overflow-y-hidden'>
+                        <div className='flex-1 mb-2'>
+                            <ChatSheetMessages onReply={onReply} getMsgsRoute={getMsgsRoute} channel={channel} />
+                        </div>
+                        
+                        
                     </div>
-                    
-                    
-                </div>
-                <ChatInput apiRoute={apiRoute} type='Channel' name='Chat Support' />
-            </SheetContent>
-        </Sheet>
-        
+                    {
+                        channel.is_closed!==1?<ChatInput apiRoute={apiRoute} type='Channel' name='Chat Support' />:(
+                            <>
+                                <Separator />
+                                <p className='font-semibold text-lg tracking-tight'>
+                                    This Case Has Been Closed. You Can Not Reply To This Thread Anymore
+                                </p>
+                                {
+                                    channel.rating===-1?(
+                                        <>
+                                            <p className='font-semibold text-lg tracking-tight'>
+                                                Would You Like To Give a Feedback?
+                                            </p>
+                                            
+                                            <Button onClick={()=>setShowFeedbackModal(true)}>Give Feedback</Button>
+                                        </>
+                                    ):(
+                                        <p className='font-semibold text-lg tracking-tight'>Thank You For Your Feedback</p>
+                                    )
+                                }
+                                
+                            </>
+                        )
+                        
+                    }
+                </SheetContent>
+            </Sheet>
+            <FeedbackModal onFeedback={(rating)=>{setChannel(val=>({...val!,rating}))}} channel_id={channel.id} isOpen={showFeedbackModal} onClose={()=>setShowFeedbackModal(false)} />
+        </>
     )
 }
 
-export default ChatSheet
+export default ChatSheet;
+
+interface FeedbackModalProps{
+    isOpen?:boolean;
+    onClose:()=>void;
+    channel_id:number;
+    onFeedback:(rating:number)=>void;
+}
+
+const FeedbackModal:FC<FeedbackModalProps> = ({isOpen,onClose,channel_id,onFeedback}) =>{
+    const [rating,setRating] = useState(0);
+
+    const giveFeedback = () =>{
+        axios.post(route('support.feedback'),{
+            rating,
+            channel_id
+        }).then(()=>{
+            onClose();
+            onFeedback(rating);
+        })
+        .catch(e=>toast({description:'Something Went Wrong. Please try again',variant:'destructive'}))
+    }
+
+    return(
+        <AlertDialog open={isOpen}>
+            <AlertDialogContent>
+                <AlertDialogHeader>
+                    <AlertDialogTitle>Please rate us! </AlertDialogTitle>
+                    <AlertDialogDescription asChild>
+                        <>
+                            <p> We appreciate your feedback.</p>
+                            <div
+                                style={{
+                                    direction: 'ltr',
+                                    fontFamily: 'sans-serif',
+                                    touchAction: 'none'
+                                }}
+                                >
+                                <Rating allowHover={false} transition SVGclassName='inline-block' onClick={e=>setRating(e)} />
+                            </div>
+                        </>
+                    </AlertDialogDescription>
+                </AlertDialogHeader>
+            
+                <AlertDialogFooter>
+                        <Button onClick={onClose} size='sm' variant='outline'>Cancel</Button>
+                    
+                        <Button  onClick={giveFeedback} size='sm'>Proceed</Button>
+                </AlertDialogFooter>
+            </AlertDialogContent>
+        </AlertDialog>
+    );
+}
+

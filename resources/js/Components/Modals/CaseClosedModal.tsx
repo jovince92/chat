@@ -23,13 +23,16 @@ const roleIconMap ={
 }
 
 const CaseClosedModal:FC = () => {
-    const {isOpen,onClose,type} = useModal();
+    const {isOpen,onClose,type,data:ModaData} = useModal();
     const {current_server,user} = usePage<PageProps>().props;
     const {users}=current_server;
 
     const { toast } = useToast();
 
-    console.log(type);
+    
+    useEffect(()=>{
+        console.log(ModaData.channel?.user)
+    },[isOpen]);
 
     const OPEN = useMemo(()=>isOpen&&type==='CaseClosed',[isOpen,type]);
 
@@ -37,6 +40,18 @@ const CaseClosedModal:FC = () => {
         initial_message: '',
         menus: [{ name:'', reply:'' }],
     });
+
+    const onCaseClose = () =>{
+        if(!ModaData.channel) return;
+        router.get(route('support.close'),{
+            channel_id:ModaData.channel.id
+        },{
+            onSuccess:()=>{
+                toast({description:'Case Closed'});
+                onClose();
+            },
+        })
+    }
 
     return (
         <Dialog open={OPEN} onOpenChange={onClose}>
@@ -48,7 +63,7 @@ const CaseClosedModal:FC = () => {
                         system will automatically send a score / rating choices for user to choose based on agent's assistance
                     </DialogDescription>
                 </DialogHeader>
-                <Button>Yes, close this case</Button>
+                    <Button onClick={onCaseClose}>Yes, close this case</Button>
                 </DialogContent>
         </Dialog>
     )
