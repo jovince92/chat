@@ -111,7 +111,7 @@ const ChatSheet:FC<Props> = ({isOpen,channel:OriginalChannel,onClose,user}) => {
                                     This Case Has Been Closed. You Can Not Reply To This Thread Anymore
                                 </p>
                                 {
-                                    channel.rating===-1?(
+                                    channel.rating<0?(
                                         <>
                                             <p className='font-semibold text-lg tracking-tight'>
                                                 Would You Like To Give a Feedback?

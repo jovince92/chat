@@ -33,7 +33,7 @@ const ServerChannel:FC<ServerChannelProps> = ({channel,role}) => {
                 )}>
                 <span>{channel.user.name}</span>
                 <span className='text-xs'>{channel.user.email}</span>
-                { channel.rating!=-1 && <Rating initialValue={channel.rating} SVGclassName='inline-block' readonly size={17} />}
+                { channel.rating>0 && <Rating initialValue={channel.rating} SVGclassName='inline-block' readonly size={17} />}
             </p>
             {
                 (channel.name !=='general' && role!=='GUEST')&&(
