@@ -13,6 +13,7 @@ import { toast } from '../ui/use-toast';
 import { Separator } from '../ui/separator';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '../ui/alert-dialog';
 import { Rating } from 'react-simple-star-rating'
+import ModalProvider from '@/lib/ModalProvider';
 interface Props{
     isOpen?:boolean;
     channel?:Channel;
@@ -131,6 +132,7 @@ const ChatSheet:FC<Props> = ({isOpen,channel:OriginalChannel,onClose,user}) => {
                 </SheetContent>
             </Sheet>
             <FeedbackModal onFeedback={(rating)=>{setChannel(val=>({...val!,rating}))}} channel_id={channel.id} isOpen={showFeedbackModal} onClose={()=>setShowFeedbackModal(false)} />
+            <ModalProvider />
         </>
     )
 }
