@@ -1,187 +1,187 @@
 {
-  "_ServerIdLayout-c3ea340e.js": {
-    "file": "assets/ServerIdLayout-c3ea340e.js",
+  "_ServerIdLayout-65ea8da0.js": {
+    "file": "assets/ServerIdLayout-65ea8da0.js",
     "imports": [
-      "_utils-f4136f34.js",
-      "_react-drag-drop-files.esm-91de88e7.js",
-      "_index-256adb21.js",
-      "_alert-4dc833a2.js",
-      "_module-c4ed8ba0.js",
+      "_utils-d51774f8.js",
+      "_react-drag-drop-files.esm-082b0a5e.js",
+      "_index-536976de.js",
+      "_alert-1d33a961.js",
+      "_module-7887c94f.js",
       "resources/js/app.tsx",
-      "_upload-cloud-c3ceee65.js",
-      "_alert-circle-af391df8.js",
-      "_useChatScroll-c04fe51f.js",
-      "_loader-8c026fc1.js"
+      "_upload-cloud-377c13ba.js",
+      "_alert-circle-f5d1043f.js",
+      "_useChatScroll-827c7ac5.js",
+      "_loader-918b2076.js"
     ]
   },
-  "_alert-4dc833a2.js": {
-    "file": "assets/alert-4dc833a2.js",
+  "_alert-1d33a961.js": {
+    "file": "assets/alert-1d33a961.js",
     "imports": [
-      "_utils-f4136f34.js"
+      "_utils-d51774f8.js"
     ]
   },
-  "_alert-circle-af391df8.js": {
-    "file": "assets/alert-circle-af391df8.js",
+  "_alert-circle-f5d1043f.js": {
+    "file": "assets/alert-circle-f5d1043f.js",
     "imports": [
-      "_utils-f4136f34.js"
+      "_utils-d51774f8.js"
     ]
   },
-  "_alert-dialog-e39ab03d.js": {
-    "file": "assets/alert-dialog-e39ab03d.js",
+  "_alert-dialog-1acda4c3.js": {
+    "file": "assets/alert-dialog-1acda4c3.js",
     "imports": [
-      "_utils-f4136f34.js",
-      "_react-drag-drop-files.esm-91de88e7.js",
-      "_alert-4dc833a2.js"
+      "_utils-d51774f8.js",
+      "_react-drag-drop-files.esm-082b0a5e.js",
+      "_alert-1d33a961.js"
     ]
   },
-  "_chevron-down-e7131a9a.js": {
-    "file": "assets/chevron-down-e7131a9a.js",
+  "_chevron-down-0c4ee3ec.js": {
+    "file": "assets/chevron-down-0c4ee3ec.js",
     "imports": [
-      "_utils-f4136f34.js"
+      "_utils-d51774f8.js"
     ]
   },
-  "_index-256adb21.js": {
+  "_index-536976de.js": {
     "css": [
       "assets/index-857d30d8.css"
     ],
-    "file": "assets/index-256adb21.js",
+    "file": "assets/index-536976de.js",
     "imports": [
-      "_utils-f4136f34.js",
-      "_module-c4ed8ba0.js",
-      "_react-drag-drop-files.esm-91de88e7.js",
-      "_chevron-down-e7131a9a.js"
+      "_utils-d51774f8.js",
+      "_module-7887c94f.js",
+      "_react-drag-drop-files.esm-082b0a5e.js",
+      "_chevron-down-0c4ee3ec.js"
     ]
   },
-  "_loader-8c026fc1.js": {
-    "file": "assets/loader-8c026fc1.js",
+  "_loader-918b2076.js": {
+    "file": "assets/loader-918b2076.js",
     "imports": [
-      "_utils-f4136f34.js"
+      "_utils-d51774f8.js"
     ]
   },
-  "_module-c4ed8ba0.js": {
-    "file": "assets/module-c4ed8ba0.js",
+  "_module-7887c94f.js": {
+    "file": "assets/module-7887c94f.js",
     "imports": [
-      "_utils-f4136f34.js",
-      "_react-drag-drop-files.esm-91de88e7.js"
+      "_utils-d51774f8.js",
+      "_react-drag-drop-files.esm-082b0a5e.js"
     ]
   },
-  "_react-drag-drop-files.esm-91de88e7.js": {
-    "file": "assets/react-drag-drop-files.esm-91de88e7.js",
+  "_react-drag-drop-files.esm-082b0a5e.js": {
+    "file": "assets/react-drag-drop-files.esm-082b0a5e.js",
     "imports": [
-      "_utils-f4136f34.js"
+      "_utils-d51774f8.js"
     ]
   },
-  "_upload-cloud-c3ceee65.js": {
-    "file": "assets/upload-cloud-c3ceee65.js",
+  "_upload-cloud-377c13ba.js": {
+    "file": "assets/upload-cloud-377c13ba.js",
     "imports": [
-      "_utils-f4136f34.js"
+      "_utils-d51774f8.js"
     ]
   },
-  "_useChatScroll-c04fe51f.js": {
-    "file": "assets/useChatScroll-c04fe51f.js",
+  "_useChatScroll-827c7ac5.js": {
+    "file": "assets/useChatScroll-827c7ac5.js",
     "imports": [
-      "_utils-f4136f34.js",
-      "_react-drag-drop-files.esm-91de88e7.js",
-      "_alert-4dc833a2.js",
-      "_module-c4ed8ba0.js",
+      "_utils-d51774f8.js",
+      "_react-drag-drop-files.esm-082b0a5e.js",
+      "_alert-1d33a961.js",
+      "_module-7887c94f.js",
       "resources/js/app.tsx",
-      "_upload-cloud-c3ceee65.js",
-      "_chevron-down-e7131a9a.js"
+      "_upload-cloud-377c13ba.js",
+      "_chevron-down-0c4ee3ec.js"
     ]
   },
-  "_utils-f4136f34.js": {
-    "file": "assets/utils-f4136f34.js"
+  "_utils-d51774f8.js": {
+    "file": "assets/utils-d51774f8.js"
   },
   "index.css": {
     "file": "assets/index-857d30d8.css",
     "src": "index.css"
   },
   "resources/js/Pages/Auth/Login.tsx": {
-    "file": "assets/Login-0b57a6a2.js",
+    "file": "assets/Login-3442a231.js",
     "imports": [
-      "_utils-f4136f34.js",
-      "_alert-4dc833a2.js",
-      "_alert-circle-af391df8.js",
-      "_loader-8c026fc1.js"
+      "_utils-d51774f8.js",
+      "_alert-1d33a961.js",
+      "_alert-circle-f5d1043f.js",
+      "_loader-918b2076.js"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/Pages/Auth/Login.tsx"
   },
   "resources/js/Pages/Auth/Register.tsx": {
-    "file": "assets/Register-909fe122.js",
+    "file": "assets/Register-e25ff2f0.js",
     "imports": [
-      "_utils-f4136f34.js",
-      "_alert-4dc833a2.js",
-      "_alert-circle-af391df8.js",
-      "_loader-8c026fc1.js"
+      "_utils-d51774f8.js",
+      "_alert-1d33a961.js",
+      "_alert-circle-f5d1043f.js",
+      "_loader-918b2076.js"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/Pages/Auth/Register.tsx"
   },
   "resources/js/Pages/Conversation.tsx": {
-    "file": "assets/Conversation-4d33fddb.js",
+    "file": "assets/Conversation-401efd66.js",
     "imports": [
-      "_utils-f4136f34.js",
-      "_ServerIdLayout-c3ea340e.js",
-      "_useChatScroll-c04fe51f.js",
-      "_index-256adb21.js",
-      "_module-c4ed8ba0.js",
+      "_utils-d51774f8.js",
+      "_ServerIdLayout-65ea8da0.js",
+      "_useChatScroll-827c7ac5.js",
+      "_index-536976de.js",
+      "_module-7887c94f.js",
       "resources/js/app.tsx",
-      "_react-drag-drop-files.esm-91de88e7.js",
-      "_alert-4dc833a2.js",
-      "_upload-cloud-c3ceee65.js",
-      "_alert-circle-af391df8.js",
-      "_loader-8c026fc1.js",
-      "_chevron-down-e7131a9a.js"
+      "_react-drag-drop-files.esm-082b0a5e.js",
+      "_alert-1d33a961.js",
+      "_upload-cloud-377c13ba.js",
+      "_alert-circle-f5d1043f.js",
+      "_loader-918b2076.js",
+      "_chevron-down-0c4ee3ec.js"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/Pages/Conversation.tsx"
   },
   "resources/js/Pages/Home.tsx": {
-    "file": "assets/Home-df6f2108.js",
+    "file": "assets/Home-f94b4996.js",
     "imports": [
-      "_utils-f4136f34.js",
-      "_ServerIdLayout-c3ea340e.js",
-      "_useChatScroll-c04fe51f.js",
-      "_module-c4ed8ba0.js",
+      "_utils-d51774f8.js",
+      "_ServerIdLayout-65ea8da0.js",
+      "_useChatScroll-827c7ac5.js",
+      "_module-7887c94f.js",
       "resources/js/app.tsx",
-      "_react-drag-drop-files.esm-91de88e7.js",
-      "_index-256adb21.js",
-      "_chevron-down-e7131a9a.js",
-      "_alert-4dc833a2.js",
-      "_upload-cloud-c3ceee65.js",
-      "_alert-circle-af391df8.js",
-      "_loader-8c026fc1.js"
+      "_react-drag-drop-files.esm-082b0a5e.js",
+      "_index-536976de.js",
+      "_chevron-down-0c4ee3ec.js",
+      "_alert-1d33a961.js",
+      "_upload-cloud-377c13ba.js",
+      "_alert-circle-f5d1043f.js",
+      "_loader-918b2076.js"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/Pages/Home.tsx"
   },
   "resources/js/Pages/Landing.tsx": {
-    "file": "assets/Landing-337f680b.js",
+    "file": "assets/Landing-2c0839d0.js",
     "imports": [
-      "_utils-f4136f34.js",
-      "_module-c4ed8ba0.js",
-      "_useChatScroll-c04fe51f.js",
-      "_alert-4dc833a2.js",
+      "_utils-d51774f8.js",
+      "_module-7887c94f.js",
+      "_useChatScroll-827c7ac5.js",
+      "_alert-1d33a961.js",
       "resources/js/app.tsx",
-      "_alert-dialog-e39ab03d.js",
-      "_react-drag-drop-files.esm-91de88e7.js",
-      "_alert-circle-af391df8.js",
-      "_loader-8c026fc1.js",
-      "_upload-cloud-c3ceee65.js",
-      "_chevron-down-e7131a9a.js"
+      "_alert-dialog-1acda4c3.js",
+      "_react-drag-drop-files.esm-082b0a5e.js",
+      "_alert-circle-f5d1043f.js",
+      "_loader-918b2076.js",
+      "_upload-cloud-377c13ba.js",
+      "_chevron-down-0c4ee3ec.js"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/Pages/Landing.tsx"
   },
   "resources/js/Pages/SetUp.tsx": {
-    "file": "assets/SetUp-c691dde3.js",
+    "file": "assets/SetUp-6c58bb56.js",
     "imports": [
-      "_utils-f4136f34.js",
-      "_react-drag-drop-files.esm-91de88e7.js",
-      "_alert-4dc833a2.js",
-      "_upload-cloud-c3ceee65.js",
-      "_alert-circle-af391df8.js"
+      "_utils-d51774f8.js",
+      "_react-drag-drop-files.esm-082b0a5e.js",
+      "_alert-1d33a961.js",
+      "_upload-cloud-377c13ba.js",
+      "_alert-circle-f5d1043f.js"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/Pages/SetUp.tsx"
@@ -202,9 +202,9 @@
       "resources/js/Pages/Landing.tsx",
       "resources/js/Pages/SetUp.tsx"
     ],
-    "file": "assets/app-e0d0c5e8.js",
+    "file": "assets/app-893070f3.js",
     "imports": [
-      "_utils-f4136f34.js"
+      "_utils-d51774f8.js"
     ],
     "isEntry": true,
     "src": "resources/js/app.tsx"
