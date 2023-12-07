@@ -26,7 +26,7 @@ const ServerHeader:FC<ServerHeaderProps> = ({role,server}) => {
                     // isMod&&<DropdownMenuItem onClick={()=>onOpen('Invite',{server})} className='text-indigo-600 dark:text-indigo-400 px-2.5 py-1.5 text-sm cursor-pointer'>Invite People <UserPlus className='h-4 w-4 ml-auto' /> </DropdownMenuItem>
                 }
                 {
-                    isAdmin&&<DropdownMenuItem onClick={()=>onOpen('EditServer',{server})}  className='px-2.5 py-1.5 text-sm cursor-pointer'>Server Settings <Settings className='h-4 w-4 ml-auto' /> </DropdownMenuItem>
+                    // isAdmin&&<DropdownMenuItem onClick={()=>onOpen('EditServer',{server})}  className='px-2.5 py-1.5 text-sm cursor-pointer'>Server Settings <Settings className='h-4 w-4 ml-auto' /> </DropdownMenuItem>
                 }
                 {
                     isAdmin&&<DropdownMenuItem onClick={()=>onOpen('Members',{server})} className='px-2.5 py-1.5 text-sm cursor-pointer'>Manage Members<Users className='h-4 w-4 ml-auto' /> </DropdownMenuItem>

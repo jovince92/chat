@@ -29,10 +29,10 @@ const CaseClosedModal:FC = () => {
 
     const { toast } = useToast();
 
-    
-    useEffect(()=>{
-        console.log(ModaData.channel?.user)
-    },[isOpen]);
+
+    // useEffect(()=>{
+    //     console.log(ModaData.channel?.user)
+    // },[isOpen]);
 
     const OPEN = useMemo(()=>isOpen&&type==='CaseClosed',[isOpen,type]);
 
@@ -59,7 +59,7 @@ const CaseClosedModal:FC = () => {
                 <DialogHeader className='pt-7 px-5'>
                     <DialogTitle className='text-2xl text-center font-bold'>Close this {users[0].name}'s case?</DialogTitle>
                     <DialogDescription className='text-center text-muted-foreground'>
-                        after closing this case, user unable to reply anymore and 
+                        after closing this case, user unable to reply anymore and
                         system will automatically send a score / rating choices for user to choose based on agent's assistance
                     </DialogDescription>
                 </DialogHeader>
