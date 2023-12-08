@@ -32,6 +32,8 @@ const MembersModal:FC = () => {
 
     const OPEN = useMemo(()=>isOpen&&type==='Members',[isOpen,type]);
 
+    if(!OPEN) return   null;
+
     return (
         <Dialog open={OPEN} onOpenChange={onClose}>
             <DialogContent className=' overflow-auto'>

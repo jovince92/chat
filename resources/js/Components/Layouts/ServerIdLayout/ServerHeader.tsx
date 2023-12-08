@@ -29,10 +29,10 @@ const ServerHeader:FC<ServerHeaderProps> = ({role,server}) => {
                     // isAdmin&&<DropdownMenuItem onClick={()=>onOpen('EditServer',{server})}  className='px-2.5 py-1.5 text-sm cursor-pointer'>Server Settings <Settings className='h-4 w-4 ml-auto' /> </DropdownMenuItem>
                 }
                 {
-                    isAdmin&&<DropdownMenuItem onClick={()=>onOpen('Members',{server})} className='px-2.5 py-1.5 text-sm cursor-pointer'>Manage Members<Users className='h-4 w-4 ml-auto' /> </DropdownMenuItem>
+                    isAdmin&&<DropdownMenuItem onClick={()=>setTimeout(() => onOpen('Members',{server}), 100)} className='px-2.5 py-1.5 text-sm cursor-pointer'>Manage Members<Users className='h-4 w-4 ml-auto' /> </DropdownMenuItem>
                 }
                 {
-                    isAdmin&&<DropdownMenuItem onClick={()=>onOpen('SystemMessage',{server})} className='px-2.5 py-1.5 text-sm cursor-pointer'>System Message<MessageCircle className='h-4 w-4 ml-auto' /> </DropdownMenuItem>
+                    isAdmin&&<DropdownMenuItem onClick={()=>setTimeout(() => onOpen('SystemMessage',{server}), 100)} className='px-2.5 py-1.5 text-sm cursor-pointer'>System Message<MessageCircle className='h-4 w-4 ml-auto' /> </DropdownMenuItem>
                 }
                 {
                     // isMod&&<DropdownMenuItem onClick={()=>onOpen('CreateChannel',{server})} className='px-2.5 py-1.5 text-sm cursor-pointer'>Create Channel<PlusCircle className='h-4 w-4 ml-auto' /> </DropdownMenuItem>

@@ -40,7 +40,7 @@ const ServerSidebar:FC = () => {
 
 
     return (
-        <div className='flex flex-col h-full text-primary w-full dark:bg-[#2B2D31] bg-[#F2F3F5]'>
+        <div className='flex flex-col h-full text-primary w-full dark:bg-[#2B2D31] bg-[#F2F3F5] '>
             <ServerHeader role={role!} server={current_server} />
             <ScrollArea className='flex-1 px-2.5'>
                 <div className='mt-1.5'>

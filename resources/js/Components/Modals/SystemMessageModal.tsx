@@ -52,7 +52,7 @@ const SystemMessageModal:FC = () => {
 
     useEffect(()=>{
         if (isOpen === true && sysMessageState.length > 0){
-            var initial = sysMessageState[0]
+            let initial = sysMessageState[0]
             reset()
 
             setData('initial_message', initial.message);
@@ -154,6 +154,8 @@ const SystemMessageModal:FC = () => {
             onSuccess:()=>console.log('system message stored')
         });
     };
+
+    if(!OPEN) return null;
 
     return (
         <Dialog open={OPEN} onOpenChange={onClose}>

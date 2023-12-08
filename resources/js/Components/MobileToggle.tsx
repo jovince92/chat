@@ -13,11 +13,13 @@ const MobileToggle:FC = () => {
                     <Menu />
                 </Button>
             </SheetTrigger>
-            <SheetContent side='left' className='p-0 flex gap-0'>
+            <SheetContent asChild side='left' className='p-0 flex gap-0'>
+                <div>
                 <div className='w-[4.5rem]'>
                     <NavigationSideBar />
                 </div>
                 <ServerSidebar />
+                </div>
             </SheetContent>
         </Sheet>
     )

@@ -1,12 +1,12 @@
 import ChatSheet from '@/Components/LandingPage/ChatSheet';
 import { Button } from '@/Components/ui/button'
 import { Card, CardDescription, CardHeader, CardTitle } from '@/Components/ui/card'
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/Components/ui/dialog';
+import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/Components/ui/dialog';
 import { Input } from '@/Components/ui/input';
 import { Label } from '@/Components/ui/label';
 import { Channel, User } from '@/types';
 import { Head, router, useForm } from '@inertiajs/react';
-import { DialogClose } from '@radix-ui/react-dialog';
+
 import { Loader2,School,Loader,AlertCircle } from 'lucide-react';
 import { FC, FormEventHandler, ReactNode, useEffect, useState } from 'react';
 import { Alert, AlertDescription, AlertTitle } from '@/Components/ui/alert';
