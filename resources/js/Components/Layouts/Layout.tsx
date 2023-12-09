@@ -11,10 +11,10 @@ const Layout:FC<LayoutProps> = ({children}) => {
         <>
             <ModalProvider />
             <div className='h-screen'>
-                <div className='hidden md:flex flex-col fixed inset-y-0 h-full w-[4.5rem] z-30'>
+                {/* <div className='hidden md:flex flex-col fixed inset-y-0 h-full w-[4.5rem] z-30'>
                     <NavigationSideBar />
-                </div>
-                <main className='md:pl-[4.5rem] h-full'>
+                </div> */}
+                <main className='h-full'>
                     {children}
                 </main>
             </div>

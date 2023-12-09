@@ -9,7 +9,7 @@ import { Separator } from '@/Components/ui/separator';
 import ServerSection from './ServerSection';
 import ServerChannel from './ServerChannel';
 import ServerMember from './ServerMember';
-
+import ModeToggle from '../../ModeToggle';
 
 const ICONMAP ={
     'TEXT':<Hash className='mr-1.5 h-4 w-4' />,
@@ -40,7 +40,7 @@ const ServerSidebar:FC = () => {
 
 
     return (
-        <div className='flex flex-col h-full text-primary w-full dark:bg-[#2B2D31] bg-[#F2F3F5] '>
+        <div className='flex flex-col h-full text-primary w-full dark:bg-zinc-800 bg-[#F2F3F5] '>
             <ServerHeader role={role!} server={current_server} />
             <ScrollArea className='flex-1 px-2.5'>
                 <div className='mt-1.5'>
@@ -60,6 +60,9 @@ const ServerSidebar:FC = () => {
                     {members.map(member=><ServerMember member={member} key={member.id} />)}
                 </div>
             </ScrollArea>
+            <div className='w-full'>
+                <ModeToggle />
+            </div>
         </div>
     )
 }

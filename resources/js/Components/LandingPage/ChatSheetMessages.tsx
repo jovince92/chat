@@ -16,25 +16,25 @@ interface Props{
 }
 
 const ChatSheetMessages:FC<Props> = ({channel,getMsgsRoute,onReply}) => {
-    
+
     const chatRef = useRef<HTMLDivElement>(null);
     const bottomRef = useRef<HTMLDivElement>(null);
-    
+
     const {data,fetchNextPage,hasNextPage,isFetchingNextPage,status} = useChatQuery({queryRoute:getMsgsRoute,queryKey:`channel_${channel.id.toString()}`,value:"0"});
     const  loadPreviousMsgs= () =>{
         if(!data?.pages){
             return null;
         }
-        
+
         fetchNextPage();
     }
 
     useChatScroll({
         chatRef,bottomRef,loadMore:loadPreviousMsgs,shouldLoadMore:!isFetchingNextPage && !!hasNextPage,count:data?.pages?.[0]?.data.length ??0
     });
-    
-    const paginatedMessages=data?.pages;   
-    
+
+    const paginatedMessages=data?.pages;
+
     if(status==='loading'){
         return(
             <div className='flex flex-col flex-1 justify-center items-center'>
@@ -52,7 +52,7 @@ const ChatSheetMessages:FC<Props> = ({channel,getMsgsRoute,onReply}) => {
             </div>
         );
     }
-    
+
     return (
         <div ref={chatRef} className='flex-1 flex flex-col py-3.5 overflow-y-auto'>
             {
@@ -86,7 +86,7 @@ const ChatSheetMessages:FC<Props> = ({channel,getMsgsRoute,onReply}) => {
                         </Fragment>
                     ))
                 }
-                
+
             </div>
             <div ref={bottomRef} />
         </div>

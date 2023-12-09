@@ -7,23 +7,23 @@ import ChatMessages from '@/Components/Chat/ChatMessages';
 import MediaRoom from '@/Components/MediaRoom';
 
 interface ChannelLayoutProps{
-    
+
 }
 
 const ChannelLayout:FC<ChannelLayoutProps> = () => {
     const {current_server,current_channel,auth} = usePage<PageProps>().props;
-    
+
     if(!current_channel){
         return null;
     }
     const apiRoute=useMemo(()=>route('server.channel.message.store',{server_id:current_server.id,channel_id:current_channel.id}),[current_server.id,current_channel.id]);
     const getMsgsRoute=useMemo(()=>route('server.channel.message.index',{server_id:current_server.id,channel_id:current_channel.id}),[current_server.id,current_channel.id]);
 
-    
+
 
     return (
         <div className='bg-white dark:bg-neutral-950 flex flex-col h-full'>
-            <ChatHeader name={current_channel.name} server={current_server} type='Channel' />
+            <ChatHeader name={current_channel.name} server={current_server} channel={current_channel} type='Channel' />
             {
                 current_channel.type==='TEXT' &&(
                     <>

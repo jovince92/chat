@@ -119,7 +119,7 @@ const ChatItem:FC<ChatItemProps> = ({message,type}) => {
         <div className='relative group flex items-center hover:bg-neutral-300 dark:hover:bg-neutral-900 p-3.5 transition w-full'>
             <div className='group flex gap-x-1.5 items-start w-full'>
                 <div onClick={onInitiate} className='cursor-pointer hover:drop-shadow-md transition'>
-                    <UserAvatar user={user} />
+                    {/* <UserAvatar user={user} /> */}
                 </div>
                 <div className='flex flex-col w-full'>
                     <div className='flex items-center gap-x-1.5'>
