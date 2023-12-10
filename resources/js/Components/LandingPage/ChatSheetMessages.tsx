@@ -3,7 +3,7 @@ import { useChatScroll } from '@/Hooks/useChatScroll';
 import { Channel, PageProps } from '@/types';
 import { usePage } from '@inertiajs/react';
 import { Loader2, ServerCrashIcon } from 'lucide-react';
-import React, { FC, Fragment, useRef } from 'react'
+import React, { FC, Fragment, useRef, useState } from 'react'
 import ChatWelcome from '../Chat/ChatWelcome';
 import ChatItem from '../Chat/ChatItem';
 import ChatSheetItem from './ChatSheetItem';
@@ -13,10 +13,10 @@ interface Props{
     channel:Channel;
     getMsgsRoute:string;
     onReply?:(reply:string)=>void;
+    hasClickedReply?:boolean;
 }
 
-const ChatSheetMessages:FC<Props> = ({channel,getMsgsRoute,onReply}) => {
-
+const ChatSheetMessages:FC<Props> = ({channel,getMsgsRoute,onReply,hasClickedReply}) => {
     const chatRef = useRef<HTMLDivElement>(null);
     const bottomRef = useRef<HTMLDivElement>(null);
 
@@ -27,6 +27,10 @@ const ChatSheetMessages:FC<Props> = ({channel,getMsgsRoute,onReply}) => {
         }
 
         fetchNextPage();
+    }
+
+    const handleReply = (reply:string) =>{
+        if(!!onReply) onReply(reply);
     }
 
     useChatScroll({
@@ -79,8 +83,8 @@ const ChatSheetMessages:FC<Props> = ({channel,getMsgsRoute,onReply}) => {
                     paginatedMessages?.map((paginatedmessage,_idx)=>(
                         <Fragment key={_idx}>
                             {
-                                paginatedmessage.data?.map(message=>(
-                                    <ChatSheetItem onReply={(reply)=>onReply&&onReply(reply)} channel={channel} type='Channel' key={message.id} message={message} />
+                                paginatedmessage.data?.map((message,_idx)=>(
+                                    <ChatSheetItem isLastMsg={paginatedmessage.data.length===(_idx+1)} hasClickedReply={hasClickedReply} onReply={handleReply} channel={channel} type='Channel' key={message.id} message={message} />
                                 ))
                             }
                         </Fragment>

@@ -62,6 +62,7 @@ class MessageController extends Controller
         
 
         broadcast(new NewChatMessageEvent($new_msg->load(['user'])));
+        sleep(1);
         $response = SystemMenu::where('name',$request->message)->first();
         if($response){
             $response_reply=SystemMessage::find($response->sys_message_reply_id);
