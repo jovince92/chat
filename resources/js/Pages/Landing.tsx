@@ -16,6 +16,8 @@ interface Props{
     user:User;
 }
 
+export const APP_NAME = `${import.meta.env.VITE_APP_NAME}`
+
 const Landing:FC<Props> = ({channel,user}) => {
 
     const { data, setData, post, get, processing, errors, reset } = useForm({
@@ -41,17 +43,17 @@ const Landing:FC<Props> = ({channel,user}) => {
 
     return (
         <>
-            <Head title='Welcome to Chat Support' />
+            <Head title='Welcome to' />
             <div className="flex flex-col h-screen">
 
             <header className="bg-white dark:bg-gray-800 text-primary py-4 text-center md:text-left shadow-md">
-                <div className="container flex items-center mx-auto ">
+                <div className="container flex items-center">
                     <h1 className="text-xl font-extrabold w-full flex items-center">
                         <School className='mr-4'/>
-                        <span>Lorem Ipsum</span>
+                        <span>{APP_NAME}</span>
                     </h1>
                     <button onClick={()=>setOpenLogin(true)}
-                        className="hidden md:block bg-primary rounded text-secondary text-sm ml-auto w-28 p-2">
+                        className="bg-primary rounded text-secondary text-sm w-28 p-2">
                         Login
                     </button>
                 </div>
@@ -123,7 +125,7 @@ const EntryDialog:FC<{children:ReactNode}> = ({children}) =>{
             </DialogTrigger>
             <DialogContent className="sm:max-w-md">
                 <DialogHeader>
-                    <DialogTitle>Welcome to Chat Support</DialogTitle>
+                    <DialogTitle>Welcome to {APP_NAME}</DialogTitle>
                     <DialogDescription>
                         Please Enter Your Contact Details Below:
                     </DialogDescription>

@@ -15,9 +15,9 @@ const MobileToggle:FC = () => {
             </SheetTrigger>
             <SheetContent asChild side='left' className='p-0 flex gap-0'>
                 <div>
-                <div className='w-[4.5rem]'>
+                {/* <div className='w-[4.5rem]'>
                     <NavigationSideBar />
-                </div>
+                </div> */}
                 <ServerSidebar />
                 </div>
             </SheetContent>
