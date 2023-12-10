@@ -40,12 +40,14 @@ const ChatSheet:FC<Props> = ({isOpen,channel:OriginalChannel,onClose,user}) => {
     const [showFeedbackModal,setShowFeedbackModal] = useState(false);
 
     const onReply = (reply:string)=>{
-        
+        setHasClickedReply(true);
         axios.post(apiRoute,{
             message:reply,
         })
-        .then(()=>setHasClickedReply(true))
-        .catch(()=>toast({title:'Internal Error',description:`Can't send message. Please try again!`}))
+        .catch(()=>{
+            toast({title:'Internal Error',description:`Can't send message. Please try again!`});
+            setHasClickedReply(false);
+        })
         //.finally(()=>setSending(false));
     }
 
