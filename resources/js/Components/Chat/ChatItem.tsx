@@ -117,9 +117,12 @@ const ChatItem:FC<ChatItemProps> = ({message,type}) => {
 
     return (
         <div className='relative group flex items-center hover:bg-neutral-300 dark:hover:bg-neutral-900 p-3.5 transition w-full'>
-            <div className='group flex gap-x-1.5 items-start w-full'>
-                <div onClick={onInitiate} className='cursor-pointer hover:drop-shadow-md transition'>
-                    {/* <UserAvatar user={user} /> */}
+            <div className='group flex items-start w-full'>
+                <div onClick={onInitiate} className='w-12 cursor-pointer hover:drop-shadow-md transition'>
+                    {user.image?
+                    <img className='!w-10 !h-10 rounded-full object-cover' src={user.image} />
+                    :
+                    <UserAvatar user={user} className='border-2' />}
                 </div>
                 <div className='flex flex-col w-full'>
                     <div className='flex items-center gap-x-1.5'>
@@ -140,7 +143,6 @@ const ChatItem:FC<ChatItemProps> = ({message,type}) => {
                                 fileType==='pdf'?'h-10 w-10':'h-48 w-48')}  >
                                 <img src={fileImage} alt='file' className='object-cover' />
                             </a>
-
                         )
                     }
                     <p className={cn('text-xs',fileType==='pdf'&&!message.deleted_at?'block':'hidden')}>PDF File</p>

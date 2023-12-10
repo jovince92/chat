@@ -44,7 +44,19 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
-    public function servers(){
-        return $this->belongsToMany(Server::class,Member::class);
+    public function servers()
+    {
+        return $this->belongsToMany(Server::class, Member::class);
+    }
+
+    public function getImageAttribute($value)
+    {
+        if ($value && str_contains(strtolower($value), 'http')) {
+            return $value;
+        }
+        if (!$value) {
+            return null;
+        }
+        return url('/') . '/' . $value;
     }
 }

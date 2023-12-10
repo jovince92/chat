@@ -13,33 +13,33 @@ interface ChatMessagesProps{
 }
 
 const ChatMessages:FC<ChatMessagesProps> = ({getMsgsRoute,type}) => {
-    
+
     const {current_channel,auth} = usePage<PageProps>().props;
-    
+
     if(!current_channel){
         return null;
     }
     const chatRef = useRef<HTMLDivElement>(null);
     const bottomRef = useRef<HTMLDivElement>(null);
-    
+
     const {data,fetchNextPage,hasNextPage,isFetchingNextPage,status} = useChatQuery({queryRoute:getMsgsRoute,queryKey:`channel_${current_channel.id.toString()}`,value:"0"});
     const  loadPreviousMsgs= () =>{
         if(!data?.pages){
             return null;
         }
-        
+
         fetchNextPage();
     }
 
     useChatScroll({
         chatRef,bottomRef,loadMore:loadPreviousMsgs,shouldLoadMore:!isFetchingNextPage && !!hasNextPage,count:data?.pages?.[0]?.data.length ??0
     });
-    
-    const paginatedMessages=data?.pages;
-    
 
-    
-    
+    const paginatedMessages=data?.pages;
+
+
+
+
     if(status==='loading'){
         return(
             <div className='flex flex-col flex-1 justify-center items-center'>
@@ -57,7 +57,7 @@ const ChatMessages:FC<ChatMessagesProps> = ({getMsgsRoute,type}) => {
             </div>
         );
     }
-    
+
     return (
         <div ref={chatRef} className='flex-1 flex flex-col py-3.5 overflow-y-auto'>
             {
@@ -91,8 +91,15 @@ const ChatMessages:FC<ChatMessagesProps> = ({getMsgsRoute,type}) => {
                         </Fragment>
                     ))
                 }
-                
             </div>
+
+            <div className='p-8' hidden={(current_channel.feedback_comment)?false:true}>
+                <div className='p-4 bg-gray-200 dark:bg-gray-700 rounded-md'>
+                    <p className='font-bold mb-4'>USER FEEDBACK / COMMENT</p>
+                    <p className='bg-gray-200 dark:bg-gray-700 text-sm'>{current_channel.feedback_comment}</p>
+                </div>
+            </div>
+
             <div ref={bottomRef} />
         </div>
     )

@@ -18,6 +18,7 @@ const fileTypes = ["JPG", "PNG", "WEBP",'JPEG'];
 
 const ProfileModal:FC = () => {
 
+    const {auth} = usePage<PageProps>().props;
     const {isOpen,onClose,type,data:ModalData} = useModal();
 
     const { data, setData, post, processing, errors, reset } = useForm<{
@@ -26,7 +27,7 @@ const ProfileModal:FC = () => {
         new_password:string,
         confirm_password:string,
         image:File|undefined}>({
-        email: '',
+        email: auth.user.email,
         current_password: '',
         new_password: '',
         confirm_password: '',
@@ -40,24 +41,25 @@ const ProfileModal:FC = () => {
         const url = URL.createObjectURL(file) ;
         setData('image',file);
         setImgPreview(url);
+        console.log(data.image)
     }
 
     const onFileDrop = (file:File) =>{
         const url = URL.createObjectURL(file) ;
         setData('image',file);
         setImgPreview(url);
-        console.log(url);
-
     }
 
     const onSubmit:FormEventHandler = (e) =>{
         e.preventDefault();
         post(route('profile.update'),{
-            onSuccess:()=>onClose()
+            onSuccess:()=>{
+                onClose()
+            }
         });
     }
 
-    const [imgPreview,setImgPreview] = useState("");
+    const [imgPreview,setImgPreview] = useState(auth.user.image);
 
     const OPEN = useMemo(()=>isOpen&&type==='Profile',[isOpen,type]);
 
@@ -69,7 +71,7 @@ const ProfileModal:FC = () => {
                     <DialogDescription className='text-center' >Customize your account</DialogDescription>
                 </DialogHeader>
 
-                <form id='profile' onSubmit={onSubmit} className='flex flex-col h-[30rem]'>
+                <form id='profile' onSubmit={onSubmit} className='flex flex-col'>
                     <div className='flex flex-col items-center justify-center text-center mb-4'>
                         {(errors.email||errors.image)&&<FileErrorAlert messages={[errors?.email||"",errors?.image||""]} />}
                         <FileUploader hoverTitle="Upload or drop a file right here" handleChange={onFileDrop} name="file" types={fileTypes}>
@@ -82,7 +84,7 @@ const ProfileModal:FC = () => {
                         </FileUploader>
                         <p className='my-2'>Profile Photo</p>
                         <div className='flex items-center space-x-2 overflow-hidden'>
-                            <Button className='w-24' onClick={()=>setImgPreview("")} disabled={imgPreview?false:true}>Remove</Button>
+                            <Button className='w-24' onChange={()=>setImgPreview("")} disabled={imgPreview?false:true}>Remove</Button>
                             <FileUploader hoverTitle="Upload or drop a file right here" handleChange={onFileDrop} name="file" types={fileTypes}>
                                 <Button className='w-24'>Add</Button>
                             </FileUploader>
@@ -95,7 +97,7 @@ const ProfileModal:FC = () => {
                         <Input type="email" value={data.email} onChange={({target})=>setData('email',target.value)} required disabled={processing}
                             className='border-0 focus-visible:!ring-0 focus-visible:!ring-offset-0' placeholder='Email Address' />
                     </div>
-                    <div className='flex flex-col space-y-1 px-12 py-2'>
+                    {/* <div className='flex flex-col space-y-1 px-12 py-2'>
                         <Label className='uppercase text-xs font-bold'>Current Password</Label>
                         <Input type="password" value={data.current_password} onChange={({target})=>setData('current_password',target.value)} required disabled={processing}
                             className='border-0 focus-visible:!ring-0 focus-visible:!ring-offset-0' placeholder='Current Password' />
@@ -109,9 +111,9 @@ const ProfileModal:FC = () => {
                         <Label className='uppercase text-xs font-bold'>Confirm Password</Label>
                         <Input type="password" value={data.confirm_password} onChange={({target})=>setData('confirm_password',target.value)} required disabled={processing}
                             className='border-0 focus-visible:!ring-0 focus-visible:!ring-offset-0' placeholder='Confirm Password' />
-                    </div>
+                    </div> */}
 
-                    <div className='text-center'>
+                    <div className='text-center pb-7'>
                         <Button disabled={processing} form='profile' className='w-24 my-4'>Save</Button>
                     </div>
                 </form>

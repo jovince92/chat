@@ -15,6 +15,7 @@ import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, 
 import { Rating } from 'react-simple-star-rating'
 import ModalProvider from '@/lib/ModalProvider';
 import MessageFileModal from '../Modals/MessageFileModal';
+import { Label } from '@radix-ui/react-label';
 interface Props{
     isOpen?:boolean;
     channel?:Channel;
@@ -33,7 +34,7 @@ const ChatSheet:FC<Props> = ({isOpen,channel:OriginalChannel,onClose,user}) => {
     const getMsgsRoute=useMemo(()=>
         route('server.channel.message.index',{server_id:channel?.server_id||"",channel_id:channel?.id||""})
     ,[channel]);
-    
+
     const queryClient = useQueryClient();
 
 
@@ -57,7 +58,7 @@ const ChatSheet:FC<Props> = ({isOpen,channel:OriginalChannel,onClose,user}) => {
         .listen('NewChatMessageEvent',({message}:{message:Message})=>{
             queryClient.setQueryData([`channel_${channel.id.toString()}`],(oldData:any)=>{
                 const {pages}=oldData as {pages:PaginatedMessage[]};
-                
+
                 const  newData=pages;
                 newData[0]={
                     ...newData[0],
@@ -70,7 +71,7 @@ const ChatSheet:FC<Props> = ({isOpen,channel:OriginalChannel,onClose,user}) => {
         .listen('MessageUpdateEvent',({message}:{message:Message})=>{
             queryClient.setQueryData([`channel_${channel.id.toString()}`],(oldData:any)=>{
                 const {pages}=oldData as {pages:PaginatedMessage[]};
-                
+
                 const  newData=pages;
                 newData[0]={
                     ...newData[0],
@@ -90,7 +91,7 @@ const ChatSheet:FC<Props> = ({isOpen,channel:OriginalChannel,onClose,user}) => {
     if(!channel || !user) return null;
     return (
         <>
-            
+
             <Sheet open={isOpen}>
                 <SheetContent className='h-full flex flex-col overflow-y-hidden space-y-2'>
                     <SheetHeader className='h-auto'>
@@ -103,8 +104,8 @@ const ChatSheet:FC<Props> = ({isOpen,channel:OriginalChannel,onClose,user}) => {
                         <div className='flex-1 mb-2 overflow-auto'>
                             <ChatSheetMessages hasClickedReply={hasClickedReply} onReply={onReply} getMsgsRoute={getMsgsRoute} channel={channel} />
                         </div>
-                        
-                        
+
+
                     </div>
                     <div className='h-auto'>
                         {
@@ -120,7 +121,7 @@ const ChatSheet:FC<Props> = ({isOpen,channel:OriginalChannel,onClose,user}) => {
                                                 <p className='font-semibold text-lg tracking-tight'>
                                                     Would You Like To Give a Feedback?
                                                 </p>
-                                                
+
                                                 <Button onClick={()=>setShowFeedbackModal(true)}>Give Feedback</Button>
                                             </>
                                         )
@@ -130,16 +131,16 @@ const ChatSheet:FC<Props> = ({isOpen,channel:OriginalChannel,onClose,user}) => {
                                             <p className='font-semibold text-lg tracking-tight'>Thank You For Your Feedback</p>
                                         )
                                     }
-                                    
+
                                 </>
                             )
-                            
+
                         }
                     </div>
                 </SheetContent>
             </Sheet>
             <FeedbackModal onFeedback={(rating)=>{setChannel(val=>({...val!,rating}))}} channel_id={channel.id} isOpen={showFeedbackModal} onClose={()=>setShowFeedbackModal(false)} />
-            
+
             <MessageFileModal />
         </>
     )
@@ -156,11 +157,13 @@ interface FeedbackModalProps{
 
 const FeedbackModal:FC<FeedbackModalProps> = ({isOpen,onClose,channel_id,onFeedback}) =>{
     const [rating,setRating] = useState(0);
+    const [feedbackComment,setFeedbackComment] = useState("");
 
     const giveFeedback = () =>{
         axios.post(route('support.feedback'),{
             rating,
-            channel_id
+            channel_id,
+            feedbackComment,
         }).then(()=>{
             onClose();
             onFeedback(rating);
@@ -184,14 +187,20 @@ const FeedbackModal:FC<FeedbackModalProps> = ({isOpen,onClose,channel_id,onFeedb
                                 }}
                                 >
                                 <Rating allowHover={false} transition SVGclassName='inline-block' onClick={e=>setRating(e)} />
+
+                                <div className='w-full'>
+                                    <Label className='uppercase text-xs font-bold'>Feedback / Comment</Label>
+                                    <textarea onChange={({target})=>setFeedbackComment(target.value)}
+                                        className='w-full border-0 focus-visible:!ring-0 focus-visible:!ring-offset-0 resize-none rounded-md dark:bg-zinc-700' />
+                                </div>
                             </div>
                         </>
                     </AlertDialogDescription>
                 </AlertDialogHeader>
-            
+
                 <AlertDialogFooter>
                         <Button onClick={onClose} size='sm' variant='outline'>Cancel</Button>
-                    
+
                         <Button  onClick={giveFeedback} size='sm'>Proceed</Button>
                 </AlertDialogFooter>
             </AlertDialogContent>

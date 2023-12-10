@@ -2,14 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\ProfileUpdateRequest;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Redirect;
+use App\Models\User;
 use Inertia\Inertia;
 use Inertia\Response;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\File;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Redirect;
+use App\Http\Requests\ProfileUpdateRequest;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 
 class ProfileController extends Controller
 {
@@ -42,7 +44,29 @@ class ProfileController extends Controller
 
     public function update(Request $request)
     {
-        dd($request);
+        // dd($request);
+
+        $user = User::where('id', Auth::id())->first();
+
+        $image = $request->file('image');
+        if ($image) {
+            $image_name = $image->getClientOriginalName();
+            $location = 'uploads/profile_photos/';
+            $path = public_path($location);
+            if (!file_exists($path)) {
+                File::makeDirectory($path, 0777, true);
+            }
+            $new_image = $location . $image_name;
+            $request->file('image')->move($path, $new_image);
+
+            $user->update([
+                'image' => $new_image,
+            ]);
+        }
+
+        $user->update([
+            'email' => $request->email
+        ]);
     }
 
     /**

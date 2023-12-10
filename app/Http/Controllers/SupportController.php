@@ -18,85 +18,91 @@ use Inertia\Inertia;
 
 class SupportController extends Controller
 {
-    public function enter(Request $request){
+    public function enter(Request $request)
+    {
         $faker = Factory::create();
-        if(Auth::check()) Auth::logout();
+        if (Auth::check()) Auth::logout();
 
-        $user=User::updateOrCreate([
-            'email'=>$request->email
-        ],[
-            'name'=>$request->name,
-            'password'=>bcrypt('password')
+        $user = User::updateOrCreate([
+            'email' => $request->email
+        ], [
+            'name' => $request->name,
+            'password' => bcrypt('password')
         ]);
-        $channel=Channel::updateOrCreate(['user_id'=>$user->id,],
-        [
-            'user_id'=>$user->id,
-            'server_id'=>1,
-            'name'=>$request->name,
-            'type'=>'TEXT'
-        ]);
-        broadcast(new NewCustomerEvent($channel,$user));
+        $channel = Channel::updateOrCreate(
+            ['user_id' => $user->id,],
+            [
+                'user_id' => $user->id,
+                'server_id' => 1,
+                'name' => $request->name,
+                'type' => 'TEXT'
+            ]
+        );
+        broadcast(new NewCustomerEvent($channel, $user));
 
         Auth::login($user);
 
-        $new_msg=Message::create([
-            'user_id'=>1,
-            'channel_id'=>$channel->id,
-            'content'=>SystemMessage::find(1)->message ??  'Hi! How Can We Help You?',
-            'is_system_msg'=>1
+        $new_msg = Message::create([
+            'user_id' => 1,
+            'channel_id' => $channel->id,
+            'content' => SystemMessage::find(1)->message ??  'Hi! How Can We Help You?',
+            'is_system_msg' => 1
         ]);
 
         broadcast(new NewChatMessageEvent($new_msg->load(['user'])));
 
-        return Inertia::render('Landing',[
-            'channel'=>$channel,
-            'user'=>$user
+        return Inertia::render('Landing', [
+            'channel' => $channel,
+            'user' => $user
         ]);
-
     }
-    public function message_store(Request $request){
+    public function message_store(Request $request)
+    {
         $request->validate([
             'image' => 'mimes:jpeg,png,jpg,webp,pdf'
         ]);
-        $new_msg=Message::create([
-            'user_id'=>$request->user()->id,
-            'channel_id'=>$request->channel_id,
-            'content'=>$request->message??"",
+        $new_msg = Message::create([
+            'user_id' => $request->user()->id,
+            'channel_id' => $request->channel_id,
+            'content' => $request->message ?? "",
         ]);
 
-        $image = $request->file('image') ;
-        if($image){
-            $image_name=$new_msg->id.'_'.$image->getClientOriginalName();
-            $location='uploads/chat_images/server_'.strval($request->channel_id).'/';
-            $path=public_path($location);
+        $image = $request->file('image');
+        if ($image) {
+            $image_name = $new_msg->id . '_' . $image->getClientOriginalName();
+            $location = 'uploads/chat_images/server_' . strval($request->channel_id) . '/';
+            $path = public_path($location);
             if (!file_exists($path)) {
-                File::makeDirectory($path,0777,true);
+                File::makeDirectory($path, 0777, true);
             }
-            $new_image = $location.$image_name;
+            $new_image = $location . $image_name;
             $request->file('image')->move($path, $new_image);
             $new_msg->update([
-                'file'=>$new_image
+                'file' => $new_image
             ]);
         }
 
-        
-        
+
+
         broadcast(new NewChatMessageEvent($new_msg->load(['user'])));
     }
 
-    public function close_case(Request $request){
+    public function close_case(Request $request)
+    {
         $channel = Channel::find($request->channel_id);
         $channel->update([
-            'is_closed'=>1
+            'is_closed' => 1
         ]);
         broadcast(new CloseCaseEvent($channel));
     }
 
-    public function feedback(Request $request){
+    public function feedback(Request $request)
+    {
         $channel = Channel::find($request->channel_id);
         $channel->update([
-            'rating'=>$request->rating
+            'rating' => $request->rating,
+            'feedback_comment' => $request->feedbackComment
         ]);
-        broadcast(new NewCustomerEvent($channel,User::find($channel->user_id)));
+        broadcast(new NewCustomerEvent($channel, User::find($channel->user_id)));
     }
 }

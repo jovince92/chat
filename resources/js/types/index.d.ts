@@ -49,6 +49,7 @@ export interface Channel{
     created_at:string;
     is_closed:1|0;
     rating: number;
+    feedback_comment: string;
 }
 
 export interface Message{

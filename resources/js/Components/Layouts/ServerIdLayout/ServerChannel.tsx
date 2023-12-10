@@ -1,7 +1,7 @@
 import { cn } from '@/lib/utils';
 import { Channel, MemberRole, PageProps } from '@/types'
 import { router, usePage } from '@inertiajs/react';
-import { Check, Edit, FileLock, FolderLock, Hash, Lock, LockIcon, Mic, Trash, User, Video } from 'lucide-react';
+import { Check, CheckIcon, Edit, FileLock, FolderLock, Hash, Lock, LockIcon, Mic, Trash, User, Video } from 'lucide-react';
 import React, { FC, MouseEventHandler } from 'react'
 import ActionTooltip from '../ActionToolTip';
 import { useModal } from '@/Hooks/useModalStore';
@@ -32,13 +32,13 @@ const ServerChannel:FC<ServerChannelProps> = ({channel,role}) => {
             {
                 channel.is_closed===1?
                 <ActionTooltip label='Case Closed'>
-                    <LockIcon className='text-green-400'/>
+                    <CheckIcon className='text-green-400'/>
                 </ActionTooltip>
                 :
                 <User/>
             }
 
-            <p className={cn('flex flex-col space-y-1 text-sm text-left text-neutral-500 group-hover:text-neutral-600 dark:text-neutral-400 dark:group-hover:text-neutral-300 transition',
+            <p className={cn('flex flex-col space-y-1 text-sm text-left text-neutral-800 group-hover:text-neutral-950 dark:text-neutral-100 dark:group-hover:text-neutral-300 transition',
                     current_channel?.id===channel.id&&"text-primary dark:text-neutral-200 dark:group-hover:text-white"
                 )}>
                 <span className='text-sm'>{channel.user.name}</span>
