@@ -1,7 +1,7 @@
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from '@/Components/ui/dropdown-menu';
 import { useModal } from '@/Hooks/useModalStore';
 import { MemberRole, Server, PageProps } from '@/types'
-import { ChevronDown, LogOut, MessageCircle, PlusCircle, Settings, Trash, UserPlus, Users } from 'lucide-react';
+import { ChevronDown, LogOut, MessageCircle, PlusCircle, Settings, Settings2, Trash, UserPlus, Users } from 'lucide-react';
 import UserAvatar from '../../UserAvatar';
 import { usePage,router } from '@inertiajs/react';
 import React, { FC } from 'react'
@@ -28,6 +28,9 @@ const ServerHeader:FC<ServerHeaderProps> = ({role,server}) => {
                 </button>
             </DropdownMenuTrigger>
             <DropdownMenuContent className='w-56 text-xs font-medium text-black dark:text-neutral-400 space-y-[0.125rem]'>
+                {
+                    isAdmin&&<DropdownMenuItem onClick={()=>setTimeout(() => onOpen('Profile',{server}), 100)} className='px-2.5 py-1.5 text-sm cursor-pointer'>Profile Settings<Settings2 className='h-4 w-4 ml-auto' /> </DropdownMenuItem>
+                }
                 {
                     // isMod&&<DropdownMenuItem onClick={()=>onOpen('Invite',{server})} className='text-indigo-600 dark:text-indigo-400 px-2.5 py-1.5 text-sm cursor-pointer'>Invite People <UserPlus className='h-4 w-4 ml-auto' /> </DropdownMenuItem>
                 }

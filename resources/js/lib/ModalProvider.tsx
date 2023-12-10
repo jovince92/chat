@@ -13,6 +13,7 @@ import MembersModal from '@/Components/Modals/MembersModal';
 import MessageFileModal from '@/Components/Modals/MessageFileModal';
 import SystemMessageModal from '@/Components/Modals/SystemMessageModal';
 import CaseClosedModal from '@/Components/Modals/CaseClosedModal';
+import ProfileModal from '@/Components/Modals/ProfileModal';
 
 const ModalProvider = () => {
     return (
@@ -30,6 +31,7 @@ const ModalProvider = () => {
             <DeleteMessageConfirmationModal />
             <SystemMessageModal />
             <CaseClosedModal />
+            <ProfileModal />
         </>
     )
 }
