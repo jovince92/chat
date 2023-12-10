@@ -16,13 +16,14 @@ interface ChatItemProps{
     message:Message;
     type:"Channel"|"Conversation";
     channel:Channel;
-    onReply?:(reply:string)=>void
+    onReply?:(reply:string)=>void;
+    hasClickedReply?:boolean;
+    isLastMsg?:boolean;
 }
 
 const DATE_FORMAT = "d MMMM yyyy HH:mm"
 
-const ChatSheetItem:FC<ChatItemProps> = ({message,type,channel,onReply}) => {
-    const [hasClickedReply,setHasClickedReply]   = useState(false);
+const ChatSheetItem:FC<ChatItemProps> = ({message,type,channel,onReply,hasClickedReply,isLastMsg}) => {
     const {replies} = usePage<PageProps>().props;
     const [newContent,setNewContent] = useState(message.content);
     const [loading,setLoading]  = useState(false);
@@ -73,7 +74,6 @@ const ChatSheetItem:FC<ChatItemProps> = ({message,type,channel,onReply}) => {
 
     const onClick = (reply:string) =>{
         if(onReply) onReply(reply);
-        setHasClickedReply(true);
     } 
 
     useEffect(()=>{
@@ -153,7 +153,7 @@ const ChatSheetItem:FC<ChatItemProps> = ({message,type,channel,onReply}) => {
                         )
                     }
                     {
-                        (message.is_system_msg===1 && !hasClickedReply && channel.is_closed!==1) && (
+                        (message.is_system_msg===1 && !hasClickedReply && channel.is_closed!==1 && isLastMsg) && (
                             <div className='w-full grid grid-cols-2 gap-3 pb-3.5'>
                                 {
                                     replies.map(reply=><Button key={reply} variant='outline' size='sm' onClick={()=>onClick(reply)}>{reply}</Button>)

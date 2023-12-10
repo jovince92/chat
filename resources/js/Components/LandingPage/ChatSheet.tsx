@@ -98,40 +98,42 @@ const ChatSheet:FC<Props> = ({isOpen,channel:OriginalChannel,onClose,user}) => {
                         </SheetDescription>
                     </SheetHeader>
                     <div className='flex-1 flex flex-col overflow-y-hidden'>
-                        <div className='flex-1 mb-2'>
-                            <ChatSheetMessages onReply={onReply} getMsgsRoute={getMsgsRoute} channel={channel} />
+                        <div className='flex-1 mb-2 overflow-auto'>
+                            <ChatSheetMessages hasClickedReply={hasClickedReply} onReply={onReply} getMsgsRoute={getMsgsRoute} channel={channel} />
                         </div>
                         
                         
                     </div>
-                    {
-                        channel.is_closed!==1?<ChatInput apiRoute={apiRoute} type='Channel' name='Chat Support' />:(
-                            <>
-                                <Separator />
-                                <p className='font-semibold text-lg tracking-tight'>
-                                    This Case Has Been Closed. You Can Not Reply To This Thread Anymore
-                                </p>
-                                {
-                                    (channel.rating<0||!channel?.rating)&&(
-                                        <>
-                                            <p className='font-semibold text-lg tracking-tight'>
-                                                Would You Like To Give a Feedback?
-                                            </p>
-                                            
-                                            <Button onClick={()=>setShowFeedbackModal(true)}>Give Feedback</Button>
-                                        </>
-                                    )
-                                }
-                                {
-                                    channel.rating>-1&&(
-                                        <p className='font-semibold text-lg tracking-tight'>Thank You For Your Feedback</p>
-                                    )
-                                }
-                                
-                            </>
-                        )
-                        
-                    }
+                    <div className='h-auto'>
+                        {
+                            channel.is_closed!==1?<ChatInput apiRoute={apiRoute} type='Channel' name='Chat Support' />:(
+                                <>
+                                    <Separator />
+                                    <p className='font-semibold text-lg tracking-tight'>
+                                        This Case Has Been Closed. You Can Not Reply To This Thread Anymore
+                                    </p>
+                                    {
+                                        (channel.rating<0||!channel?.rating)&&(
+                                            <>
+                                                <p className='font-semibold text-lg tracking-tight'>
+                                                    Would You Like To Give a Feedback?
+                                                </p>
+                                                
+                                                <Button onClick={()=>setShowFeedbackModal(true)}>Give Feedback</Button>
+                                            </>
+                                        )
+                                    }
+                                    {
+                                        channel.rating>-1&&(
+                                            <p className='font-semibold text-lg tracking-tight'>Thank You For Your Feedback</p>
+                                        )
+                                    }
+                                    
+                                </>
+                            )
+                            
+                        }
+                    </div>
                 </SheetContent>
             </Sheet>
             <FeedbackModal onFeedback={(rating)=>{setChannel(val=>({...val!,rating}))}} channel_id={channel.id} isOpen={showFeedbackModal} onClose={()=>setShowFeedbackModal(false)} />
