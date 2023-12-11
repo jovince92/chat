@@ -1,10 +1,15 @@
 import { PageProps } from '@/types';
-import { usePage } from '@inertiajs/react';
-import React, { FC, ReactNode } from 'react'
+import { router, usePage } from '@inertiajs/react';
+import React, { FC, ReactNode, useEffect } from 'react'
 import ServerSidebar from './ServerSidebar';
 
 const ServerIdLayout:FC<{children:ReactNode}> = ({children}) => {
     const {current_server} = usePage<PageProps>().props;
+    useEffect(()=>{
+        const e=window.Echo.join('global_channel')
+                .listen('NewCustomerEvent',(e:any)=>router.reload(),    
+            )       ;
+    },[]);
     return (
         <div className='h-full'>
             <div className='hidden md:flex flex-col h-full w-60 z-20 inset-y-0 fixed'>
