@@ -117,7 +117,7 @@ const ChatSheet:FC<Props> = ({isOpen,channel:OriginalChannel,onClose,user}) => {
                     </div>
                     <div className='h-auto'>
                         {
-                            channel.is_closed!==1?<ChatInput apiRoute={apiRoute} type='Channel' name='Chat Support' />:(
+                            channel.is_closed!==1?<ChatInput getMsgsRoute={getMsgsRoute} apiRoute={apiRoute} type='Channel' name='Chat Support' />:(
                                 <>
                                     <Separator />
                                     <p className='font-semibold text-lg tracking-tight'>

@@ -64,7 +64,7 @@ const ChannelLayout:FC<ChannelLayoutProps> = () => {
                 current_channel.type==='TEXT' &&(
                     <>
                         <ChatMessages getMsgsRoute={getMsgsRoute} type='Channel' />
-                        <ChatInput name={current_channel.name} type='Channel' apiRoute={apiRoute}  />
+                        <ChatInput getMsgsRoute={getMsgsRoute} name={current_channel.name} type='Channel' apiRoute={apiRoute}  />
                     </>
                 )
             }

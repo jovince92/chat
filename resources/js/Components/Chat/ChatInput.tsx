@@ -1,4 +1,4 @@
-import { useForm } from '@inertiajs/react';
+import { useForm, usePage } from '@inertiajs/react';
 import { Plus } from 'lucide-react';
 import React, { FC, FormEventHandler, useEffect, useState } from 'react'
 import { Input } from '../ui/input';
@@ -6,16 +6,20 @@ import { toast } from '../ui/use-toast';
 import { useModal } from '@/Hooks/useModalStore';
 import EmojiPicker from '../EmojiPicker';
 import axios from 'axios';
+import { useChatQuery } from '@/Hooks/useChatQuery';
+import { PageProps } from '@/types';
 
 interface ChatInputProps{
     apiRoute:string;
     name:string;
     type:"Channel"|"Conversation";
+    getMsgsRoute:string;
 }
 
-const ChatInput:FC<ChatInputProps> = ({apiRoute,name,type}) => {
+const ChatInput:FC<ChatInputProps> = ({apiRoute,name,type,getMsgsRoute}) => {
+    const {current_channel} = usePage<PageProps>().props;
     const [sending,setSending]=useState(false);
-    
+    const {fetchNextPage} = useChatQuery({queryRoute:getMsgsRoute,queryKey:`channel_${current_channel?.id.toString()}`,value:"0"});
     const [message,setMsg]=useState("");
     const {onOpen} = useModal();
     const onSubmit:FormEventHandler<HTMLFormElement> = (e) =>{
@@ -28,7 +32,10 @@ const ChatInput:FC<ChatInputProps> = ({apiRoute,name,type}) => {
         axios.post(apiRoute,{
             message
         })
-        .then(()=>setMsg(""))
+        .then(()=>{
+            setMsg("");
+            if(!!current_channel) fetchNextPage();
+        })
         .catch(()=>toast({title:'Internal Error',description:`Can't send message. Please try again!`}))
         .finally(()=>setSending(false));
 

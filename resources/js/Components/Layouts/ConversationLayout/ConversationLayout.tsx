@@ -25,7 +25,7 @@ const ConversationLayout = () => {
         <div className='bg-white dark:bg-neutral-950 flex flex-col h-full'>
             <ChatHeader  name={otherUser.name} user={otherUser} server={current_server} type='Conversation' />
             {
-                (isVideo && conversationId===current_conversation.id)?<MediaRoom chat_id={current_conversation.id.toString()} video audio />:<><ConversationMessages otherUser={otherUser} getMsgsRoute={getMsgsRoute} type='Conversation' /><ChatInput name={otherUser.name} apiRoute={apiRoute} type='Conversation' /></>
+                (isVideo && conversationId===current_conversation.id)?<MediaRoom chat_id={current_conversation.id.toString()} video audio />:<><ConversationMessages otherUser={otherUser} getMsgsRoute={getMsgsRoute} type='Conversation' /><ChatInput getMsgsRoute={getMsgsRoute} name={otherUser.name} apiRoute={apiRoute} type='Conversation' /></>
             }
             
         </div>

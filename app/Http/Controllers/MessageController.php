@@ -60,7 +60,7 @@ class MessageController extends Controller
         }
 
         
-
+        
         broadcast(new NewChatMessageEvent($new_msg->load(['user'])));
         sleep(1);
         $response = SystemMenu::where('name',$request->message)->first();
@@ -78,6 +78,7 @@ class MessageController extends Controller
             ]);
             broadcast(new NewChatMessageEvent($response_msg->load(['user'])));
         }
+        return $new_msg->load(['user']);
     }
 
     /**
