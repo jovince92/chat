@@ -29,23 +29,23 @@ export const useChatScroll = (props:ChatScrollProps) =>{
     },[shouldLoadMore,loadMore,chatRef]);
 
     useEffect(()=>{
-        const bottomDiv = bottomRef.current;
-        const topDiv = chatRef.current;
+        // const bottomDiv = bottomRef.current;
+        // const topDiv = chatRef.current;
 
-        const shouldAutoScroll = () =>{
-            if(!hasInitialized && bottomDiv){
-                setHasInitialized(true);
-                return true;
-            }
-            if(!topDiv){
-                return false;
-            }
+        // const shouldAutoScroll = () =>{
+        //     if(!hasInitialized && bottomDiv){
+        //         setHasInitialized(true);
+        //         return true;
+        //     }
+        //     if(!topDiv){
+        //         return false;
+        //     }
 
-            const distanceFromBottom = topDiv.scrollHeight - topDiv.scrollTop - topDiv.clientHeight;
-            return distanceFromBottom <=100;
-        }
+        //     const distanceFromBottom = topDiv.scrollHeight - topDiv.scrollTop - topDiv.clientHeight;
+        //     return distanceFromBottom <=100;
+        // }
 
-        if(shouldAutoScroll()){
+        if(true){
             setTimeout(()=>bottomRef.current?.scrollIntoView({
                 behavior:'smooth'
             }),100);
@@ -59,5 +59,5 @@ export const useChatScroll = (props:ChatScrollProps) =>{
 
         // console.log(shouldAutoScroll());
 
-    },[bottomRef,chatRef,count,hasInitialized]);
+    },[bottomRef,count]);
 }
