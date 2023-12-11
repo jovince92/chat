@@ -23,6 +23,7 @@ export const useChatQuery = ({queryRoute,value,queryKey}:ChatQueryProps) =>{
         queryKey:[queryKey],
         queryFn:fetchMessages,
         getNextPageParam:(lastpage)=>lastpage?.next_page_url,
+        //refetchInterval:echoInstance?false:1000,
         refetchInterval:echoInstance?false:1000,
         structuralSharing:false
     }); 
