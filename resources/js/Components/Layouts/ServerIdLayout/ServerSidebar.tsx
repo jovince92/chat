@@ -43,12 +43,17 @@ const ServerSidebar:FC = () => {
         <div className='relative flex flex-col h-full text-primary w-full dark:bg-zinc-800 bg-[#F2F3F5] '>
             <ServerHeader role={role!} server={current_server} />
             <ScrollArea className='flex-1 px-2.5'>
-                <div className='mt-1.5'>
-                    <ServerSearch data={[{
-                        label:"Inbox",
-                        type:'CHANNEL',
-                        data: textChannels.map(channel=>({id:channel.id,name:channel.name,icon:ICONMAP[channel.type]}))
-                    },]} />
+                <div className='mt-1.5 flex items-center space-x-1'>
+                    <div className='flex-1'>
+                        <ServerSearch data={[{
+                            label:"Inbox",
+                            type:'CHANNEL',
+                            data: textChannels.map(channel=>({id:channel.id,name:channel.name,icon:ICONMAP[channel.type]}))
+                        },]} />
+                    </div>
+                    <div className='w-auto'>
+                        <ModeToggle />
+                    </div>
                 </div>
                 <Separator className='rounded-md my-1.5' />
                 {textChannels.length>0&&<ServerSection sectionType='Channel' channelType='TEXT' role={role} label="Inbox" />}
@@ -60,9 +65,7 @@ const ServerSidebar:FC = () => {
                     {members.map(member=><ServerMember member={member} key={member.id} />)}
                 </div>
             </ScrollArea>
-            <div className='w-full '>
-                <ModeToggle />
-            </div>
+            
         </div>
     )
 }
