@@ -39,6 +39,7 @@ class HandleInertiaRequests extends Middleware
             'auth' => [
                 'user' => $request->user(),
             ],
+            'app_name'=>config('app.name'),
             'replies'=>$rs->pluck('name')->toArray(),
             'servers' => Auth::check() ? $request->user()->servers : [],
             'system_message' => SystemMessage::with(['menus', 'menus.replies'])->get(),

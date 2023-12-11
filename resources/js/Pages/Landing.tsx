@@ -4,8 +4,8 @@ import { Card, CardDescription, CardHeader, CardTitle } from '@/Components/ui/ca
 import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/Components/ui/dialog';
 import { Input } from '@/Components/ui/input';
 import { Label } from '@/Components/ui/label';
-import { Channel, User } from '@/types';
-import { Head, router, useForm } from '@inertiajs/react';
+import { Channel, PageProps, User } from '@/types';
+import { Head, router, useForm, usePage } from '@inertiajs/react';
 
 import { Loader2,School,Loader,AlertCircle } from 'lucide-react';
 import { FC, FormEventHandler, ReactNode, useEffect, useState } from 'react';
@@ -16,10 +16,10 @@ interface Props{
     user:User;
 }
 
-export const APP_NAME = `${import.meta.env.VITE_APP_NAME}`
-
 const Landing:FC<Props> = ({channel,user}) => {
-
+    
+    
+    const {app_name} = usePage<PageProps>().props;
     const { data, setData, post, get, processing, errors, reset } = useForm({
         name: '',
         email: '',
@@ -39,18 +39,17 @@ const Landing:FC<Props> = ({channel,user}) => {
 
     const [openLogin,setOpenLogin] = useState<boolean>(false);
 
-    console.log([channel,user]);
 
     return (
         <>
-            <Head title='Welcome to' />
+            <Head title='Welcome to ' />
             <div className="flex flex-col h-screen">
 
             <header className="bg-white dark:bg-gray-800 text-primary py-4 text-center md:text-left shadow-md">
                 <div className="container flex items-center">
                     <h1 className="text-xl font-extrabold w-full flex items-center">
                         <School className='mr-4'/>
-                        <span>{APP_NAME}</span>
+                        <span>{app_name}</span>
                     </h1>
                     <button onClick={()=>setOpenLogin(true)}
                         className="bg-primary rounded text-secondary text-sm w-28 p-2">
@@ -106,7 +105,7 @@ const Landing:FC<Props> = ({channel,user}) => {
 export default Landing;
 
 const EntryDialog:FC<{children:ReactNode}> = ({children}) =>{
-
+    const {app_name} = usePage<PageProps>().props;
     const {data,setData,post,processing,errors} = useForm({name:"",email:""})
     const onSubmit:FormEventHandler<HTMLFormElement> = (e) =>{
         e.preventDefault();
@@ -125,7 +124,7 @@ const EntryDialog:FC<{children:ReactNode}> = ({children}) =>{
             </DialogTrigger>
             <DialogContent className="sm:max-w-md">
                 <DialogHeader>
-                    <DialogTitle>Welcome to {APP_NAME}</DialogTitle>
+                    <DialogTitle>Welcome to {app_name}</DialogTitle>
                     <DialogDescription>
                         Please Enter Your Contact Details Below:
                     </DialogDescription>

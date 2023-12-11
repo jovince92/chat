@@ -8,7 +8,7 @@ import { ThemeProvider } from './lib/ThemeProvider';
 import { Toaster } from './Components/ui/toaster';
 import QueryProvider from './Providers/QueryProvider';
 
-const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
+const appName = import.meta.env.VITE_APP_NAME || 'academicsupport.chat';
 
 createInertiaApp({
     title: (title) => `${title} - ${appName}`,

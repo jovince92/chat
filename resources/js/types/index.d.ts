@@ -85,6 +85,7 @@ export type PageProps<T extends Record<string, unknown> = Record<string, unknown
     base_url:string;
     replies:string[];
     system_message:SystemMessage[];
+    app_name:string;
 };
 
 export interface PaginatedMessage{

@@ -17,7 +17,6 @@ import ModalProvider from '@/lib/ModalProvider';
 import MessageFileModal from '../Modals/MessageFileModal';
 import { Label } from '@radix-ui/react-label';
 import ModeToggle from '../ModeToggle';
-import { APP_NAME } from '@/Pages/Landing';
 interface Props{
     isOpen?:boolean;
     channel?:Channel;
@@ -26,6 +25,7 @@ interface Props{
 }
 
 const ChatSheet:FC<Props> = ({isOpen,channel:OriginalChannel,onClose,user}) => {
+    const {app_name} = usePage<PageProps>().props;
     const [channel,setChannel] = useState(OriginalChannel);
     const [hasClickedReply,setHasClickedReply]   = useState(false);
     const {replies} = usePage<PageProps>().props;
@@ -99,8 +99,8 @@ const ChatSheet:FC<Props> = ({isOpen,channel:OriginalChannel,onClose,user}) => {
                     <SheetHeader className='h-auto'>
                         <SheetTitle>
                             <div className='flex items-center'>
-                                <p>Welcome to {APP_NAME}</p>
-                                <div className='w-12 ml-auto'>
+                                <p>Welcome to {app_name}</p>
+                                <div className='ml-auto'>
                                     <ModeToggle/>
                                 </div>
                             </div>
