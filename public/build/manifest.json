@@ -1,6 +1,6 @@
 {
-  "_ServerIdLayout-3870af03.js": {
-    "file": "assets/ServerIdLayout-3870af03.js",
+  "_ServerIdLayout-bacb0d53.js": {
+    "file": "assets/ServerIdLayout-bacb0d53.js",
     "imports": [
       "_utils-64caab42.js",
       "_react-drag-drop-files.esm-b088b8bd.js",
@@ -10,7 +10,7 @@
       "resources/js/app.tsx",
       "_upload-cloud-365b74f1.js",
       "_alert-circle-1273824c.js",
-      "_useChatScroll-618efddd.js",
+      "_useChatScroll-56ab7de6.js",
       "_loader-f5ec6bed.js"
     ]
   },
@@ -77,8 +77,8 @@
       "_utils-64caab42.js"
     ]
   },
-  "_useChatScroll-618efddd.js": {
-    "file": "assets/useChatScroll-618efddd.js",
+  "_useChatScroll-56ab7de6.js": {
+    "file": "assets/useChatScroll-56ab7de6.js",
     "imports": [
       "_utils-64caab42.js",
       "_react-drag-drop-files.esm-b088b8bd.js",
@@ -119,11 +119,11 @@
     "src": "resources/js/Pages/Auth/Register.tsx"
   },
   "resources/js/Pages/Conversation.tsx": {
-    "file": "assets/Conversation-6f7f14fa.js",
+    "file": "assets/Conversation-f8ee340a.js",
     "imports": [
       "_utils-64caab42.js",
-      "_ServerIdLayout-3870af03.js",
-      "_useChatScroll-618efddd.js",
+      "_ServerIdLayout-bacb0d53.js",
+      "_useChatScroll-56ab7de6.js",
       "_index-f2a81c0a.js",
       "_module-c8edc7dc.js",
       "resources/js/app.tsx",
@@ -138,11 +138,11 @@
     "src": "resources/js/Pages/Conversation.tsx"
   },
   "resources/js/Pages/Home.tsx": {
-    "file": "assets/Home-6db8f57d.js",
+    "file": "assets/Home-4e5f708a.js",
     "imports": [
       "_utils-64caab42.js",
-      "_ServerIdLayout-3870af03.js",
-      "_useChatScroll-618efddd.js",
+      "_ServerIdLayout-bacb0d53.js",
+      "_useChatScroll-56ab7de6.js",
       "resources/js/app.tsx",
       "_module-c8edc7dc.js",
       "_react-drag-drop-files.esm-b088b8bd.js",
@@ -157,11 +157,11 @@
     "src": "resources/js/Pages/Home.tsx"
   },
   "resources/js/Pages/Landing.tsx": {
-    "file": "assets/Landing-b95e8370.js",
+    "file": "assets/Landing-aeb71a5a.js",
     "imports": [
       "_utils-64caab42.js",
       "_module-c8edc7dc.js",
-      "_useChatScroll-618efddd.js",
+      "_useChatScroll-56ab7de6.js",
       "_alert-7fe151e9.js",
       "resources/js/app.tsx",
       "_alert-dialog-fd3e1fb6.js",
@@ -202,7 +202,7 @@
       "resources/js/Pages/Landing.tsx",
       "resources/js/Pages/SetUp.tsx"
     ],
-    "file": "assets/app-a0440d80.js",
+    "file": "assets/app-18f9b4a5.js",
     "imports": [
       "_utils-64caab42.js"
     ],
