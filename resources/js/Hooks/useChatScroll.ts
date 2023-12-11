@@ -47,7 +47,8 @@ export const useChatScroll = (props:ChatScrollProps) =>{
 
         
         setTimeout(()=>bottomRef.current?.scrollIntoView({
-            behavior:'smooth'
+            behavior:'smooth',
+            block: 'center'
         }),100);
         
 
