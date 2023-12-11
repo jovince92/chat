@@ -22,7 +22,7 @@ const ChatMessages:FC<ChatMessagesProps> = ({getMsgsRoute,type}) => {
     const chatRef = useRef<HTMLDivElement>(null);
     const bottomRef = useRef<HTMLDivElement>(null);
 
-    const {data,fetchNextPage,hasNextPage,isFetchingNextPage,status} = useChatQuery({queryRoute:getMsgsRoute,queryKey:`channel_${current_channel.id.toString()}`,value:"0"});
+    const { data,fetchNextPage,hasNextPage,isFetchingNextPage,status} = useChatQuery({queryRoute:getMsgsRoute,queryKey:`channel_${current_channel.id.toString()}`,value:"0"});
     const  loadPreviousMsgs= () =>{
         if(!data?.pages){
             return null;
@@ -31,14 +31,22 @@ const ChatMessages:FC<ChatMessagesProps> = ({getMsgsRoute,type}) => {
         fetchNextPage();
     }
 
-    useChatScroll({
-        chatRef,bottomRef,loadMore:loadPreviousMsgs,shouldLoadMore:!isFetchingNextPage && !!hasNextPage,count:data?.pages?.[0]?.data.length ??0
-    });
+    // useChatScroll({
+    //     chatRef,bottomRef,loadMore:loadPreviousMsgs,shouldLoadMore:!isFetchingNextPage && !!hasNextPage,count:data?.pages?.[0]?.data.length ??0
+    // });
 
     const paginatedMessages=data?.pages;
 
 
-
+    
+    
+    useEffect(() => {
+        console.log(bottomRef);
+        setTimeout(()=>bottomRef.current?.scrollIntoView({
+            behavior:'smooth',
+            block: 'center'
+        }),100);
+    }, [bottomRef,data?.pages?.[0]?.data]);
 
     if(status==='loading'){
         return(
@@ -57,6 +65,9 @@ const ChatMessages:FC<ChatMessagesProps> = ({getMsgsRoute,type}) => {
             </div>
         );
     }
+
+
+    
 
     return (
         <div ref={chatRef} className='flex-1 flex flex-col py-3.5 overflow-y-auto'>

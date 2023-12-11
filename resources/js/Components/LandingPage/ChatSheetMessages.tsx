@@ -3,7 +3,7 @@ import { useChatScroll } from '@/Hooks/useChatScroll';
 import { Channel, PageProps } from '@/types';
 import { usePage } from '@inertiajs/react';
 import { Loader2, ServerCrashIcon } from 'lucide-react';
-import React, { FC, Fragment, useRef, useState } from 'react'
+import React, { FC, Fragment, useEffect, useRef, useState } from 'react'
 import ChatWelcome from '../Chat/ChatWelcome';
 import ChatItem from '../Chat/ChatItem';
 import ChatSheetItem from './ChatSheetItem';
@@ -33,9 +33,18 @@ const ChatSheetMessages:FC<Props> = ({channel,getMsgsRoute,onReply,hasClickedRep
         if(!!onReply) onReply(reply);
     }
 
-    useChatScroll({
-        chatRef,bottomRef,loadMore:loadPreviousMsgs,shouldLoadMore:!isFetchingNextPage && !!hasNextPage,count:data?.pages?.[0]?.data.length ??0
-    });
+    // useChatScroll({
+    //     chatRef,bottomRef,loadMore:loadPreviousMsgs,shouldLoadMore:!isFetchingNextPage && !!hasNextPage,count:data?.pages?.[0]?.data.length ??0
+    // });
+
+
+    useEffect(() => {
+        console.log(bottomRef);
+        setTimeout(()=>bottomRef.current?.scrollIntoView({
+            behavior:'smooth',
+            block: 'center'
+        }),100);
+    }, [bottomRef,data?.pages?.[0]?.data]);
 
     const paginatedMessages=data?.pages;
 
