@@ -19,7 +19,7 @@ interface ChatInputProps{
 const ChatInput:FC<ChatInputProps> = ({apiRoute,name,type,getMsgsRoute}) => {
     const {current_channel} = usePage<PageProps>().props;
     const [sending,setSending]=useState(false);
-    const {fetchNextPage} = useChatQuery({queryRoute:getMsgsRoute,queryKey:`channel_${current_channel?.id.toString()}`,value:"0"});
+    //const {fetchNextPage} = useChatQuery({queryRoute:getMsgsRoute,queryKey:`channel_${current_channel?.id.toString()}`,value:"0"});
     const [message,setMsg]=useState("");
     const {onOpen} = useModal();
     const onSubmit:FormEventHandler<HTMLFormElement> = (e) =>{
@@ -34,7 +34,7 @@ const ChatInput:FC<ChatInputProps> = ({apiRoute,name,type,getMsgsRoute}) => {
         })
         .then(()=>{
             setMsg("");
-            if(!!current_channel) fetchNextPage();
+            //if(!!current_channel) fetchNextPage();
         })
         .catch(()=>toast({title:'Internal Error',description:`Can't send message. Please try again!`}))
         .finally(()=>setSending(false));
