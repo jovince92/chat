@@ -83,3 +83,15 @@
 div{
   @apply focus:!ring-0 focus:ring-offset-0 focus:!outline-offset-0 focus:!outline-0
 }
+
+.EmojiPickerReact{
+  @apply !z-[5000]
+}
+
+.EmojiPickerReact.epr-dark-theme{
+  @apply !z-[5000]
+}
+
+em-emoji-picker{
+  @apply !z-[5000]
+}
