@@ -38,10 +38,10 @@ const ChatMessages:FC<ChatMessagesProps> = ({getMsgsRoute,type}) => {
     const paginatedMessages=data?.pages;
 
 
-    
-    
+
+
     useEffect(() => {
-        console.log(bottomRef);
+        // console.log(bottomRef);
         setTimeout(()=>bottomRef.current?.scrollIntoView({
             behavior:'smooth',
             block: 'center'
@@ -67,7 +67,7 @@ const ChatMessages:FC<ChatMessagesProps> = ({getMsgsRoute,type}) => {
     }
 
 
-    
+
 
     return (
         <div ref={chatRef} className='flex-1 flex flex-col py-3.5 overflow-y-auto'>

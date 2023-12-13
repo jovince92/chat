@@ -89,6 +89,7 @@ Route::prefix('backend')->middleware(['auth'])->group(function () {
     Route::prefix('member')->name('member.')->group(function () {
         Route::post('/role_change', [MemberController::class, 'role_change'])->name('role_change');
         Route::post('/kick', [MemberController::class, 'kick'])->name('kick');
+        Route::post('/register', [MemberController::class, 'register'])->name('register');
     });
 });
 

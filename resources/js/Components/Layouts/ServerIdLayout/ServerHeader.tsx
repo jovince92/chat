@@ -53,7 +53,7 @@ const ServerHeader:FC<ServerHeaderProps> = ({role,server}) => {
                     // isAdmin&&<DropdownMenuItem onClick={()=>onOpen('DeleteServer',{server})} className='text-destructive px-2.5 py-1.5 text-sm cursor-pointer'>Delete Server<Trash className='h-4 w-4 ml-auto' /> </DropdownMenuItem>
                 }
                 {
-                    !isAdmin&&<DropdownMenuItem onClick={()=>onOpen('LeaveServer',{server})} className='text-destructive px-2.5 py-1.5 text-sm cursor-pointer'>Leave Server<LogOut className='h-4 w-4 ml-auto' /> </DropdownMenuItem>
+                    // !isAdmin&&<DropdownMenuItem onClick={()=>onOpen('LeaveServer',{server})} className='text-destructive px-2.5 py-1.5 text-sm cursor-pointer'>Leave Server<LogOut className='h-4 w-4 ml-auto' /> </DropdownMenuItem>
                 }
                 {
                     <DropdownMenuItem onClick={()=>router.post(route('logout'))} className='text-destructive px-2.5 py-1.5 text-sm cursor-pointer'>Logout<LogOut className='h-4 w-4 ml-auto' /></DropdownMenuItem>

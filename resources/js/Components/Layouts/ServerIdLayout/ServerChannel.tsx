@@ -41,8 +41,8 @@ const ServerChannel:FC<ServerChannelProps> = ({channel,role}) => {
             <p className={cn('flex flex-col space-y-1 text-sm text-left text-neutral-800 group-hover:text-neutral-950 dark:text-neutral-100 dark:group-hover:text-neutral-300 transition',
                     current_channel?.id===channel.id&&"text-primary dark:text-neutral-200 dark:group-hover:text-white"
                 )}>
-                <span className='text-sm'>{channel.user.name}</span>
-                <span className='text-xs'>{channel.user.email}</span>
+                <span className='w-32 truncate text-sm'>{channel.user.name}</span>
+                <span className='w-32 truncate text-xs'>{channel.user.email}</span>
                 { channel.rating>0 && <Rating initialValue={channel.rating} SVGclassName='inline-block' readonly size={17} />}
             </p>
             {

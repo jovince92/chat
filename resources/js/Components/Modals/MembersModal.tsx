@@ -31,6 +31,7 @@ const MembersModal:FC = () => {
 
 
     const OPEN = useMemo(()=>isOpen&&type==='Members',[isOpen,type]);
+    const [openRegister,setOpenRegister] = useState(false);
 
     if(!OPEN) return   null;
 
@@ -53,6 +54,10 @@ const MembersModal:FC = () => {
                     }
                 </ScrollArea>
 
+                <div className='w-full text-center mb-2'>
+                    <Button onClick={()=>setOpenRegister(true)} className='mx-auto'>Add New User</Button>
+                </div>
+                <RegisterDialog openRegister={openRegister} onClose={()=>setOpenRegister(false)}/>
 
                 </DialogContent>
         </Dialog>
@@ -69,7 +74,6 @@ interface MemberModalItemProps{
 const MemberModalItem:FC<MemberModalItemProps> = ({user,current_server}) =>{
 
     const [processing,setProcessing] = useState(false);
-    const [openRegister,setOpenRegister] = useState(false);
 
     const onRoleChange=(role:MemberRole) =>{
         setProcessing(true);
@@ -113,7 +117,7 @@ const MemberModalItem:FC<MemberModalItemProps> = ({user,current_server}) =>{
 
     return(
         <>
-            <div  className='flex items-center gap-x-1.5 mb-10'>
+            <div  className='flex items-center gap-x-1.5 mb-4'>
                 <UserAvatar user={user} />
                 <div className='flex flex-col gap-y-1'>
                     <p className='text-xs font-semibold flex items-center gap-x-1'>
@@ -139,13 +143,13 @@ const MemberModalItem:FC<MemberModalItemProps> = ({user,current_server}) =>{
                                         </DropdownMenuSubTrigger>
                                         <DropdownMenuPortal>
                                             <DropdownMenuSubContent>
-                                                <DropdownMenuItem onClick={()=>onRoleChange('GUEST')}>
+                                                {/* <DropdownMenuItem onClick={()=>onRoleChange('GUEST')}>
                                                     <Shield className='h-4 w-4 mr-1.5' />
                                                     GUEST
                                                     {
                                                         user.pivot.member_role==='GUEST'&&<Check className='h-4 w-4 ml-auto' />
                                                     }
-                                                </DropdownMenuItem>
+                                                </DropdownMenuItem> */}
                                                 <DropdownMenuItem onClick={()=>onRoleChange('MODERATOR')}>
                                                     <ShieldCheck className='h-4 w-4 mr-1.5' />
                                                     MODERATOR
@@ -171,18 +175,17 @@ const MemberModalItem:FC<MemberModalItemProps> = ({user,current_server}) =>{
                     processing && <Loader2 className='animate-spin text-secondary-foreground ml-auto w-4 h-4' />
                 }
             </div>
-
-            <div className='w-full text-center mb-2'>
-                <Button onClick={()=>setOpenRegister(true)} className='mx-auto'>Add New User</Button>
-            </div>
-
-            <RegisterDialog openRegister={openRegister} onClose={()=>setOpenRegister(false)}/>
         </>
     )
 }
 
 
 const RegisterDialog:FC<{openRegister:boolean|undefined, onClose:()=>void}> = ({openRegister,onClose}) => {
+
+    const [openState,setOpenState] = useState<boolean|undefined>(false);
+
+    const OPEN = useMemo(()=>setOpenState(openRegister),[openRegister]);
+
 
     const { data, setData, post, processing, errors, reset } = useForm({
         name: '',
@@ -199,14 +202,20 @@ const RegisterDialog:FC<{openRegister:boolean|undefined, onClose:()=>void}> = ({
 
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
-
-        post(route('register'),{
-            onSuccess:()=>router.get(route('home'))
+        post(route('member.register'),{
+            preserveState:true,
+            onFinish:()=>{
+                setOpenState(false);
+                toast({
+                    'title':'Success',
+                    'description':`${data.name} account has been created`
+                })
+            }
         });
     };
 
     return (
-        <Dialog open={openRegister} onOpenChange={onClose}>
+        <Dialog open={openState} onOpenChange={onClose}>
             <DialogContent className="sm:max-w-[425px]">
                 <DialogHeader>
                 </DialogHeader>
