@@ -1,16 +1,16 @@
 {
-  "_ServerIdLayout-3cb5dd6f.js": {
-    "file": "assets/ServerIdLayout-3cb5dd6f.js",
+  "_ServerIdLayout-e5472f1a.js": {
+    "file": "assets/ServerIdLayout-e5472f1a.js",
     "imports": [
       "_utils-64caab42.js",
       "_react-drag-drop-files.esm-b088b8bd.js",
-      "_index-f2a81c0a.js",
+      "_index-83b9d848.js",
       "_alert-7fe151e9.js",
-      "_module-c8edc7dc.js",
+      "_module-f0250b1b.js",
       "resources/js/app.tsx",
       "_upload-cloud-365b74f1.js",
       "_alert-circle-1273824c.js",
-      "_index-487fe938.js",
+      "_index-1578c3d1.js",
       "_loader-f5ec6bed.js"
     ]
   },
@@ -40,26 +40,26 @@
       "_utils-64caab42.js"
     ]
   },
-  "_index-487fe938.js": {
-    "file": "assets/index-487fe938.js",
+  "_index-1578c3d1.js": {
+    "file": "assets/index-1578c3d1.js",
     "imports": [
       "_utils-64caab42.js",
       "_react-drag-drop-files.esm-b088b8bd.js",
       "_alert-7fe151e9.js",
-      "_module-c8edc7dc.js",
+      "_module-f0250b1b.js",
       "resources/js/app.tsx",
       "_upload-cloud-365b74f1.js",
       "_chevron-down-6a0284dd.js"
     ]
   },
-  "_index-f2a81c0a.js": {
+  "_index-83b9d848.js": {
     "css": [
       "assets/index-857d30d8.css"
     ],
-    "file": "assets/index-f2a81c0a.js",
+    "file": "assets/index-83b9d848.js",
     "imports": [
       "_utils-64caab42.js",
-      "_module-c8edc7dc.js",
+      "_module-f0250b1b.js",
       "_react-drag-drop-files.esm-b088b8bd.js",
       "_chevron-down-6a0284dd.js"
     ]
@@ -70,8 +70,8 @@
       "_utils-64caab42.js"
     ]
   },
-  "_module-c8edc7dc.js": {
-    "file": "assets/module-c8edc7dc.js",
+  "_module-f0250b1b.js": {
+    "file": "assets/module-f0250b1b.js",
     "imports": [
       "_utils-64caab42.js",
       "_react-drag-drop-files.esm-b088b8bd.js"
@@ -119,13 +119,13 @@
     "src": "resources/js/Pages/Auth/Register.tsx"
   },
   "resources/js/Pages/Conversation.tsx": {
-    "file": "assets/Conversation-f1ab5f52.js",
+    "file": "assets/Conversation-7f45f106.js",
     "imports": [
       "_utils-64caab42.js",
-      "_ServerIdLayout-3cb5dd6f.js",
-      "_index-487fe938.js",
-      "_index-f2a81c0a.js",
-      "_module-c8edc7dc.js",
+      "_ServerIdLayout-e5472f1a.js",
+      "_index-1578c3d1.js",
+      "_index-83b9d848.js",
+      "_module-f0250b1b.js",
       "resources/js/app.tsx",
       "_react-drag-drop-files.esm-b088b8bd.js",
       "_alert-7fe151e9.js",
@@ -138,15 +138,15 @@
     "src": "resources/js/Pages/Conversation.tsx"
   },
   "resources/js/Pages/Home.tsx": {
-    "file": "assets/Home-a2bfc684.js",
+    "file": "assets/Home-dc3e511b.js",
     "imports": [
       "_utils-64caab42.js",
-      "_ServerIdLayout-3cb5dd6f.js",
-      "_index-487fe938.js",
+      "_ServerIdLayout-e5472f1a.js",
+      "_index-1578c3d1.js",
       "resources/js/app.tsx",
-      "_module-c8edc7dc.js",
+      "_module-f0250b1b.js",
       "_react-drag-drop-files.esm-b088b8bd.js",
-      "_index-f2a81c0a.js",
+      "_index-83b9d848.js",
       "_chevron-down-6a0284dd.js",
       "_alert-7fe151e9.js",
       "_upload-cloud-365b74f1.js",
@@ -157,11 +157,11 @@
     "src": "resources/js/Pages/Home.tsx"
   },
   "resources/js/Pages/Landing.tsx": {
-    "file": "assets/Landing-bed6e337.js",
+    "file": "assets/Landing-5320423e.js",
     "imports": [
       "_utils-64caab42.js",
-      "_module-c8edc7dc.js",
-      "_index-487fe938.js",
+      "_module-f0250b1b.js",
+      "_index-1578c3d1.js",
       "_alert-7fe151e9.js",
       "resources/js/app.tsx",
       "_alert-dialog-fd3e1fb6.js",
@@ -187,12 +187,12 @@
     "src": "resources/js/Pages/SetUp.tsx"
   },
   "resources/js/app.css": {
-    "file": "assets/app-4edbb49b.css",
+    "file": "assets/app-2ac89083.css",
     "src": "resources/js/app.css"
   },
   "resources/js/app.tsx": {
     "css": [
-      "assets/app-4edbb49b.css"
+      "assets/app-2ac89083.css"
     ],
     "dynamicImports": [
       "resources/js/Pages/Auth/Login.tsx",
@@ -202,7 +202,7 @@
       "resources/js/Pages/Landing.tsx",
       "resources/js/Pages/SetUp.tsx"
     ],
-    "file": "assets/app-37a98c0e.js",
+    "file": "assets/app-2329f5cc.js",
     "imports": [
       "_utils-64caab42.js"
     ],
