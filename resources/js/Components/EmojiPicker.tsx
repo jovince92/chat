@@ -24,7 +24,7 @@ const EmojiPicker:FC<EmojiPickerProps> = ({onChange}) => {
             <PopoverTrigger>
                 <Smile className='text-neutral-500 hover:text-neutral-600 dark:text-neutral-400 dark:hover:text-neutral-300 transition z-[5000]' />
             </PopoverTrigger>
-            <PopoverContent side='right' sideOffset={40} className='bg-transparent border-none shadow-none drop-shadow-none mb-16'>
+            <PopoverContent side='left' sideOffset={30} className='bg-transparent border-none shadow-none drop-shadow-none mb-16'>
                 <PopoverClose ref={modalClose} className='hidden' />
                 <Picker data={EmojiData} onEmojiSelect={(emoji:any)=>onEmojiSelect(emoji.native)} theme={theme} />
             </PopoverContent>

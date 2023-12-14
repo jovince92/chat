@@ -93,8 +93,58 @@ const ChatSheet:FC<Props> = ({isOpen,channel:OriginalChannel,onClose,user}) => {
     if(!channel || !user) return null;
     return (
         <>
+            <AlertDialog open={isOpen}>
+                <AlertDialogContent className='w-full md:min-w-[45rem] h-full flex flex-col overflow-y-hidden space-y-2'>
+                    <AlertDialogHeader className='h-auto'>
+                        <AlertDialogTitle>
+                            <div className='flex items-center'>
+                                <p>Welcome to {app_name}</p>
+                                <div className='ml-auto'>
+                                    <ModeToggle/>
+                                </div>
+                            </div>
+                        </AlertDialogTitle>
+                        <AlertDialogDescription>You Are Now Connected to Chat Support. Please be patient while we assign an agent</AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <hr />
+                    <div className='flex-1 flex flex-col overflow-y-hidden'>
+                        <div className='flex-1 mb-2 overflow-auto'>
+                            <ChatSheetMessages hasClickedReply={hasClickedReply} onReply={onReply} getMsgsRoute={getMsgsRoute} channel={channel} />
+                        </div>
+                    </div>
+                    <div className='h-auto'>
+                        {
+                            channel.is_closed!==1?<ChatInput getMsgsRoute={getMsgsRoute} apiRoute={apiRoute} type='Channel' name='Chat Support' />:(
+                                <>
+                                    <Separator />
+                                    <p className='font-semibold text-lg tracking-tight'>
+                                        This Case Has Been Closed. You Can Not Reply To This Thread Anymore
+                                    </p>
+                                    {
+                                        (channel.rating<0||!channel?.rating)&&(
+                                            <>
+                                                <p className='font-semibold text-lg tracking-tight'>
+                                                    Would You Like To Give a Feedback?
+                                                </p>
 
-            <Sheet open={isOpen}>
+                                                <Button onClick={()=>setShowFeedbackModal(true)}>Give Feedback</Button>
+                                            </>
+                                        )
+                                    }
+                                    {
+                                        channel.rating>-1&&(
+                                            <p className='font-semibold text-lg tracking-tight'>Thank You For Your Feedback</p>
+                                        )
+                                    }
+
+                                </>
+                            )
+
+                        }
+                    </div>
+                </AlertDialogContent>
+            </AlertDialog>
+            {/* <Sheet  open={isOpen}>
                 <SheetContent className='w-full sm:w-[420px] h-full flex flex-col overflow-y-hidden space-y-2'>
                     <SheetHeader className='h-auto'>
                         <SheetTitle>
@@ -146,7 +196,7 @@ const ChatSheet:FC<Props> = ({isOpen,channel:OriginalChannel,onClose,user}) => {
                         }
                     </div>
                 </SheetContent>
-            </Sheet>
+            </Sheet> */}
             <FeedbackModal onFeedback={(rating)=>{setChannel(val=>({...val!,rating}))}} channel_id={channel.id} isOpen={showFeedbackModal} onClose={()=>setShowFeedbackModal(false)} />
 
             <MessageFileModal />
