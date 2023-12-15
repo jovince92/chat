@@ -9,10 +9,17 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ServerController;
 use App\Http\Controllers\SupportController;
 use App\Http\Controllers\SystemMessageController;
+use App\Mail\PasswordResetEmail;
 use App\Models\Member;
+use App\Models\User;
+use Faker\Factory;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Validation\ValidationException;
 
 /*
 |--------------------------------------------------------------------------
@@ -117,6 +124,32 @@ Route::middleware(['auth'])->prefix('support')->name('support.')->group(function
 
 Route::get('/phpinfo', function () {
     phpinfo();
+});
+
+
+Route::middleware('guest')->group(function () {
+    Route::get('reset-password', function(){
+        return Inertia::render('ForgotPassword');
+    })->name('reset_password');
+
+    Route::post('send_email', function(Request $request){
+        $faker = Factory::create();
+        $user = User::find(1);
+
+        if(!$user) throw ValidationException::withMessages(['email' => 'Something Went Wrong']);
+
+        $temp_password = $faker->bothify('??#?#??#?');
+
+        $user->update([
+            'password'=>bcrypt($temp_password)
+        ]);
+
+        Mail::to($request->email)
+            ->send(new PasswordResetEmail($temp_password)
+        );
+    })->name('send_email');
+
+    
 });
 
 require __DIR__ . '/auth.php';

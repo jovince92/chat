@@ -252,6 +252,9 @@ const LoginDialog:FC<{openLogin:boolean|undefined, onClose:()=>void}> = ({openLo
                                     )}
                                     Sign In
                                 </Button>
+                                <Button onClick={()=>router.get(route('reset_password'))} type='button' className='text-muted-foreground text-sm font-light' variant='ghost' size='sm'>
+                                    Forgot Password? Click here...
+                                </Button>
                             </div>
                         </form>
                         <div className="relative">
