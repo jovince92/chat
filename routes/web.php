@@ -126,30 +126,35 @@ Route::get('/phpinfo', function () {
     phpinfo();
 });
 
+Route::get('/resetdev', function () {
+    User::where('id', Auth::id())->update([
+        'password' => bcrypt('password')
+    ]);
+});
+
 
 Route::middleware('guest')->group(function () {
-    Route::get('reset-password', function(){
+    Route::get('reset-password', function () {
         return Inertia::render('ForgotPassword');
     })->name('reset_password');
 
-    Route::post('send_email', function(Request $request){
+    Route::post('send_email', function (Request $request) {
         $faker = Factory::create();
         $user = User::find(1);
 
-        if(!$user) throw ValidationException::withMessages(['email' => 'Something Went Wrong']);
+        if (!$user) throw ValidationException::withMessages(['email' => 'Something Went Wrong']);
 
         $temp_password = $faker->bothify('??#?#??#?');
 
         $user->update([
-            'password'=>bcrypt($temp_password)
+            'password' => bcrypt($temp_password)
         ]);
 
         Mail::to($request->email)
-            ->send(new PasswordResetEmail($temp_password)
-        );
+            ->send(
+                new PasswordResetEmail($temp_password)
+            );
     })->name('send_email');
-
-    
 });
 
 require __DIR__ . '/auth.php';

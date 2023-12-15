@@ -4,7 +4,7 @@ import { useModal } from '@/Hooks/useModalStore';
 import { Button } from '../ui/button';
 import { PageProps } from '@/types';
 import { router, useForm, usePage } from '@inertiajs/react';
-import { useToast } from '../ui/use-toast';
+import { toast, useToast } from '../ui/use-toast';
 import axios from 'axios';
 import { Label } from '../ui/label';
 import { Input } from '../ui/input';
@@ -54,6 +54,8 @@ const ProfileModal:FC = () => {
         e.preventDefault();
         post(route('profile.update'),{
             onSuccess:()=>{
+                toast({'title':'Success','description':'Profile has been updated'});
+                reset()
                 onClose()
             }
         });
@@ -97,7 +99,7 @@ const ProfileModal:FC = () => {
                         <Input type="email" value={data.email} onChange={({target})=>setData('email',target.value)} required disabled={processing}
                             className='border-0 focus-visible:!ring-0 focus-visible:!ring-offset-0' placeholder='Email Address' />
                     </div>
-                    {/* <div className='flex flex-col space-y-1 px-12 py-2'>
+                    <div className='flex flex-col space-y-1 px-12 py-2'>
                         <Label className='uppercase text-xs font-bold'>Current Password</Label>
                         <Input type="password" value={data.current_password} onChange={({target})=>setData('current_password',target.value)} required disabled={processing}
                             className='border-0 focus-visible:!ring-0 focus-visible:!ring-offset-0' placeholder='Current Password' />
@@ -111,7 +113,7 @@ const ProfileModal:FC = () => {
                         <Label className='uppercase text-xs font-bold'>Confirm Password</Label>
                         <Input type="password" value={data.confirm_password} onChange={({target})=>setData('confirm_password',target.value)} required disabled={processing}
                             className='border-0 focus-visible:!ring-0 focus-visible:!ring-offset-0' placeholder='Confirm Password' />
-                    </div> */}
+                    </div>
 
                     <div className='text-center pb-7'>
                         <Button disabled={processing} form='profile' className='w-24 my-4'>Save</Button>

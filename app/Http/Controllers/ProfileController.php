@@ -8,6 +8,7 @@ use Inertia\Response;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Redirect;
 use App\Http\Requests\ProfileUpdateRequest;
@@ -67,6 +68,21 @@ class ProfileController extends Controller
         $user->update([
             'email' => $request->email
         ]);
+
+        if ($request->new_password) {
+            if ($request->new_password != $request->confirm_password) {
+                return "New password and confirm password is not match.";
+            }
+
+            $hasher = app('hash');
+            if ($hasher->check($request->current_password, $user->password)) {
+                $user->update([
+                    'password' => bcrypt($request->new_password),
+                ]);
+            } else {
+                return "Invalid current password entered.";
+            }
+        }
     }
 
     /**
