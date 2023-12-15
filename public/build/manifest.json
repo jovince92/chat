@@ -1,210 +1,246 @@
 {
-  "_ServerIdLayout-7593fd54.js": {
-    "file": "assets/ServerIdLayout-7593fd54.js",
+  "_ServerIdLayout-c07dd259.js": {
+    "file": "assets/ServerIdLayout-c07dd259.js",
     "imports": [
-      "_utils-64caab42.js",
-      "_react-drag-drop-files.esm-b088b8bd.js",
-      "_index-3c7254c7.js",
-      "_alert-7fe151e9.js",
-      "_module-cdae6d27.js",
+      "_utils-eb5efc80.js",
+      "_react-drag-drop-files.esm-41bf0066.js",
+      "_index-ae8a64b4.js",
+      "_button-3cb7bb48.js",
+      "_module-63751d3c.js",
       "resources/js/app.tsx",
-      "_upload-cloud-365b74f1.js",
-      "_alert-circle-1273824c.js",
-      "_index-36b4c578.js",
-      "_loader-f5ec6bed.js"
+      "_alert-0236938e.js",
+      "_upload-cloud-5d69c1a3.js",
+      "_alert-circle-b44fd1a9.js",
+      "_index-2fc7bd59.js",
+      "_loader-2-0ed0f1f3.js",
+      "_loader-ffea248d.js"
     ]
   },
-  "_alert-7fe151e9.js": {
-    "file": "assets/alert-7fe151e9.js",
+  "_alert-0236938e.js": {
+    "file": "assets/alert-0236938e.js",
     "imports": [
-      "_utils-64caab42.js"
+      "_utils-eb5efc80.js"
     ]
   },
-  "_alert-circle-1273824c.js": {
-    "file": "assets/alert-circle-1273824c.js",
+  "_alert-circle-b44fd1a9.js": {
+    "file": "assets/alert-circle-b44fd1a9.js",
     "imports": [
-      "_utils-64caab42.js"
+      "_utils-eb5efc80.js"
     ]
   },
-  "_alert-dialog-fd3e1fb6.js": {
-    "file": "assets/alert-dialog-fd3e1fb6.js",
+  "_alert-dialog-cbd6b095.js": {
+    "file": "assets/alert-dialog-cbd6b095.js",
     "imports": [
-      "_utils-64caab42.js",
-      "_react-drag-drop-files.esm-b088b8bd.js",
-      "_alert-7fe151e9.js"
+      "_utils-eb5efc80.js",
+      "_react-drag-drop-files.esm-41bf0066.js",
+      "_button-3cb7bb48.js"
     ]
   },
-  "_chevron-down-6a0284dd.js": {
-    "file": "assets/chevron-down-6a0284dd.js",
+  "_button-3cb7bb48.js": {
+    "file": "assets/button-3cb7bb48.js",
     "imports": [
-      "_utils-64caab42.js"
+      "_utils-eb5efc80.js"
     ]
   },
-  "_index-36b4c578.js": {
-    "file": "assets/index-36b4c578.js",
+  "_chevron-down-2d7ba327.js": {
+    "file": "assets/chevron-down-2d7ba327.js",
     "imports": [
-      "_utils-64caab42.js",
-      "_react-drag-drop-files.esm-b088b8bd.js",
-      "_alert-7fe151e9.js",
-      "_module-cdae6d27.js",
+      "_utils-eb5efc80.js"
+    ]
+  },
+  "_index-2fc7bd59.js": {
+    "file": "assets/index-2fc7bd59.js",
+    "imports": [
+      "_utils-eb5efc80.js",
+      "_react-drag-drop-files.esm-41bf0066.js",
+      "_button-3cb7bb48.js",
+      "_alert-0236938e.js",
+      "_module-63751d3c.js",
       "resources/js/app.tsx",
-      "_upload-cloud-365b74f1.js",
-      "_chevron-down-6a0284dd.js"
+      "_upload-cloud-5d69c1a3.js",
+      "_chevron-down-2d7ba327.js"
     ]
   },
-  "_index-3c7254c7.js": {
+  "_index-ae8a64b4.js": {
     "css": [
       "assets/index-857d30d8.css"
     ],
-    "file": "assets/index-3c7254c7.js",
+    "file": "assets/index-ae8a64b4.js",
     "imports": [
-      "_utils-64caab42.js",
-      "_module-cdae6d27.js",
-      "_react-drag-drop-files.esm-b088b8bd.js",
-      "_chevron-down-6a0284dd.js"
+      "_utils-eb5efc80.js",
+      "_module-63751d3c.js",
+      "_react-drag-drop-files.esm-41bf0066.js",
+      "_chevron-down-2d7ba327.js"
     ]
   },
-  "_loader-f5ec6bed.js": {
-    "file": "assets/loader-f5ec6bed.js",
+  "_loader-2-0ed0f1f3.js": {
+    "file": "assets/loader-2-0ed0f1f3.js",
     "imports": [
-      "_utils-64caab42.js"
+      "_utils-eb5efc80.js"
     ]
   },
-  "_module-cdae6d27.js": {
-    "file": "assets/module-cdae6d27.js",
+  "_loader-ffea248d.js": {
+    "file": "assets/loader-ffea248d.js",
     "imports": [
-      "_utils-64caab42.js",
-      "_react-drag-drop-files.esm-b088b8bd.js"
+      "_utils-eb5efc80.js"
     ]
   },
-  "_react-drag-drop-files.esm-b088b8bd.js": {
-    "file": "assets/react-drag-drop-files.esm-b088b8bd.js",
+  "_module-63751d3c.js": {
+    "file": "assets/module-63751d3c.js",
     "imports": [
-      "_utils-64caab42.js"
+      "_utils-eb5efc80.js",
+      "_react-drag-drop-files.esm-41bf0066.js"
     ]
   },
-  "_upload-cloud-365b74f1.js": {
-    "file": "assets/upload-cloud-365b74f1.js",
+  "_react-drag-drop-files.esm-41bf0066.js": {
+    "file": "assets/react-drag-drop-files.esm-41bf0066.js",
     "imports": [
-      "_utils-64caab42.js"
+      "_utils-eb5efc80.js"
     ]
   },
-  "_utils-64caab42.js": {
-    "file": "assets/utils-64caab42.js"
+  "_upload-cloud-5d69c1a3.js": {
+    "file": "assets/upload-cloud-5d69c1a3.js",
+    "imports": [
+      "_utils-eb5efc80.js"
+    ]
+  },
+  "_utils-eb5efc80.js": {
+    "file": "assets/utils-eb5efc80.js"
   },
   "index.css": {
     "file": "assets/index-857d30d8.css",
     "src": "index.css"
   },
   "resources/js/Pages/Auth/Login.tsx": {
-    "file": "assets/Login-a794cbba.js",
+    "file": "assets/Login-93c9d454.js",
     "imports": [
-      "_utils-64caab42.js",
-      "_alert-7fe151e9.js",
-      "_alert-circle-1273824c.js",
-      "_loader-f5ec6bed.js"
+      "_utils-eb5efc80.js",
+      "_button-3cb7bb48.js",
+      "_alert-0236938e.js",
+      "_alert-circle-b44fd1a9.js",
+      "_loader-ffea248d.js"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/Pages/Auth/Login.tsx"
   },
   "resources/js/Pages/Auth/Register.tsx": {
-    "file": "assets/Register-eaf894bf.js",
+    "file": "assets/Register-5b3eea69.js",
     "imports": [
-      "_utils-64caab42.js",
-      "_alert-7fe151e9.js",
-      "_alert-circle-1273824c.js",
-      "_loader-f5ec6bed.js"
+      "_utils-eb5efc80.js",
+      "_alert-0236938e.js",
+      "_button-3cb7bb48.js",
+      "_alert-circle-b44fd1a9.js",
+      "_loader-ffea248d.js"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/Pages/Auth/Register.tsx"
   },
   "resources/js/Pages/Conversation.tsx": {
-    "file": "assets/Conversation-f63c8578.js",
+    "file": "assets/Conversation-f5e4b747.js",
     "imports": [
-      "_utils-64caab42.js",
-      "_ServerIdLayout-7593fd54.js",
-      "_index-36b4c578.js",
-      "_index-3c7254c7.js",
-      "_module-cdae6d27.js",
+      "_utils-eb5efc80.js",
+      "_ServerIdLayout-c07dd259.js",
+      "_index-2fc7bd59.js",
+      "_loader-2-0ed0f1f3.js",
+      "_index-ae8a64b4.js",
+      "_module-63751d3c.js",
       "resources/js/app.tsx",
-      "_react-drag-drop-files.esm-b088b8bd.js",
-      "_alert-7fe151e9.js",
-      "_upload-cloud-365b74f1.js",
-      "_alert-circle-1273824c.js",
-      "_loader-f5ec6bed.js",
-      "_chevron-down-6a0284dd.js"
+      "_react-drag-drop-files.esm-41bf0066.js",
+      "_button-3cb7bb48.js",
+      "_alert-0236938e.js",
+      "_upload-cloud-5d69c1a3.js",
+      "_alert-circle-b44fd1a9.js",
+      "_loader-ffea248d.js",
+      "_chevron-down-2d7ba327.js"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/Pages/Conversation.tsx"
   },
-  "resources/js/Pages/Home.tsx": {
-    "file": "assets/Home-79d1b431.js",
+  "resources/js/Pages/ForgotPassword.tsx": {
+    "file": "assets/ForgotPassword-5c7399f9.js",
     "imports": [
-      "_utils-64caab42.js",
-      "_ServerIdLayout-7593fd54.js",
-      "_index-36b4c578.js",
+      "_utils-eb5efc80.js",
+      "_button-3cb7bb48.js",
       "resources/js/app.tsx",
-      "_module-cdae6d27.js",
-      "_react-drag-drop-files.esm-b088b8bd.js",
-      "_index-3c7254c7.js",
-      "_chevron-down-6a0284dd.js",
-      "_alert-7fe151e9.js",
-      "_upload-cloud-365b74f1.js",
-      "_alert-circle-1273824c.js",
-      "_loader-f5ec6bed.js"
+      "_loader-2-0ed0f1f3.js"
+    ],
+    "isDynamicEntry": true,
+    "src": "resources/js/Pages/ForgotPassword.tsx"
+  },
+  "resources/js/Pages/Home.tsx": {
+    "file": "assets/Home-8cb94f6f.js",
+    "imports": [
+      "_utils-eb5efc80.js",
+      "_ServerIdLayout-c07dd259.js",
+      "_index-2fc7bd59.js",
+      "_loader-2-0ed0f1f3.js",
+      "resources/js/app.tsx",
+      "_module-63751d3c.js",
+      "_react-drag-drop-files.esm-41bf0066.js",
+      "_index-ae8a64b4.js",
+      "_chevron-down-2d7ba327.js",
+      "_button-3cb7bb48.js",
+      "_alert-0236938e.js",
+      "_upload-cloud-5d69c1a3.js",
+      "_alert-circle-b44fd1a9.js",
+      "_loader-ffea248d.js"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/Pages/Home.tsx"
   },
   "resources/js/Pages/Landing.tsx": {
-    "file": "assets/Landing-5adf9c4e.js",
+    "file": "assets/Landing-369d7413.js",
     "imports": [
-      "_utils-64caab42.js",
-      "_index-36b4c578.js",
-      "_alert-7fe151e9.js",
+      "_utils-eb5efc80.js",
+      "_index-2fc7bd59.js",
+      "_button-3cb7bb48.js",
       "resources/js/app.tsx",
-      "_module-cdae6d27.js",
-      "_alert-dialog-fd3e1fb6.js",
-      "_react-drag-drop-files.esm-b088b8bd.js",
-      "_alert-circle-1273824c.js",
-      "_loader-f5ec6bed.js",
-      "_upload-cloud-365b74f1.js",
-      "_chevron-down-6a0284dd.js"
+      "_loader-2-0ed0f1f3.js",
+      "_module-63751d3c.js",
+      "_alert-dialog-cbd6b095.js",
+      "_react-drag-drop-files.esm-41bf0066.js",
+      "_alert-0236938e.js",
+      "_alert-circle-b44fd1a9.js",
+      "_loader-ffea248d.js",
+      "_upload-cloud-5d69c1a3.js",
+      "_chevron-down-2d7ba327.js"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/Pages/Landing.tsx"
   },
   "resources/js/Pages/SetUp.tsx": {
-    "file": "assets/SetUp-422789ae.js",
+    "file": "assets/SetUp-430eb366.js",
     "imports": [
-      "_utils-64caab42.js",
-      "_react-drag-drop-files.esm-b088b8bd.js",
-      "_alert-7fe151e9.js",
-      "_upload-cloud-365b74f1.js",
-      "_alert-circle-1273824c.js"
+      "_utils-eb5efc80.js",
+      "_react-drag-drop-files.esm-41bf0066.js",
+      "_button-3cb7bb48.js",
+      "_alert-0236938e.js",
+      "_upload-cloud-5d69c1a3.js",
+      "_alert-circle-b44fd1a9.js"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/Pages/SetUp.tsx"
   },
   "resources/js/app.css": {
-    "file": "assets/app-39085888.css",
+    "file": "assets/app-4b2b1b44.css",
     "src": "resources/js/app.css"
   },
   "resources/js/app.tsx": {
     "css": [
-      "assets/app-39085888.css"
+      "assets/app-4b2b1b44.css"
     ],
     "dynamicImports": [
       "resources/js/Pages/Auth/Login.tsx",
       "resources/js/Pages/Auth/Register.tsx",
       "resources/js/Pages/Conversation.tsx",
+      "resources/js/Pages/ForgotPassword.tsx",
       "resources/js/Pages/Home.tsx",
       "resources/js/Pages/Landing.tsx",
       "resources/js/Pages/SetUp.tsx"
     ],
-    "file": "assets/app-354e0870.js",
+    "file": "assets/app-cacaf052.js",
     "imports": [
-      "_utils-64caab42.js"
+      "_utils-eb5efc80.js"
     ],
     "isEntry": true,
     "src": "resources/js/app.tsx"
