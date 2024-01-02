@@ -30,18 +30,18 @@ const ChatSheetItem:FC<ChatItemProps> = ({message,type,channel,onReply,hasClicke
     const [isEditing,setIsEditing]  = useState(false);
     const {user} = message;
     const fileType=message.file?.split(".").pop();
-    
+
     const fileImage = fileType==='pdf'?route('home')+'/uploads/pdf/pdf.png':message.file;
-    
+
     const input = useRef<HTMLInputElement>(null);
 
     const {post} =useForm({user_id:message.user_id});
-    
+
     const onSubmit:FormEventHandler<HTMLFormElement> = useCallback((e) => {
         e.preventDefault();
-        
+
         setLoading(true);
-        
+
 
         axios.post(route('server.channel.message.update',{
             server_id:channel.server_id,
@@ -57,7 +57,7 @@ const ChatSheetItem:FC<ChatItemProps> = ({message,type,channel,onReply,hasClicke
 
 
     useEffect(()=>{
-        
+
         if(input.current){
             input.current.focus();
         }
@@ -74,7 +74,7 @@ const ChatSheetItem:FC<ChatItemProps> = ({message,type,channel,onReply,hasClicke
 
     const onClick = (reply:string) =>{
         if(onReply) onReply(reply);
-    } 
+    }
 
     useEffect(()=>{
         if(input.current&&isEditing){
@@ -126,7 +126,14 @@ const ChatSheetItem:FC<ChatItemProps> = ({message,type,channel,onReply,hasClicke
                         ( !isEditing) && (
                             <p className={cn('text-sm my-4 text-neutral-600 dark:text-neutral-300',
                                 message.deleted_at && 'italic text-neutral-500 dark:text-neutral-400 text-xs mt-1')}>
-                                {!message.deleted_at?message.content:'Message Deleted'}
+                                {!message.deleted_at?
+                                    message.is_system_msg===1?
+                                        <div dangerouslySetInnerHTML={{ __html: message.content }} />
+                                        :
+                                        message.content
+                                    :
+                                    'Message Deleted'
+                                }
                                 {
                                     ((message.created_at!==message.updated_at)&&!message.deleted_at) &&(
                                         <span className='text-[0.625rem] mx-1.5 text-neutral-500 dark:text-neutral-400'>
@@ -154,7 +161,7 @@ const ChatSheetItem:FC<ChatItemProps> = ({message,type,channel,onReply,hasClicke
                     }
                     {
                         (message.is_system_msg===1 && !hasClickedReply && channel.is_closed!==1 && isLastMsg) && (
-                            <div className='w-full grid grid-cols-2 gap-3 pb-3.5'>
+                            <div className='w-2/3 flex flex-col'>
                                 {
                                     replies.map(reply=><Button key={reply} variant='outline' size='sm' onClick={()=>onClick(reply)}>{reply}</Button>)
                                 }

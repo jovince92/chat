@@ -1,6 +1,6 @@
 import React, { FC, ReactNode, useEffect, useMemo, useState } from 'react'
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from '@/Components/ui/sheet';
-import { Channel, Message, PageProps, PaginatedMessage, User } from '@/types';
+import { Channel, Message, PageProps, PaginatedMessage, User, SystemMessage } from '@/types';
 import ChatMessages from '../Chat/ChatMessages';
 import ChatInput from '../Chat/ChatInput';
 import { QueryClientProvider, useQueryClient } from '@tanstack/react-query';
@@ -25,7 +25,12 @@ interface Props{
 }
 
 const ChatSheet:FC<Props> = ({isOpen,channel:OriginalChannel,onClose,user}) => {
-    const {app_name} = usePage<PageProps>().props;
+
+    const {app_name, system_message} = usePage<PageProps>().props;
+
+    const [sysMessageState, setSysMessageState] = useState<SystemMessage[]>(system_message);
+    const [subMenusState, setSubMenusState] = useState<any>(null);
+
     const [channel,setChannel] = useState(OriginalChannel);
     const [hasClickedReply,setHasClickedReply]   = useState(false);
     const {replies} = usePage<PageProps>().props;
@@ -38,7 +43,6 @@ const ChatSheet:FC<Props> = ({isOpen,channel:OriginalChannel,onClose,user}) => {
     ,[channel]);
 
     const queryClient = useQueryClient();
-
 
     const [showFeedbackModal,setShowFeedbackModal] = useState(false);
 
@@ -53,6 +57,22 @@ const ChatSheet:FC<Props> = ({isOpen,channel:OriginalChannel,onClose,user}) => {
         })
         //.finally(()=>setSending(false));
     }
+
+    useEffect(()=>{
+        if (sysMessageState.length > 0){
+            axios
+            .get(route('sys_message.sub_index'))
+            .then(function(response){
+
+                if (response.data) {
+                    const d = response.data;
+                    if (d.length > 0) {
+                        setSubMenusState(d);
+                    }
+                }
+            })
+        }
+    }, [sysMessageState])
 
     useEffect(()=>{
         if(!channel){return;}
@@ -114,8 +134,20 @@ const ChatSheet:FC<Props> = ({isOpen,channel:OriginalChannel,onClose,user}) => {
                     </div>
                     <div className='h-auto'>
                         {
-                            channel.is_closed!==1?<ChatInput getMsgsRoute={getMsgsRoute} apiRoute={apiRoute} type='Channel' name='Chat Support' />:(
+                            channel.is_closed!==1?
                                 <>
+                                    {/* FOR SUB MENUS */}
+                                    <div className='mb-2 space-x-2'>
+                                        {subMenusState?
+                                            subMenusState.map((m:any)=><button className='px-4 py-1 border rounded-lg'>{m.name}</button>)
+                                            :
+                                            <></>
+                                        }
+                                    </div>
+                                    <ChatInput getMsgsRoute={getMsgsRoute} apiRoute={apiRoute} type='Channel' name='Chat Support' />
+                                </>
+                                :
+                                (<>
                                     <Separator />
                                     <p className='font-semibold text-lg tracking-tight'>
                                         This Case Has Been Closed. You Can Not Reply To This Thread Anymore
@@ -137,9 +169,7 @@ const ChatSheet:FC<Props> = ({isOpen,channel:OriginalChannel,onClose,user}) => {
                                         )
                                     }
 
-                                </>
-                            )
-
+                                </>)
                         }
                     </div>
                 </AlertDialogContent>

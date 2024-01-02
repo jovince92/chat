@@ -64,6 +64,7 @@ export interface Message{
     updated_at:string;
     deleted_at:string;
     is_system_msg:number;
+    menus:SystemMenu[];
 }
 
 export interface Conversation{

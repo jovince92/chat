@@ -55,7 +55,9 @@ Route::prefix('backend')->middleware(['auth'])->group(function () {
 
     Route::prefix('sys_message')->name('sys_message.')->group(function () {
         Route::get('/', [SystemMessageController::class, 'index'])->name('index');
+        Route::get('/sub/index', [SystemMessageController::class, 'sub_index'])->name('sub_index');
         Route::post('/store', [SystemMessageController::class, 'store'])->name('store');
+        Route::post('/sub/store', [SystemMessageController::class, 'sub_store'])->name('sub_store');
     });
 
     Route::prefix('server')->name('server.')->group(function () {

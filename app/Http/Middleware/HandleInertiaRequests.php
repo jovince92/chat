@@ -33,16 +33,16 @@ class HandleInertiaRequests extends Middleware
      */
     public function share(Request $request): array
     {
-        $rs=SystemMenu::all();
+        $rs = SystemMenu::where('system_type', 0)->get();
         return [
             ...parent::share($request),
             'auth' => [
                 'user' => $request->user(),
             ],
-            'app_name'=>config('app.name'),
-            'replies'=>$rs->pluck('name')->toArray(),
+            'app_name' => config('app.name'),
+            'replies' => $rs->pluck('name')->toArray(),
             'servers' => Auth::check() ? $request->user()->servers : [],
-            'system_message' => SystemMessage::with(['menus', 'menus.replies'])->get(),
+            'system_message' => SystemMessage::with(['menus', 'menus.replies'])->where('system_type', 0)->get(),
             'ziggy' => fn () => [
                 ...(new Ziggy)->toArray(),
                 'location' => $request->url(),
