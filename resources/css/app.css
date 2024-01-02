@@ -95,3 +95,8 @@ div{
 em-emoji-picker{
   @apply !z-[5000]
 }
+
+
+.ql-container {
+  @apply !text-base
+}

@@ -12,6 +12,7 @@ import { Button } from '../ui/button';
 import axios from 'axios';
 import { toast } from '../ui/use-toast';
 import { useModal } from '@/Hooks/useModalStore';
+import Editor from '../Editor';
 interface ChatItemProps{
     message:Message;
     type:"Channel"|"Conversation";
@@ -127,8 +128,7 @@ const ChatSheetItem:FC<ChatItemProps> = ({message,type,channel,onReply,hasClicke
                             <p className={cn('text-sm my-4 text-neutral-600 dark:text-neutral-300',
                                 message.deleted_at && 'italic text-neutral-500 dark:text-neutral-400 text-xs mt-1')}>
                                 {!message.deleted_at?
-                                    message.is_system_msg===1?
-                                        <div dangerouslySetInnerHTML={{ __html: message.content }} />
+                                    message.is_system_msg===1? <Editor value={message.content} readonly />
                                         :
                                         message.content
                                     :
@@ -163,7 +163,7 @@ const ChatSheetItem:FC<ChatItemProps> = ({message,type,channel,onReply,hasClicke
                         (message.is_system_msg===1 && !hasClickedReply && channel.is_closed!==1 && isLastMsg) && (
                             <div className='w-2/3 flex flex-col'>
                                 {
-                                    replies.map(reply=><Button key={reply} variant='outline' size='sm' onClick={()=>onClick(reply)}>{reply}</Button>)
+                                    replies.map((reply,idx)=><Button key={`reply_${idx.toString()}`} variant='outline' size='sm' onClick={()=>onClick(reply)}>{reply}</Button>)
                                 }
                             </div>
                         )

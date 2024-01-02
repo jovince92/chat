@@ -22,6 +22,7 @@ import {
     AccordionItem,
     AccordionTrigger,
   } from "../ui/accordion"
+import Editor from '../Editor';
 
 const roleIconMap ={
     'GUEST':null,
@@ -123,7 +124,7 @@ const SystemMessageModal:FC = () => {
 
     const renderFields = () => {
         return data.menus.map((menu,index) => (
-            <div key={index} className='grid gap-3 p-5 mb-5 bg-white dark:bg-neutral-950 rounded-md shadow'>
+            <div key={index} className='grid gap-3 p-5 mb-5 bg-white dark:bg-neutral-950 rounded-md shadow pb-16'>
                 <div className="grid gap-1.5">
                     <Label htmlFor={'name' + index}>
                         Menu button {index+1}
@@ -145,15 +146,10 @@ const SystemMessageModal:FC = () => {
                     <Label htmlFor={'reply' + index}>
                         Reply for menu button {index+1}
                     </Label>
-                    <textarea
-                        required
+                    <Editor
                         id={'reply' + index}
                         placeholder="Sure! Please wait..."
-                        autoCapitalize="none"
-                        autoComplete="off"
-                        autoCorrect="off"
-                        disabled={processing}
-                        onChange={({target}) => updateFields(index, 'reply', target.value)}
+                        onChange={val => updateFields(index, 'reply', val)}
                         value={menu.reply}
                     />
                 </div>
@@ -343,7 +339,7 @@ const SubMenus:FC<SubMenusProps> = ({messageState}) => {
 
     const renderFields = () => {
         return data.menus.map((menu,index) => (
-            <div key={index} className='grid gap-3 p-5 mb-5 bg-white dark:bg-neutral-950 rounded-md shadow'>
+            <div key={index} className='grid gap-3 p-5 mb-5 bg-white dark:bg-neutral-950 rounded-md shadow pb-16'>
                 <div className="grid gap-1.5">
                     <Label htmlFor={'name' + index}>
                         Menu button {index+1}
@@ -365,15 +361,10 @@ const SubMenus:FC<SubMenusProps> = ({messageState}) => {
                     <Label htmlFor={'reply' + index}>
                         Reply for menu button {index+1}
                     </Label>
-                    <textarea
-                        required
+                    <Editor
                         id={'reply' + index}
                         placeholder="Sure! Please wait..."
-                        autoCapitalize="none"
-                        autoComplete="off"
-                        autoCorrect="off"
-                        disabled={processing}
-                        onChange={({target}) => updateFields(index, 'reply', target.value)}
+                        onChange={val => updateFields(index, 'reply', val)}
                         value={menu.reply}
                     />
                 </div>
