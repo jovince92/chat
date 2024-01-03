@@ -137,12 +137,14 @@ const ChatSheet:FC<Props> = ({isOpen,channel:OriginalChannel,onClose,user}) => {
                             channel.is_closed!==1?
                                 <>
                                     {/* FOR SUB MENUS */}
-                                    <div className='mb-2 space-x-2'>
-                                        {subMenusState?
-                                            subMenusState.map((m:any)=><button className='px-4 py-1 border rounded-lg'>{m.name}</button>)
-                                            :
-                                            <></>
-                                        }
+                                    <div className='mb-2 pb-2 overflow-y-auto w-full'>
+                                        <div className='py-2 space-x-2 w-[60rem] overflow-y-auto'>
+                                            {subMenusState?
+                                                subMenusState.map((m:any)=><button onClick={()=>onReply(m.name)} className='px-4 py-1 border rounded-lg'>{m.name}</button>)
+                                                :
+                                                <></>
+                                            }
+                                        </div>
                                     </div>
                                     <ChatInput getMsgsRoute={getMsgsRoute} apiRoute={apiRoute} type='Channel' name='Chat Support' />
                                 </>
