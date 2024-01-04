@@ -45,7 +45,7 @@ const ChatInput:FC<ChatInputProps> = ({apiRoute,name,type,getMsgsRoute}) => {
 
     return (
         <form onSubmit={onSubmit}>
-            <div className='relative pb-6'>
+            <div className='relative'>
                 <button disabled={sending} type='button' onClick={()=>onOpen('MessageFile',{apiRoute})} className='absolute top-2 left-3 h-6 w-6 bg-neutral-500 dark:bg-neutral-400 hover:bg-neutral-600 dark:hover:bg-neutral-300 transition rounded-full p-1 flex items-center justify-center'>
                     <Plus className='text-white dark:text-neutral-900' />
                 </button>

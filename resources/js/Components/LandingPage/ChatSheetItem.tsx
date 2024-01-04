@@ -84,7 +84,7 @@ const ChatSheetItem:FC<ChatItemProps> = ({message,type,channel,onReply,hasClicke
     },[input,isEditing]);
 
     return (
-        <div className='relative group flex items-center hover:bg-neutral-300 dark:hover:bg-neutral-900 p-3.5 transition w-full'>
+        <div className='relative group flex items-center hover:bg-neutral-50 dark:hover:bg-neutral-900 p-3.5 transition w-full rounded hover:shadow'>
             <div className='group flex gap-x-1.5 items-start w-full'>
                 <div  className='cursor-pointer hover:drop-shadow-md transition'>
                     {message.is_system_msg===0?
@@ -125,8 +125,8 @@ const ChatSheetItem:FC<ChatItemProps> = ({message,type,channel,onReply,hasClicke
                     <p className={cn('text-xs',fileType==='pdf'&&!message.deleted_at?'block':'hidden')}>PDF File</p>
                     {
                         ( !isEditing) && (
-                            <p className={cn('text-sm my-4 text-neutral-600 dark:text-neutral-300',
-                                message.deleted_at && 'italic text-neutral-500 dark:text-neutral-400 text-xs mt-1')}>
+                            <p className={cn('text-sm my-4 dark:text-neutral-300',
+                                message.deleted_at && 'italic dark:text-neutral-400 text-xs mt-1')}>
                                 {!message.deleted_at?
                                     message.is_system_msg===1? <Editor value={message.content} readonly />
                                         :

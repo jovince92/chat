@@ -114,7 +114,7 @@ const ChatSheet:FC<Props> = ({isOpen,channel:OriginalChannel,onClose,user}) => {
     return (
         <>
             <AlertDialog open={isOpen}>
-                <AlertDialogContent className='w-full md:min-w-[45rem] h-full flex flex-col overflow-y-hidden space-y-2'>
+                <AlertDialogContent className='w-full md:min-w-[40rem] h-[95%] flex flex-col overflow-y-hidden space-y-2 dark:bg-neutral-800'>
                     <AlertDialogHeader className='h-auto'>
                         <AlertDialogTitle>
                             <div className='flex items-center'>
@@ -128,7 +128,7 @@ const ChatSheet:FC<Props> = ({isOpen,channel:OriginalChannel,onClose,user}) => {
                     </AlertDialogHeader>
                     <hr />
                     <div className='flex-1 flex flex-col overflow-y-hidden'>
-                        <div className='flex-1 mb-2 overflow-auto'>
+                        <div className='flex-1 mb-2 overflow-auto scrollbar'>
                             <ChatSheetMessages hasClickedReply={hasClickedReply} onReply={onReply} getMsgsRoute={getMsgsRoute} channel={channel} />
                         </div>
                     </div>
@@ -138,9 +138,12 @@ const ChatSheet:FC<Props> = ({isOpen,channel:OriginalChannel,onClose,user}) => {
                                 <>
                                     {/* FOR SUB MENUS */}
                                     <div className='mb-2 pb-2 overflow-y-auto w-full'>
-                                        <div className='py-2 space-x-2 w-[60rem] overflow-y-auto'>
+                                        <div className='py-2 space-x-2 w-max overflow-y-auto'>
                                             {subMenusState?
-                                                subMenusState.map((m:any)=><button onClick={()=>onReply(m.name)} className='px-4 py-1 border rounded-lg'>{m.name}</button>)
+                                                subMenusState.map((m:any)=>
+                                                        <button onClick={()=>onReply(m.name)} className='px-4 py-1 border rounded-lg
+                                                            hover:bg-neutral-100 hover:shadow dark:hover:bg-neutral-900'>{m.name}</button>
+                                                    )
                                                 :
                                                 <></>
                                             }
