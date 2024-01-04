@@ -1,5 +1,5 @@
 import { Message, PageProps } from '@/types';
-import {FC,FormEventHandler,useEffect,useMemo, useState,useRef, useCallback} from 'react';
+import {FC,FormEventHandler,useEffect,useMemo, useState,useRef, useCallback, ReactNode} from 'react';
 import UserAvatar from '../UserAvatar';
 import ActionTooltip from '../Layouts/ActionToolTip';
 import { useForm, usePage } from '@inertiajs/react';
@@ -12,6 +12,7 @@ import { Button } from '../ui/button';
 import axios from 'axios';
 import { toast } from '../ui/use-toast';
 import { useModal } from '@/Hooks/useModalStore';
+import Editor from '../Editor';
 interface ChatItemProps{
     message:Message;
     type:"Channel"|"Conversation";
@@ -115,6 +116,11 @@ const ChatItem:FC<ChatItemProps> = ({message,type}) => {
         }
     },[input,isEditing]);
 
+    const renderedMsg:ReactNode = useMemo(()=>{
+        if(message.is_system_msg===1) return <Editor value={message.content} readonly />;
+        return  <span> {message.content}</span>;
+    },[message]);
+
     return (
         <div className='relative group flex items-center hover:bg-neutral-300 dark:hover:bg-neutral-900 p-3.5 transition w-full'>
             <div className='group flex items-start w-full'>
@@ -148,9 +154,8 @@ const ChatItem:FC<ChatItemProps> = ({message,type}) => {
                     <p className={cn('text-xs',fileType==='pdf'&&!message.deleted_at?'block':'hidden')}>PDF File</p>
                     {
                         ( !isEditing) && (
-                            <p className={cn('text-sm text-neutral-600 dark:text-neutral-300',
-                                message.deleted_at && 'italic text-neutral-500 dark:text-neutral-400 text-xs mt-1')}>
-                                {!message.deleted_at?message.content:'Message Deleted'}
+                            <p className={cn('text-sm text-neutral-600 dark:text-neutral-300 ', message.deleted_at && 'italic text-neutral-500 dark:text-neutral-400 text-xs mt-1')}>
+                                {!message.deleted_at? renderedMsg :'Message Deleted'}
                                 {
                                     ((message.created_at!==message.updated_at)&&!message.deleted_at) &&(
                                         <span className='text-[0.625rem] mx-1.5 text-neutral-500 dark:text-neutral-400'>

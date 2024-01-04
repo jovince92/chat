@@ -128,9 +128,7 @@ const ChatSheetItem:FC<ChatItemProps> = ({message,type,channel,onReply,hasClicke
                             <p className={cn('text-sm my-4 dark:text-neutral-300',
                                 message.deleted_at && 'italic dark:text-neutral-400 text-xs mt-1')}>
                                 {!message.deleted_at?
-                                    message.is_system_msg===1? <Editor value={message.content} readonly />
-                                        :
-                                        message.content
+                                    message.is_system_msg===1? <Editor value={message.content} readonly />:message.content
                                     :
                                     'Message Deleted'
                                 }
