@@ -154,7 +154,7 @@ const ChatItem:FC<ChatItemProps> = ({message,type}) => {
                     <p className={cn('text-xs',fileType==='pdf'&&!message.deleted_at?'block':'hidden')}>PDF File</p>
                     {
                         ( !isEditing) && (
-                            <p className={cn('text-sm text-neutral-600 dark:text-neutral-300 ', message.deleted_at && 'italic text-neutral-500 dark:text-neutral-400 text-xs mt-1')}>
+                            <div className={cn('text-sm text-neutral-600 dark:text-neutral-300 ', message.deleted_at && 'italic text-neutral-500 dark:text-neutral-400 text-xs mt-1')}>
                                 {!message.deleted_at? renderedMsg :'Message Deleted'}
                                 {
                                     ((message.created_at!==message.updated_at)&&!message.deleted_at) &&(
@@ -163,7 +163,7 @@ const ChatItem:FC<ChatItemProps> = ({message,type}) => {
                                         </span>
                                     )
                                 }
-                            </p>
+                            </div>
                         )
                     }
                     {
