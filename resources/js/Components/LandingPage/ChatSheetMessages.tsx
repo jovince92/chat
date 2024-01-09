@@ -15,9 +15,10 @@ interface Props{
     getMsgsRoute:string;
     onReply?:(reply:string)=>void;
     hasClickedReply?:boolean;
+    isScrollToView:boolean;
 }
 
-const ChatSheetMessages:FC<Props> = ({channel,getMsgsRoute,onReply,hasClickedReply}) => {
+const ChatSheetMessages:FC<Props> = ({channel,getMsgsRoute,onReply,hasClickedReply,isScrollToView}) => {
     const chatRef = useRef<HTMLDivElement>(null);
     const bottomRef = useRef<HTMLDivElement>(null);
     const [autoScroll,setAutoScroll] = useState(true);
@@ -32,10 +33,21 @@ const ChatSheetMessages:FC<Props> = ({channel,getMsgsRoute,onReply,hasClickedRep
     }
 
     const handleReply = (reply:string) =>{
+        scrollToBottom();
         if(!!onReply) onReply(reply);
     }
 
-    
+    useEffect(() => {
+        scrollToBottom();
+    }, [isScrollToView])
+
+    const scrollToBottom = () => {
+        bottomRef.current?.scrollIntoView({
+            behavior:'smooth',
+            block: 'center'
+        })
+        console.log("scroll to view");
+    }
 
 
     useEffect(() => {
@@ -68,12 +80,12 @@ const ChatSheetMessages:FC<Props> = ({channel,getMsgsRoute,onReply,hasClickedRep
 
     return (
         <>
-            <div className='fixed top-28 md:top-24 flex items-center space-x-2'>
+            <div className='fixed top-7 right-20 flex items-center space-x-2'>
                 <Switch checked={autoScroll} onCheckedChange={()=>setAutoScroll(!autoScroll)} id="autoscroll" />
                 <Label htmlFor="autoscroll">Auto Scroll</Label>
             </div>
             <div ref={chatRef} className='flex-1 flex flex-col py-3.5 overflow-y-auto '>
-                
+
                 {
                     !hasNextPage&&(
                         <>

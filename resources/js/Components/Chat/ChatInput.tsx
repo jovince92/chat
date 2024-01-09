@@ -45,12 +45,12 @@ const ChatInput:FC<ChatInputProps> = ({apiRoute,name,type,getMsgsRoute}) => {
 
     return (
         <form onSubmit={onSubmit}>
-            <div className='relative'>
-                <button disabled={sending} type='button' onClick={()=>onOpen('MessageFile',{apiRoute})} className='absolute top-2 left-3 h-6 w-6 bg-neutral-500 dark:bg-neutral-400 hover:bg-neutral-600 dark:hover:bg-neutral-300 transition rounded-full p-1 flex items-center justify-center'>
+            <div className='relative p-0 xl:px-4 xl:pb-4'>
+                <button disabled={sending} type='button' onClick={()=>onOpen('MessageFile',{apiRoute})} className='absolute top-2 left-3 lg:left-7 h-6 w-6 bg-neutral-500 dark:bg-neutral-400 hover:bg-neutral-600 dark:hover:bg-neutral-300 transition rounded-full p-1 flex items-center justify-center'>
                     <Plus className='text-white dark:text-neutral-900' />
                 </button>
                 <Input placeholder={`Send to ${type==='Conversation'?name:'#'+name}`} value={message} onChange={({target})=>setMsg(target.value)} disabled={sending} className='px-12 py-5 bg-neutral-200/90 dark:bg-neutral-700/75 border-none border-0 focus-visible:ring-0 focus-visible:ring-offset-0 text-neutral-600 dark:text-neutral-200'  />
-                <div className='absolute top-2 right-3'>
+                <div className='absolute top-2 right-3 lg:right-7'>
                     <EmojiPicker   onChange={(emoji:string)=>setMsg(val=>`${val} ${emoji}`)} />
                 </div>
             </div>

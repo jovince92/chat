@@ -26,6 +26,8 @@ interface Props{
 
 const ChatSheet:FC<Props> = ({isOpen,channel:OriginalChannel,onClose,user}) => {
 
+    const [scrollToView, doScrollToView] = useState<boolean>(false);
+
     const {app_name, system_message} = usePage<PageProps>().props;
 
     const [sysMessageState, setSysMessageState] = useState<SystemMessage[]>(system_message);
@@ -47,6 +49,7 @@ const ChatSheet:FC<Props> = ({isOpen,channel:OriginalChannel,onClose,user}) => {
     const [showFeedbackModal,setShowFeedbackModal] = useState(false);
 
     const onReply = (reply:string)=>{
+        doScrollToView(true);
         setHasClickedReply(true);
         axios.post(apiRoute,{
             message:reply,
@@ -55,7 +58,7 @@ const ChatSheet:FC<Props> = ({isOpen,channel:OriginalChannel,onClose,user}) => {
             toast({title:'Internal Error',description:`Can't send message. Please try again!`});
             setHasClickedReply(false);
         })
-        //.finally(()=>setSending(false));
+        .finally(()=>doScrollToView(false));
     }
 
     useEffect(()=>{
@@ -129,7 +132,8 @@ const ChatSheet:FC<Props> = ({isOpen,channel:OriginalChannel,onClose,user}) => {
                     <hr />
                     <div className='flex-1 flex flex-col overflow-y-hidden'>
                         <div className='flex-1 mb-2 overflow-auto scrollbar'>
-                            <ChatSheetMessages hasClickedReply={hasClickedReply} onReply={onReply} getMsgsRoute={getMsgsRoute} channel={channel} />
+                            <ChatSheetMessages hasClickedReply={hasClickedReply} onReply={onReply} getMsgsRoute={getMsgsRoute} channel={channel}
+                                isScrollToView={scrollToView} />
                         </div>
                     </div>
                     <div className='h-auto'>
@@ -141,7 +145,7 @@ const ChatSheet:FC<Props> = ({isOpen,channel:OriginalChannel,onClose,user}) => {
                                         <div className='py-2 space-x-2 w-max overflow-y-auto'>
                                             {subMenusState?
                                                 subMenusState.map((m:any)=>
-                                                        <button onClick={()=>onReply(m.name)} className='px-4 py-1 border rounded-lg
+                                                        <button key={m.id} onClick={()=>onReply(m.name)} className='px-4 py-1 border rounded-lg
                                                             hover:bg-neutral-100 hover:shadow dark:hover:bg-neutral-900'>{m.name}</button>
                                                     )
                                                 :
