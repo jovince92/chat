@@ -125,7 +125,7 @@ const ChatSheetItem:FC<ChatItemProps> = ({message,type,channel,onReply,hasClicke
                     <p className={cn('text-xs',fileType==='pdf'&&!message.deleted_at?'block':'hidden')}>PDF File</p>
                     {
                         ( !isEditing) && (
-                            <div className={cn('text-sm my-4 dark:text-neutral-300',
+                            <div className={cn('text-sm my-4',
                                 message.deleted_at && 'italic dark:text-neutral-400 text-xs mt-1')}>
                                 {!message.deleted_at?
                                     message.is_system_msg===1? <Editor value={message.content} readonly />:message.content
