@@ -13,6 +13,7 @@ class SystemMessage extends Model
     public function menus()
     {
         return $this->hasMany(SystemMenu::class, 'sys_message_id', 'id')
-            ->where('system_type', 0);
+            ->where('system_type', 0)
+            ->with('replies');
     }
 }

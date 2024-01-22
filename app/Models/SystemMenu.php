@@ -8,9 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 class SystemMenu extends Model
 {
     use HasFactory;
-    protected $guarded=[];
+    protected $guarded = [];
 
-    public function replies(){
-        return $this->hasOne(SystemMessage::class,'id','sys_message_reply_id');
+    public function replies()
+    {
+        return $this->hasOne(SystemMessage::class, 'id', 'sys_message_reply_id')->with('menus');
     }
 }

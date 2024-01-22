@@ -23,7 +23,7 @@ export interface SystemMessage {
 export interface SystemMenu {
     id: number;
     name: string;
-    replies: SystemMessage
+    replies: SystemMessage;
 }
 
 export interface Server{
