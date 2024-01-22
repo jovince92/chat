@@ -42,10 +42,7 @@ const SystemMessageModal:FC = () => {
     const [isRemove, setIsRemove] = useState<boolean>(false);
     const [sysMessageState, setSysMessageState] = useState<SystemMessage[]>(system_message);
 
-    const { data, setData, post, get, processing, errors, reset } = useForm({
-        initial_message: '',
-        menus: [{ id:0, reply_id:0, name:'', reply:'', menus:[] }],
-    });
+    const { data, setData, post, get, processing, errors, reset } = useForm<SystemMessage>();
 
     useEffect(()=>{
         if (isOpen === true && sysMessageState.length > 0){
@@ -65,29 +62,29 @@ const SystemMessageModal:FC = () => {
             let initial = sysMessageState[0]
             reset()
 
-            setData('initial_message', initial.message);
+            setData(initial);
 
-            setData((prevData) => ({
-                ...prevData,
-                menus: initial.menus.map((m) => ({
-                    id: m.id,
-                    reply_id: m.replies.id,
-                    name: m.name,
-                    reply: m.replies.message,
-                    menus: []
-                })),
-            }))
+            // setData((prevData) => ({
+            //     ...prevData,
+            //     menus: initial.menus.map((m) => ({
+            //         id: m.id,
+            //         reply_id: m.replies.id,
+            //         name: m.name,
+            //         reply: m.replies.message,
+            //         menus: []
+            //     })),
+            // }))
         }else{
             reset()
         }
     }, [sysMessageState])
 
     const addMenu = () => {
-        setData((prevData) => ({
-            ...prevData,
-            menus: [...prevData.menus,
-                { id:prevData.menus.length, reply_id:prevData.menus.length+1, name: '', reply: '', menus:[] }],
-        }));
+        // setData((prevData) => ({
+        //     ...prevData,
+        //     menus: [...prevData.menus,
+        //         { id:prevData.menus.length, reply_id:prevData.menus.length+1, name: '', reply: '', menus:[] }],
+        // }));
     };
 
     const removeMenu = () => {
@@ -108,35 +105,33 @@ const SystemMessageModal:FC = () => {
         // console.log(data);
     };
 
-    const handleMenuUpdate = (index:number, fieldName:string, value:string) => {
-        // updateFields(index, fieldName, value);
-    }
-
     const updateFields = (index:number, fieldName:string, value:string) => {
-        setData((prevData) => {
-            const updatedMenus = [...prevData.menus];
+        const updatedMenus = updateMenu(data.menus, index, value);
+        // updatedMenus[index].name = value;
 
-            updatedMenus[index].id = index+1;
-            updatedMenus[index].reply_id = index+2;
+        //console.log(updatedMenus);
 
-            if (fieldName === 'name'){
-                updatedMenus[index].name = value;
-            }else{
-                updatedMenus[index].reply = value;
-            }
-            return { ...prevData, menus: updatedMenus };
-        });
+        // setData(prevData => ({
+        //     ...prevData,
+        //     menus: updatedMenus,
+        // }));
     };
 
+    const updateMenu = (menus:SystemMenu[], targetID:number, value:string) => {
+        return menus.map(menu => {
+            if (menu.id === targetID) {
+              return { ...menu, name: value };
+            } else if (menu.replies) {
+            //   return { ...menu, replies: updateMenu(menu.replies.menus, targetID, value) };
+              return menu;
+            } else {
+              return menu;
+            }
+          });
+    }
+
     interface MenuComponentsProps {
-        menu:
-        {
-            id: number;
-            reply_id: number;
-            name: string;
-            reply: string;
-            menus: {};
-        };
+        menu: SystemMenu;
         index: number;
         updateFieldsCallback: (index: number, field: string, value: string) => void;
     }
@@ -172,56 +167,24 @@ const SystemMessageModal:FC = () => {
                         id={'reply' + index}
                         placeholder="Sure! Please wait..."
                         onChange={val => updateFieldsCallback(index, 'reply', val)}
-                        value={menu.reply}
+                        value={menu.replies.message}
                     />
                 </div>
-
             </div>
         )
     }
 
-    const renderFields = () => {
-        // {console.log(data.menus)}
+    const renderFields = (d:SystemMessage) => {
+        // { console.log(d.menus) }
 
-        // return data.menus.map((menu,index) => (
-        //     <div key={index} className='grid gap-3 p-5 mb-5 bg-white dark:bg-neutral-950 rounded-md shadow pb-16'>
-        //         <div className="grid gap-1.5">
-        //             <Label htmlFor={'name' + index}>
-        //                 Menu button {index+1}
-        //             </Label>
-        //             <Input
-        //                 required
-        //                 id={'name' + index}
-        //                 placeholder="Can I speak to one of your agents?"
-        //                 type="text"
-        //                 autoCapitalize="none"
-        //                 autoComplete="off"
-        //                 autoCorrect="off"
-        //                 disabled={processing}
-        //                 onChange={(e) => updateFields(index, 'name', e.target.value)}
-        //                 value={menu.name}
-        //             />
-        //         </div>
-        //         <div className="grid gap-1.5">
-        //             <Label htmlFor={'reply' + index}>
-        //                 Reply for menu button {index+1}
-        //             </Label>
-        //             <Editor
-        //                 id={'reply' + index}
-        //                 placeholder="Sure! Please wait..."
-        //                 onChange={val => updateFields(index, 'reply', val)}
-        //                 value={menu.reply}
-        //             />
-        //         </div>
-        //     </div>
-        // ))
+        if (!d.menus) { return; }
 
-        return data.menus.map((menu,index) => (
+        return d.menus.map((menu,index) => (
             <Accordion key={index} type="single" className='px-4 rounded bg-neutral-800' collapsible>
                 <AccordionItem value="item-1" className='mb-1'>
                     <AccordionTrigger>{menu.name}</AccordionTrigger>
                     <AccordionContent>
-                        { menu && <MenuComponents menu={menu} index={index} updateFieldsCallback={handleMenuUpdate} /> }
+                        { menu && <MenuComponents menu={menu} index={index} updateFieldsCallback={updateFields} /> }
                     </AccordionContent>
                 </AccordionItem>
             </Accordion>
@@ -274,8 +237,8 @@ const SystemMessageModal:FC = () => {
                                             autoComplete="off"
                                             autoCorrect="off"
                                             disabled={processing}
-                                            onChange={({target}) => setData('initial_message', target.value)}
-                                            value={data.initial_message}
+                                            onChange={({target}) => setData("message", target.value)}
+                                            value={data.message}
                                         />
                                     </div>
 
@@ -292,7 +255,7 @@ const SystemMessageModal:FC = () => {
                                             </div>
                                         </div>
 
-                                        {renderFields()}
+                                        { renderFields(data) }
                                     </div>
 
                                     <Button disabled={processing}>
