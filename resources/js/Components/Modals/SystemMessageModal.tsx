@@ -69,11 +69,9 @@ const SystemMessageModal:FC = () => {
     }, [sysMessageState])
 
     const addMenu = () => {
-        // setData((prevData) => ({
-        //     ...prevData,
-        //     menus: [...prevData.menus,
-        //         { id:prevData.menus.length, reply_id:prevData.menus.length+1, name: '', reply: '', menus:[] }],
-        // }));
+        router.post(route('sys_message.add_menu'), {},{
+            onSuccess:()=>console.log('system message stored')
+        });
     };
 
     const removeMenu = () => {
@@ -223,10 +221,10 @@ const SystemMessageModal:FC = () => {
                                         <div className='flex items-center mb-4'>
                                             <p className='font-bold text-xs'>MENUS</p>
                                             <div className='flex items-center ml-auto'>
-                                                <button onClick={addMenu} className='text-green-600 mr-0.5'>
+                                                <button type="button" onClick={addMenu} className='text-green-600 mr-0.5'>
                                                     <PlusSquare/>
                                                 </button>
-                                                <button onClick={removeMenu} className='text-red-600'>
+                                                <button type="button" onClick={removeMenu} className='text-red-600'>
                                                     <XSquare/>
                                                 </button>
                                             </div>
@@ -257,6 +255,8 @@ const SystemMessageModal:FC = () => {
 }
 
 export default SystemMessageModal
+
+// ************************************************
 
 interface SubMenusProps {
     messageState: SystemMessage[];

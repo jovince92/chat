@@ -58,6 +58,8 @@ Route::prefix('backend')->middleware(['auth'])->group(function () {
         Route::get('/sub/index', [SystemMessageController::class, 'sub_index'])->name('sub_index');
         Route::post('/store', [SystemMessageController::class, 'store'])->name('store');
         Route::post('/sub/store', [SystemMessageController::class, 'sub_store'])->name('sub_store');
+        Route::post('/menu/add', [SystemMessageController::class, 'addMenu'])->name('add_menu');
+        Route::post('/menu/remove', [SystemMessageController::class, 'removeMenu'])->name('remove_menu');
     });
 
     Route::prefix('server')->name('server.')->group(function () {
