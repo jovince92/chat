@@ -42,10 +42,7 @@ const SystemMessageModal:FC = () => {
     const [isRemove, setIsRemove] = useState<boolean>(false);
     const [sysMessageState, setSysMessageState] = useState<SystemMessage[]>(system_message);
 
-    const { data, setData, post, get, processing, errors, reset } = useForm({
-        initial_message: '',
-        menus: [{ id:0, reply_id:0, name:'', reply:'', menus:[] }],
-    });
+    const { data, setData, post, get, processing, errors, reset } = useForm<SystemMessage>();
 
     useEffect(()=>{
         if (isOpen === true && sysMessageState.length > 0){
@@ -65,29 +62,18 @@ const SystemMessageModal:FC = () => {
             let initial = sysMessageState[0]
             reset()
 
-            setData('initial_message', initial.message);
-
-            setData((prevData) => ({
-                ...prevData,
-                menus: initial.menus.map((m) => ({
-                    id: m.id,
-                    reply_id: m.replies.id,
-                    name: m.name,
-                    reply: m.replies.message,
-                    menus: []
-                })),
-            }))
+            setData(initial);
         }else{
             reset()
         }
     }, [sysMessageState])
 
     const addMenu = () => {
-        setData((prevData) => ({
-            ...prevData,
-            menus: [...prevData.menus,
-                { id:prevData.menus.length, reply_id:prevData.menus.length+1, name: '', reply: '', menus:[] }],
-        }));
+        // setData((prevData) => ({
+        //     ...prevData,
+        //     menus: [...prevData.menus,
+        //         { id:prevData.menus.length, reply_id:prevData.menus.length+1, name: '', reply: '', menus:[] }],
+        // }));
     };
 
     const removeMenu = () => {
@@ -108,113 +94,78 @@ const SystemMessageModal:FC = () => {
         // console.log(data);
     };
 
-    const handleMenuUpdate = (index:number, fieldName:string, value:string) => {
-        // updateFields(index, fieldName, value);
-    }
-
     const updateFields = (index:number, fieldName:string, value:string) => {
+        //const updatedMenus = updateMenu(data.menus, index, value);
+        // updatedMenus[index].name = value;
+
+        // console.log([index, fieldName, value].join(" - "));
+
         setData((prevData) => {
-            const updatedMenus = [...prevData.menus];
 
-            updatedMenus[index].id = index+1;
-            updatedMenus[index].reply_id = index+2;
+            console.log(prevData.menus);
 
-            if (fieldName === 'name'){
-                updatedMenus[index].name = value;
-            }else{
-                updatedMenus[index].reply = value;
-            }
-            return { ...prevData, menus: updatedMenus };
+            return {...prevData, menus:prevData.menus}
         });
     };
 
     interface MenuComponentsProps {
-        menu:
-        {
-            id: number;
-            reply_id: number;
-            name: string;
-            reply: string;
-            menus: {};
-        };
+        menu: SystemMenu;
         index: number;
         updateFieldsCallback: (index: number, field: string, value: string) => void;
     }
 
     const MenuComponents:FC<MenuComponentsProps> = ({menu, index, updateFieldsCallback}) => {
-
-        // console.log(menu.menus)
-
         return (
-            <div className='grid gap-3 p-5 mb-5 bg-white dark:bg-neutral-950 rounded-md shadow pb-16'>
-                <div className="grid gap-1.5">
-                    <Label htmlFor={'name' + index}>
-                        Menu button {index+1}
-                    </Label>
-                    <Input
-                        required
-                        id={'name' + index}
-                        placeholder="Can I speak to one of your agents?"
-                        type="text"
-                        autoCapitalize="none"
-                        autoComplete="off"
-                        autoCorrect="off"
-                        disabled={processing}
-                        onChange={(e) => updateFieldsCallback(index, 'name', e.target.value)}
-                        value={menu.name}
-                    />
-                </div>
-                <div className="grid gap-1.5">
-                    <Label htmlFor={'reply' + index}>
-                        Reply for menu button {index+1}
-                    </Label>
-                    <Editor
-                        id={'reply' + index}
-                        placeholder="Sure! Please wait..."
-                        onChange={val => updateFieldsCallback(index, 'reply', val)}
-                        value={menu.reply}
-                    />
-                </div>
-
-            </div>
+            <Accordion type="single" className='px-4 rounded bg-neutral-800' collapsible>
+                <AccordionItem value="item-1" className='mb-1'>
+                    <AccordionTrigger>{menu.name}</AccordionTrigger>
+                    <AccordionContent>
+                        <div className='grid gap-3 p-5 mb-5 bg-white dark:bg-neutral-950 rounded-md shadow pb-16'>
+                            <div className="grid gap-1.5">
+                                <Label htmlFor={'name' + index}>
+                                    Menu button {index+1}
+                                </Label>
+                                <Input
+                                    required
+                                    id={'name' + index}
+                                    placeholder="Can I speak to one of your agents?"
+                                    type="text"
+                                    autoCapitalize="none"
+                                    autoComplete="off"
+                                    autoCorrect="off"
+                                    disabled={processing}
+                                    onChange={(e) => updateFieldsCallback(index, 'name', e.target.value)}
+                                    value={menu.name}
+                                />
+                            </div>
+                            <div className="grid gap-1.5">
+                                <Label htmlFor={'reply' + index}>
+                                    Reply for menu button {index+1}
+                                </Label>
+                                <Editor
+                                    id={'reply' + index}
+                                    placeholder="Sure! Please wait..."
+                                    onChange={val => updateFieldsCallback(index, 'reply', val)}
+                                    value={menu.replies.message}
+                                />
+                            </div>
+                        </div>
+                    </AccordionContent>
+                </AccordionItem>
+            </Accordion>
         )
     }
 
     const renderFields = () => {
-        // {console.log(data.menus)}
+        console.log(data);
 
-        return data.menus.map((menu,index) => (
-            <div key={index} className='grid gap-3 p-5 mb-5 bg-white dark:bg-neutral-950 rounded-md shadow pb-16'>
-                <div className="grid gap-1.5">
-                    <Label htmlFor={'name' + index}>
-                        Menu button {index+1}
-                    </Label>
-                    <Input
-                        required
-                        id={'name' + index}
-                        placeholder="Can I speak to one of your agents?"
-                        type="text"
-                        autoCapitalize="none"
-                        autoComplete="off"
-                        autoCorrect="off"
-                        disabled={processing}
-                        onChange={(e) => updateFields(index, 'name', e.target.value)}
-                        value={menu.name}
-                    />
-                </div>
-                <div className="grid gap-1.5">
-                    <Label htmlFor={'reply' + index}>
-                        Reply for menu button {index+1}
-                    </Label>
-                    <Editor
-                        id={'reply' + index}
-                        placeholder="Sure! Please wait..."
-                        onChange={val => updateFields(index, 'reply', val)}
-                        value={menu.reply}
-                    />
-                </div>
-            </div>
-        ))
+        if (!data.menus) { return; }
+
+        return (
+            data.menus.map((menu,index) =>
+                <MenuComponents key={index} menu={menu} index={index} updateFieldsCallback={updateFields} />
+            )
+        )
     }
 
     const submit: FormEventHandler = (e) => {
@@ -263,8 +214,8 @@ const SystemMessageModal:FC = () => {
                                             autoComplete="off"
                                             autoCorrect="off"
                                             disabled={processing}
-                                            onChange={({target}) => setData('initial_message', target.value)}
-                                            value={data.initial_message}
+                                            onChange={({target}) => setData("message", target.value)}
+                                            value={data.message}
                                         />
                                     </div>
 
@@ -281,7 +232,7 @@ const SystemMessageModal:FC = () => {
                                             </div>
                                         </div>
 
-                                        {renderFields()}
+                                        { renderFields() }
                                     </div>
 
                                     <Button disabled={processing}>

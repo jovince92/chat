@@ -48,39 +48,42 @@ class SystemMessageController extends Controller
      */
     public function store(Request $request)
     {
-        // dd($request);
+        //dd($request);
 
-        SystemMenu::where('sys_message_id', 1)->where('system_type', 0)->delete();
+        // SystemMenu::where('sys_message_id', 1)->where('system_type', 0)->delete();
 
-        $newSysMessage = SystemMessage::updateOrCreate([
-            'id' => 1,
-            'system_type' => 0,
-        ], [
-            'sys_menu_id' => null,
-            'message' => $request->initial_message,
-            'system_type' => 0,
-        ]);
-
-        foreach ($request->menus as $menu) {
-            $newReply = SystemMessage::updateOrCreate([
-                'id' => $menu['reply_id'],
-                'system_type' => 0,
-            ], [
+        $newSysMessage = SystemMessage::updateOrCreate(
+            [
+                'id' => 1,
+                'system_type' => 0
+            ],
+            [
                 'sys_menu_id' => null,
-                'message' => $menu['reply'],
+                'message' => $request->message,
                 'system_type' => 0,
-            ]);
+            ]
+        );
 
-            SystemMenu::updateOrCreate([
-                'sys_message_reply_id' => $newReply->id,
-                'system_type' => 0,
-            ], [
-                'sys_message_id' => $newSysMessage->id,
-                'sys_message_reply_id' => $newReply->id,
-                'name' => $menu['name'],
-                'system_type' => 0,
-            ]);
-        }
+        // foreach ($request->menus as $menu) {
+        //     $newReply = SystemMessage::updateOrCreate([
+        //         'id' => $menu['reply_id'],
+        //         'system_type' => 0,
+        //     ], [
+        //         'sys_menu_id' => null,
+        //         'message' => $menu['reply'],
+        //         'system_type' => 0,
+        //     ]);
+
+        //     SystemMenu::updateOrCreate([
+        //         'sys_message_reply_id' => $newReply->id,
+        //         'system_type' => 0,
+        //     ], [
+        //         'sys_message_id' => $newSysMessage->id,
+        //         'sys_message_reply_id' => $newReply->id,
+        //         'name' => $menu['name'],
+        //         'system_type' => 0,
+        //     ]);
+        // }
     }
 
     public function sub_store(Request $request)
