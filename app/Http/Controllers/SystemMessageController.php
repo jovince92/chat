@@ -129,46 +129,26 @@ class SystemMessageController extends Controller
         }
     }
 
-    public function addMenu (Request $request) {
+    public function addMenu(Request $request)
+    {
+        if (count($request->all()) == 0) {
+            $newMessage = SystemMessage::create([
+                'message' => null,
+                'system_type' => 0,
+                'parent_id' => null
+            ]);
 
-        dd($request);
-
-        // $newSysMessage = SystemMessage::updateOrCreate(
-        //     [
-        //         'id' => 1,
-        //         'system_type' => 0
-        //     ],
-        //     [
-        //         'sys_menu_id' => null,
-        //         'message' => "test123",
-        //         'system_type' => 0,
-        //     ]
-        // );
-
-        // foreach ($request->menus as $menu) {
-        //     $newReply = SystemMessage::updateOrCreate([
-        //         'id' => $menu['reply_id'],
-        //         'system_type' => 0,
-        //     ], [
-        //         'sys_menu_id' => null,
-        //         'message' => $menu['reply'],
-        //         'system_type' => 0,
-        //     ]);
-
-        //     SystemMenu::updateOrCreate([
-        //         'sys_message_reply_id' => $newReply->id,
-        //         'system_type' => 0,
-        //     ], [
-        //         'sys_message_id' => $newSysMessage->id,
-        //         'sys_message_reply_id' => $newReply->id,
-        //         'name' => $menu['name'],
-        //         'system_type' => 0,
-        //     ]);
-        // }
+            SystemMenu::create([
+                'sys_message_id' => $request->sys_message_id,
+                'sys_message_reply_id' => $newMessage->id,
+                'name' => "",
+                'system_type' => 0,
+            ]);
+        }
     }
 
-    public function removeMenu (Request $request) {
-
+    public function removeMenu(Request $request)
+    {
     }
 
     /**

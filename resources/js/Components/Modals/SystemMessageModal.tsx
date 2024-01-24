@@ -61,16 +61,17 @@ const SystemMessageModal:FC = () => {
         if (isOpen === true && sysMessageState.length > 0){
             let initial = sysMessageState[0]
             reset()
-
             setData(initial);
         }else{
             reset()
         }
     }, [sysMessageState])
 
-    const addMenu = () => {
-        router.post(route('sys_message.add_menu'), {},{
-            onSuccess:()=>console.log('system message stored')
+    const addMenu = (msg_id:number) => {
+        router.post(route('sys_message.add_menu'), {sys_message_id:msg_id},{
+            onSuccess:()=>{
+                console.log('system message stored')
+            }
         });
     };
 
@@ -113,12 +114,26 @@ const SystemMessageModal:FC = () => {
     }
 
     const MenuComponents:FC<MenuComponentsProps> = ({menu, index, updateFieldsCallback}) => {
+
+        const [currentMenu, setCurrentMenu] = useState<SystemMenu>(menu);
+
+        const updateMenuAPI = (index: number, name:string, val:string) => {
+            setCurrentMenu((prev) => {
+                if (name == "name") {
+                    prev.name = val;
+                }else{
+                    prev.replies.message = val;
+                }
+                return {...prev}
+            });
+        }
+
         return (
             <Accordion type="single" className='px-4 rounded bg-neutral-800' collapsible>
                 <AccordionItem value="item-1" className='mb-1'>
-                    <AccordionTrigger>{menu.name}</AccordionTrigger>
+                    <AccordionTrigger>{(currentMenu.name ? currentMenu.name : 'button ' + currentMenu.id)}</AccordionTrigger>
                     <AccordionContent>
-                        <div className='grid gap-3 p-5 mb-5 bg-white dark:bg-neutral-950 rounded-md shadow pb-16'>
+                        <div className='grid gap-3 p-5 mb-5 bg-white dark:bg-neutral-950 rounded-md shadow'>
                             <div className="grid gap-1.5">
                                 <Label htmlFor={'name' + index}>
                                     Menu button {index+1}
@@ -132,8 +147,8 @@ const SystemMessageModal:FC = () => {
                                     autoComplete="off"
                                     autoCorrect="off"
                                     disabled={processing}
-                                    onChange={(e) => updateFieldsCallback(index, 'name', e.target.value)}
-                                    value={menu.name}
+                                    onChange={(e) => updateMenuAPI(index, 'name', e.target.value)}
+                                    value={currentMenu.name}
                                 />
                             </div>
                             <div className="grid gap-1.5">
@@ -143,10 +158,13 @@ const SystemMessageModal:FC = () => {
                                 <Editor
                                     id={'reply' + index}
                                     placeholder="Sure! Please wait..."
-                                    onChange={val => updateFieldsCallback(index, 'reply', val)}
-                                    value={menu.replies.message}
+                                    onChange={val => updateMenuAPI(index, 'reply', val)}
+                                    value={currentMenu.replies.message}
                                 />
                             </div>
+
+                            <SystemMessageComponent data={currentMenu.replies} />
+
                         </div>
                     </AccordionContent>
                 </AccordionItem>
@@ -154,15 +172,34 @@ const SystemMessageModal:FC = () => {
         )
     }
 
-    const renderFields = () => {
-        console.log(data);
+    const SystemMessageComponent:FC<{data:SystemMessage}> = ({data}) => {
 
-        if (!data.menus) { return; }
+        const [ sysMessage, setSysMessage ] = useState<SystemMessage>(data);
+
+        if (!sysMessage.menus) { return; }
 
         return (
-            data.menus.map((menu,index) =>
-                <MenuComponents key={index} menu={menu} index={index} updateFieldsCallback={updateFields} />
-            )
+            (sysMessage.menus.length > 0) ?
+            <div className='max-h-[20rem] bg-gray-100 dark:bg-neutral-900 p-4 rounded overflow-auto'>
+                <div className='flex items-center mb-4'>
+                    <p className='font-bold text-xs'>MENUS</p>
+                    <div className='flex items-center ml-auto'>
+                        <button type="button" onClick={()=>addMenu(sysMessage.id)} className='text-green-600 mr-0.5'>
+                            <PlusSquare/>
+                        </button>
+                        <button type="button" onClick={removeMenu} className='text-red-600'>
+                            <XSquare/>
+                        </button>
+                    </div>
+                </div>
+                {
+                    sysMessage.menus.map((menu,index) =>
+                        menu && <MenuComponents key={index} menu={menu} index={index} updateFieldsCallback={updateFields} />
+                    )
+                }
+            </div>
+            :
+            <></>
         )
     }
 
@@ -191,7 +228,6 @@ const SystemMessageModal:FC = () => {
                     <DialogDescription className='text-center text-muted-foreground'>
                     </DialogDescription>
                 </DialogHeader>
-                {/* <ScrollArea className='mt-7 max-h-[26.25rem] p-5'></ScrollArea> */}
 
                 <Accordion type="single" collapsible className='max-h-[35rem]'>
                     <AccordionItem value="item-1">
@@ -200,10 +236,6 @@ const SystemMessageModal:FC = () => {
                             <form onSubmit={submit}>
                                 <div className="grid gap-6">
                                     <div className="grid gap-1.5">
-                                        {/* <Label htmlFor="initial_message" className='mb-2'>
-                                            Initial message when user sends a message
-                                        </Label> */}
-
                                         <textarea className='rounded resize-none dark:bg-neutral-950'
                                             required
                                             id="initial_message"
@@ -217,21 +249,7 @@ const SystemMessageModal:FC = () => {
                                         />
                                     </div>
 
-                                    <div className='max-h-[20rem] bg-gray-100 dark:bg-neutral-900 p-4 rounded overflow-auto'>
-                                        <div className='flex items-center mb-4'>
-                                            <p className='font-bold text-xs'>MENUS</p>
-                                            <div className='flex items-center ml-auto'>
-                                                <button type="button" onClick={addMenu} className='text-green-600 mr-0.5'>
-                                                    <PlusSquare/>
-                                                </button>
-                                                <button type="button" onClick={removeMenu} className='text-red-600'>
-                                                    <XSquare/>
-                                                </button>
-                                            </div>
-                                        </div>
-
-                                        { renderFields() }
-                                    </div>
+                                    <SystemMessageComponent data={data} />
 
                                     <Button disabled={processing}>
                                         {processing && (<Loader className="mr-2 h-4 w-4 animate-spin" />)}
@@ -249,7 +267,7 @@ const SystemMessageModal:FC = () => {
                         </AccordionContent>
                     </AccordionItem>
                 </Accordion>
-                </DialogContent>
+            </DialogContent>
         </Dialog>
     )
 }
