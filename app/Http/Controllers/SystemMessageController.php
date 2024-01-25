@@ -50,19 +50,25 @@ class SystemMessageController extends Controller
     {
         //dd($request);
 
-        // SystemMenu::where('sys_message_id', 1)->where('system_type', 0)->delete();
+        SystemMessage::where('id', $request->reply_id)->update([
+            'message' => $request->content
+        ]);
 
-        $newSysMessage = SystemMessage::updateOrCreate(
-            [
-                'id' => 1,
-                'system_type' => 0
-            ],
-            [
-                'sys_menu_id' => null,
-                'message' => $request->message,
-                'system_type' => 0,
-            ]
-        );
+        SystemMenu::where('id', $request->id)->update([
+            'name' => $request->menu
+        ]);
+
+        // $newSysMessage = SystemMessage::updateOrCreate(
+        //     [
+        //         'id' => 1,
+        //         'system_type' => 0
+        //     ],
+        //     [
+        //         'sys_menu_id' => null,
+        //         'message' => $request->message,
+        //         'system_type' => 0,
+        //     ]
+        // );
 
         // foreach ($request->menus as $menu) {
         //     $newReply = SystemMessage::updateOrCreate([
@@ -131,24 +137,24 @@ class SystemMessageController extends Controller
 
     public function addMenu(Request $request)
     {
-        if (count($request->all()) == 0) {
-            $newMessage = SystemMessage::create([
-                'message' => null,
-                'system_type' => 0,
-                'parent_id' => null
-            ]);
-
-            SystemMenu::create([
-                'sys_message_id' => $request->sys_message_id,
-                'sys_message_reply_id' => $newMessage->id,
-                'name' => "",
-                'system_type' => 0,
-            ]);
-        }
+        $newMessage = SystemMessage::create([
+            'message' => null,
+            'system_type' => 0,
+            'parent_id' => null
+        ]);
+        SystemMenu::create([
+            'sys_message_id' => $request->sys_message_id,
+            'sys_message_reply_id' => $newMessage->id,
+            'name' => "",
+            'system_type' => 0,
+        ]);
     }
 
     public function removeMenu(Request $request)
     {
+        $lastMenuItem = SystemMenu::where('sys_message_id', $request->sys_message_id)->orderBy('sys_message_reply_id', 'desc')->first();
+        SystemMessage::where('id', $lastMenuItem->sys_message_reply_id)->delete();
+        SystemMenu::where('id', $lastMenuItem->id)->delete();
     }
 
     /**

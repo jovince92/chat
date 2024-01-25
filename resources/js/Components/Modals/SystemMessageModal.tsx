@@ -67,31 +67,31 @@ const SystemMessageModal:FC = () => {
         }
     }, [sysMessageState])
 
-    const addMenu = (msg_id:number) => {
-        router.post(route('sys_message.add_menu'), {sys_message_id:msg_id},{
-            onSuccess:()=>{
-                console.log('system message stored')
-            }
-        });
-    };
+    // const addMenu = (msg_id:number) => {
+    //     router.post(route('sys_message.add_menu'), {sys_message_id:msg_id},{
+    //         onSuccess:()=>{
+    //             console.log('system message stored')
+    //         }
+    //     });
+    // };
 
-    const removeMenu = () => {
+    // const removeMenu = () => {
 
-        setIsRemove(true);
+    //     setIsRemove(true);
 
-        setData((prevData) => {
-            const updatedMenus = [...prevData.menus];
-            if (updatedMenus.length===1) {return { ...prevData, menus: updatedMenus }; }
-            updatedMenus.splice(updatedMenus.length-1, 1);
-            return { ...prevData, menus: updatedMenus };
-        });
+    //     setData((prevData) => {
+    //         const updatedMenus = [...prevData.menus];
+    //         if (updatedMenus.length===1) {return { ...prevData, menus: updatedMenus }; }
+    //         updatedMenus.splice(updatedMenus.length-1, 1);
+    //         return { ...prevData, menus: updatedMenus };
+    //     });
 
-        // if (data.menus.length===1) { return; }
-        // const updatedMenus = data.menus.splice(data.menus.length-1, 1);
-        // setData({...data, menus: updatedMenus});
+    //     // if (data.menus.length===1) { return; }
+    //     // const updatedMenus = data.menus.splice(data.menus.length-1, 1);
+    //     // setData({...data, menus: updatedMenus});
 
-        // console.log(data);
-    };
+    //     // console.log(data);
+    // };
 
     const updateFields = (index:number, fieldName:string, value:string) => {
         //const updatedMenus = updateMenu(data.menus, index, value);
@@ -126,12 +126,25 @@ const SystemMessageModal:FC = () => {
                 }
                 return {...prev}
             });
+
+            router.post(route('sys_message.store'),
+                {
+                    id:currentMenu.id,
+                    menu:currentMenu.name,
+                    reply_id:currentMenu.replies.id,
+                    content:currentMenu.replies.message
+                },
+                {
+                    preserveState:true,
+                }
+            );
+
         }
 
         return (
             <Accordion type="single" className='px-4 rounded bg-neutral-800' collapsible>
                 <AccordionItem value="item-1" className='mb-1'>
-                    <AccordionTrigger>{(currentMenu.name ? currentMenu.name : 'button ' + currentMenu.id)}</AccordionTrigger>
+                    <AccordionTrigger>{(currentMenu.name ? currentMenu.name : <i>{' Menu Button ' + (index+1)}</i>)}</AccordionTrigger>
                     <AccordionContent>
                         <div className='grid gap-3 p-5 mb-5 bg-white dark:bg-neutral-950 rounded-md shadow'>
                             <div className="grid gap-1.5">
@@ -151,6 +164,7 @@ const SystemMessageModal:FC = () => {
                                     value={currentMenu.name}
                                 />
                             </div>
+
                             <div className="grid gap-1.5">
                                 <Label htmlFor={'reply' + index}>
                                     Reply for menu button {index+1}
@@ -163,8 +177,9 @@ const SystemMessageModal:FC = () => {
                                 />
                             </div>
 
-                            <SystemMessageComponent data={currentMenu.replies} />
-
+                            <div className="grid gap-1.5 mt-12">
+                                <SystemMessageComponent data={currentMenu.replies} />
+                            </div>
                         </div>
                     </AccordionContent>
                 </AccordionItem>
@@ -178,28 +193,40 @@ const SystemMessageModal:FC = () => {
 
         if (!sysMessage.menus) { return; }
 
+        const addMenu = (msg_id:number) => {
+            router.post(route('sys_message.add_menu'), {sys_message_id:msg_id},{
+                preserveState:true,
+            });
+        };
+
+        const removeMenu = (msg_id:number) => {
+            router.post(route('sys_message.remove_menu'), {sys_message_id:msg_id},{
+                preserveState:true,
+            });
+        }
+
         return (
-            (sysMessage.menus.length > 0) ?
             <div className='max-h-[20rem] bg-gray-100 dark:bg-neutral-900 p-4 rounded overflow-auto'>
-                <div className='flex items-center mb-4'>
-                    <p className='font-bold text-xs'>MENUS</p>
+                <div className={cn('flex items-center ', sysMessage.menus.length > 0 ? 'mb-4' : '')}>
+                    <p className='font-bold text-xs truncate'>{sysMessage.menus.length > 0 ? "MENUS for " + data.message : "MENU"}</p>
                     <div className='flex items-center ml-auto'>
                         <button type="button" onClick={()=>addMenu(sysMessage.id)} className='text-green-600 mr-0.5'>
                             <PlusSquare/>
                         </button>
-                        <button type="button" onClick={removeMenu} className='text-red-600'>
+                        <button type="button" onClick={()=>removeMenu(sysMessage.id)} className='text-red-600'>
                             <XSquare/>
                         </button>
                     </div>
                 </div>
                 {
-                    sysMessage.menus.map((menu,index) =>
-                        menu && <MenuComponents key={index} menu={menu} index={index} updateFieldsCallback={updateFields} />
-                    )
+                    (sysMessage.menus.length > 0) ?
+                        sysMessage.menus.map((menu,index) =>
+                            menu && <MenuComponents key={index} menu={menu} index={index} updateFieldsCallback={updateFields} />
+                        )
+                    :
+                    <></>
                 }
             </div>
-            :
-            <></>
         )
     }
 
@@ -251,10 +278,10 @@ const SystemMessageModal:FC = () => {
 
                                     <SystemMessageComponent data={data} />
 
-                                    <Button disabled={processing}>
+                                    {/* <Button disabled={processing}>
                                         {processing && (<Loader className="mr-2 h-4 w-4 animate-spin" />)}
                                         Save
-                                    </Button>
+                                    </Button> */}
                                 </div>
                             </form>
                         </AccordionContent>
