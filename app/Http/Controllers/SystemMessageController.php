@@ -31,7 +31,7 @@ class SystemMessageController extends Controller
         //     ->get();
         return SystemMenu::with(['replies', 'replies.menus'])
             ->where('system_type', 1)
-            ->where('parent_id', null)
+            // ->where('parent_id', null)
             ->get();
     }
 
