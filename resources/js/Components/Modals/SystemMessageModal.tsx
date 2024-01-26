@@ -21,7 +21,7 @@ import {
     AccordionContent,
     AccordionItem,
     AccordionTrigger,
-  } from "../ui/accordion"
+} from "../ui/accordion"
 import Editor from '../Editor';
 
 const roleIconMap ={
@@ -31,6 +31,7 @@ const roleIconMap ={
 }
 
 const SystemMessageModal:FC = () => {
+    
     const {isOpen,onClose,type} = useModal();
     const {current_server,system_message} = usePage<PageProps>().props;
     const {users}=current_server;
@@ -40,65 +41,20 @@ const SystemMessageModal:FC = () => {
     const OPEN = useMemo(()=>isOpen&&type==='SystemMessage',[isOpen,type]);
 
     const [isRemove, setIsRemove] = useState<boolean>(false);
-    const [sysMessageState, setSysMessageState] = useState<SystemMessage[]>(system_message);
-
+    
     const { data, setData, post, get, processing, errors, reset } = useForm<SystemMessage>();
 
     useEffect(()=>{
-        if (isOpen === true && sysMessageState.length > 0){
-            axios
-            .get(route('sys_message.index'))
-            .then(function(response){
-                // console.log(response.data);
-                setSysMessageState(response.data);
-            })
+        if (OPEN){
+            setData(system_message[0])
         }else{
             reset()
         }
-    },[isOpen])
+    },[OPEN,system_message])
 
-    useEffect(()=>{
-        if (isOpen === true && sysMessageState.length > 0){
-            let initial = sysMessageState[0]
-            reset()
-            setData(initial);
-        }else{
-            reset()
-        }
-    }, [sysMessageState])
-
-    // const addMenu = (msg_id:number) => {
-    //     router.post(route('sys_message.add_menu'), {sys_message_id:msg_id},{
-    //         onSuccess:()=>{
-    //             console.log('system message stored')
-    //         }
-    //     });
-    // };
-
-    // const removeMenu = () => {
-
-    //     setIsRemove(true);
-
-    //     setData((prevData) => {
-    //         const updatedMenus = [...prevData.menus];
-    //         if (updatedMenus.length===1) {return { ...prevData, menus: updatedMenus }; }
-    //         updatedMenus.splice(updatedMenus.length-1, 1);
-    //         return { ...prevData, menus: updatedMenus };
-    //     });
-
-    //     // if (data.menus.length===1) { return; }
-    //     // const updatedMenus = data.menus.splice(data.menus.length-1, 1);
-    //     // setData({...data, menus: updatedMenus});
-
-    //     // console.log(data);
-    // };
 
     const updateFields = (index:number, fieldName:string, value:string) => {
-        //const updatedMenus = updateMenu(data.menus, index, value);
-        // updatedMenus[index].name = value;
-
-        // console.log([index, fieldName, value].join(" - "));
-
+    
         setData((prevData) => {
 
             console.log(prevData.menus);
@@ -114,10 +70,19 @@ const SystemMessageModal:FC = () => {
     }
 
     const MenuComponents:FC<MenuComponentsProps> = ({menu, index, updateFieldsCallback}) => {
-
+        
         const [currentMenu, setCurrentMenu] = useState<SystemMenu>(menu);
 
         const updateMenuAPI = (index: number, name:string, val:string) => {
+            
+            axios.post(route('sys_message.store'),
+                {
+                    id:menu.id,
+                    menu:name==='name'?val:menu.name,
+                    reply_id:menu.replies.id,
+                    content:name!=='name'?val:(menu.replies.message),
+                },
+            );
             setCurrentMenu((prev) => {
                 if (name == "name") {
                     prev.name = val;
@@ -125,25 +90,12 @@ const SystemMessageModal:FC = () => {
                     prev.replies.message = val;
                 }
                 return {...prev}
-            });
-
-            router.post(route('sys_message.store'),
-                {
-                    id:currentMenu.id,
-                    menu:currentMenu.name,
-                    reply_id:currentMenu.replies.id,
-                    content:currentMenu.replies.message
-                },
-                {
-                    preserveState:true,
-                }
-            );
-
+            })
         }
 
         return (
-            <Accordion type="single" className='px-4 rounded bg-neutral-800' collapsible>
-                <AccordionItem value="item-1" className='mb-1'>
+            <Accordion  type="single" className='px-4 rounded bg-neutral-800' collapsible>
+                <AccordionItem  value="item-1" className='mb-1' >
                     <AccordionTrigger>{(currentMenu.name ? currentMenu.name : <i>{' Menu Button ' + (index+1)}</i>)}</AccordionTrigger>
                     <AccordionContent>
                         <div className='grid gap-3 p-5 mb-5 bg-white dark:bg-neutral-950 rounded-md shadow'>
@@ -187,48 +139,56 @@ const SystemMessageModal:FC = () => {
         )
     }
 
-    const SystemMessageComponent:FC<{data:SystemMessage}> = ({data}) => {
+const SystemMessageComponent:FC<{data:SystemMessage}> = ({data}) => {
 
-        const [ sysMessage, setSysMessage ] = useState<SystemMessage>(data);
+    const [ sysMessage, setSysMessage ] = useState<SystemMessage>(data);
 
-        if (!sysMessage.menus) { return; }
+    if (!sysMessage.menus) { return; }
 
-        const addMenu = (msg_id:number) => {
-            router.post(route('sys_message.add_menu'), {sys_message_id:msg_id},{
-                preserveState:true,
-            });
-        };
+    const addMenu = (msg_id:number) => {
+        router.post(route('sys_message.add_menu'), {sys_message_id:msg_id},{
+            preserveState:true,
+            onError:e=>{
+                toast({title:'Internal Error',description:'Please Try Again'})
+                console.error(e);
+            }
+        });
+    };
 
-        const removeMenu = (msg_id:number) => {
-            router.post(route('sys_message.remove_menu'), {sys_message_id:msg_id},{
-                preserveState:true,
-            });
-        }
-
-        return (
-            <div className='max-h-[20rem] bg-gray-100 dark:bg-neutral-900 p-4 rounded overflow-auto'>
-                <div className={cn('flex items-center ', sysMessage.menus.length > 0 ? 'mb-4' : '')}>
-                    <p className='font-bold text-xs truncate'>{sysMessage.menus.length > 0 ? "MENUS for " + data.message : "MENU"}</p>
-                    <div className='flex items-center ml-auto'>
-                        <button type="button" onClick={()=>addMenu(sysMessage.id)} className='text-green-600 mr-0.5'>
-                            <PlusSquare/>
-                        </button>
-                        <button type="button" onClick={()=>removeMenu(sysMessage.id)} className='text-red-600'>
-                            <XSquare/>
-                        </button>
-                    </div>
-                </div>
-                {
-                    (sysMessage.menus.length > 0) ?
-                        sysMessage.menus.map((menu,index) =>
-                            menu && <MenuComponents key={index} menu={menu} index={index} updateFieldsCallback={updateFields} />
-                        )
-                    :
-                    <></>
-                }
-            </div>
-        )
+    const removeMenu = (msg_id:number) => {
+        router.post(route('sys_message.remove_menu'), {sys_message_id:msg_id},{
+            preserveState:true,
+            onError:e=>{
+                toast({title:'Internal Error',description:'Please Try Again'})
+                console.error(e);
+            }
+        });
     }
+
+    return (
+        <div className='max-h-[20rem] bg-gray-100 dark:bg-neutral-900 p-4 rounded overflow-auto'>
+            <div className={cn('flex items-center ', sysMessage.menus.length > 0 ? 'mb-4' : '')}>
+                <p className='font-bold text-xs truncate'>{sysMessage.menus.length > 0 ? "MENUS for " + data.message : "MENU"}</p>
+                <div className='flex items-center ml-auto'>
+                    <button type="button" onClick={()=>addMenu(sysMessage.id)} className='text-green-600 mr-0.5'>
+                        <PlusSquare/>
+                    </button>
+                    <button type="button" onClick={()=>removeMenu(sysMessage.id)} className='text-red-600'>
+                        <XSquare/>
+                    </button>
+                </div>
+            </div>
+            {
+                (sysMessage.menus.length > 0) ?
+                    sysMessage.menus.map((menu,index) =>
+                        menu && <MenuComponents key={index} menu={menu} index={index} updateFieldsCallback={updateFields} />
+                    )
+                :
+                <></>
+            }
+        </div>
+    )
+}
 
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
@@ -246,7 +206,7 @@ const SystemMessageModal:FC = () => {
     };
 
     if(!OPEN) return null;
-
+    
     return (
         <Dialog open={OPEN} onOpenChange={onClose}>
             <DialogContent className='overflow-auto lg:max-w-4xl'>
@@ -272,7 +232,7 @@ const SystemMessageModal:FC = () => {
                                             autoCorrect="off"
                                             disabled={processing}
                                             onChange={({target}) => setData("message", target.value)}
-                                            value={data.message}
+                                            value={data.message || ""}
                                         />
                                     </div>
 
@@ -290,7 +250,7 @@ const SystemMessageModal:FC = () => {
                     <AccordionItem value="item-2">
                         <AccordionTrigger>Sub Menus</AccordionTrigger>
                         <AccordionContent>
-                            <SubMenus messageState={sysMessageState} />
+                            <SubMenus messageState={system_message} />
                         </AccordionContent>
                     </AccordionItem>
                 </Accordion>
@@ -435,10 +395,10 @@ const SubMenus:FC<SubMenusProps> = ({messageState}) => {
                     <div className='flex items-center mb-4'>
                         <p className='font-bold text-xs'>MENUS</p>
                         <div className='flex items-center ml-auto'>
-                            <button onClick={addMenu} className='text-green-600 mr-0.5'>
+                            <button type='button' onClick={addMenu} className='text-green-600 mr-0.5'>
                                 <PlusSquare/>
                             </button>
-                            <button onClick={removeMenu} className='text-red-600'>
+                            <button type='button' onClick={removeMenu} className='text-red-600'>
                                 <XSquare/>
                             </button>
                         </div>

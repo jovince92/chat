@@ -264,7 +264,7 @@ const SystemMessageModal:FC = () => {
                                             autoCorrect="off"
                                             disabled={processing}
                                             onChange={({target}) => setData('initial_message', target.value)}
-                                            value={data.initial_message}
+                                            value={data.initial_message || ""}
                                         />
                                     </div>
 

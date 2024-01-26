@@ -287,7 +287,7 @@ const FeedbackModal:FC<FeedbackModalProps> = ({isOpen,onClose,channel_id,onFeedb
 
                                 <div className='w-full'>
                                     <Label className='uppercase text-xs font-bold'>Feedback / Comment</Label>
-                                    <textarea onChange={({target})=>setFeedbackComment(target.value)}
+                                    <textarea value={feedbackComment} onChange={({target})=>setFeedbackComment(target.value)}
                                         className='w-full border-0 focus-visible:!ring-0 focus-visible:!ring-offset-0 resize-none rounded-md dark:bg-zinc-700' />
                                 </div>
                             </div>
