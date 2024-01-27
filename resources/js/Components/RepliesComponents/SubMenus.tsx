@@ -17,10 +17,10 @@ const SubMenus:FC<Props> = ({sub_menus}) => {
     }
     const onAdd = () =>{
         router.post(route('system_replies.store'),{
-            
-        },{        
+
+        },{
             onStart:()=>setAdding(true),
-            onFinish:()=>setAdding(false),    
+            onFinish:()=>setAdding(false),
             onError:e=>{
                 console.error(e);
                 toast({description: 'An error occured while saving your message',variant:'destructive'});
@@ -41,13 +41,13 @@ const SubMenus:FC<Props> = ({sub_menus}) => {
                             }
                         </button>
                     </div>
-                    <div className='flex flex-col space-y-10  rounded-lg'>
+                    <div className='flex flex-col space-y-1  rounded-lg'>
                         {
                             sub_menus.map(menu=> <MenuItem  key={menu.id} menu={menu} expanded={expanded} isExpanded={expanded[menu.id]} onExpand={id=>onExpand(id)} />)
                         }
                     </div>
                 </div>
-                
+
             </div>
         </div>
     )

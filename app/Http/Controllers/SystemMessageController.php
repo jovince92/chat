@@ -31,7 +31,6 @@ class SystemMessageController extends Controller
         //     ->get();
         return SystemMenu::with(['replies', 'replies.menus'])
             ->where('system_type', 1)
-            ->where('parent_id', null)
             ->get();
     }
 
@@ -48,8 +47,6 @@ class SystemMessageController extends Controller
      */
     public function store(Request $request)
     {
-        //dd($request);
-
         SystemMessage::where('id', $request->reply_id)->update([
             'message' => $request->content
         ]);
@@ -57,39 +54,6 @@ class SystemMessageController extends Controller
         SystemMenu::where('id', $request->id)->update([
             'name' => $request->menu
         ]);
-
-        // $newSysMessage = SystemMessage::updateOrCreate(
-        //     [
-        //         'id' => 1,
-        //         'system_type' => 0
-        //     ],
-        //     [
-        //         'sys_menu_id' => null,
-        //         'message' => $request->message,
-        //         'system_type' => 0,
-        //     ]
-        // );
-
-        // foreach ($request->menus as $menu) {
-        //     $newReply = SystemMessage::updateOrCreate([
-        //         'id' => $menu['reply_id'],
-        //         'system_type' => 0,
-        //     ], [
-        //         'sys_menu_id' => null,
-        //         'message' => $menu['reply'],
-        //         'system_type' => 0,
-        //     ]);
-
-        //     SystemMenu::updateOrCreate([
-        //         'sys_message_reply_id' => $newReply->id,
-        //         'system_type' => 0,
-        //     ], [
-        //         'sys_message_id' => $newSysMessage->id,
-        //         'sys_message_reply_id' => $newReply->id,
-        //         'name' => $menu['name'],
-        //         'system_type' => 0,
-        //     ]);
-        // }
     }
 
     public function sub_store(Request $request)
