@@ -40,7 +40,7 @@ class HandleInertiaRequests extends Middleware
                 'user' => $request->user(),
             ],
             'app_name' => config('app.name'),
-            'replies' => SystemMenu::where('system_type', 0)->get(),
+            'replies' => SystemMenu::where('system_type', 0)->where('sys_message_id', 1)->get(),
             'servers' => Auth::check() ? $request->user()->servers : [],
             // 'system_message' => SystemMessage::with(['menus', 'menus.replies', 'menus.replies.menus', 'menus.replies.menus.replies'])
             //     ->where('system_type', 0)
@@ -54,7 +54,7 @@ class HandleInertiaRequests extends Middleware
                 ...(new Ziggy)->toArray(),
                 'location' => $request->url(),
             ],
-            
+
 
             //
 

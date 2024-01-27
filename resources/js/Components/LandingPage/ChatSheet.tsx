@@ -49,13 +49,14 @@ const ChatSheet:FC<Props> = ({isOpen,channel:OriginalChannel,onClose,user}) => {
 
     const onReply = (reply:string,system_message_id:number)=>{
         doScrollToView(true);
-        setHasClickedReply(true);
+        // setHasClickedReply(true);
         axios.post(apiRoute,{
             message:reply,
             system_message_id
         })
         .catch(()=>{
-            toast({title:'Internal Error',description:`Can't send message. Please try again!`});
+            // toast({title:'Internal Error',description:`Can't send message. Please try again!`});
+            console.log("Internal Error.Can't send message. Please try again!");
             setHasClickedReply(false);
         })
         .finally(()=>doScrollToView(false));
@@ -145,8 +146,11 @@ const ChatSheet:FC<Props> = ({isOpen,channel:OriginalChannel,onClose,user}) => {
                                         <div className='py-2 space-x-2 w-max overflow-y-auto'>
                                             {subMenusState?
                                                 subMenusState.map(menu=>
+                                                        menu.replies.menus.length?
                                                         <button key={menu.id} onClick={()=>onReply(menu.name,menu.id)} className='px-4 py-1 border rounded-lg
                                                             hover:bg-neutral-100 hover:shadow dark:hover:bg-neutral-900'>{menu.name}</button>
+                                                        :
+                                                        <></>
                                                     )
                                                 :
                                                 <></>
@@ -183,7 +187,7 @@ const ChatSheet:FC<Props> = ({isOpen,channel:OriginalChannel,onClose,user}) => {
                     </div>
                 </AlertDialogContent>
             </AlertDialog>
-        
+
             <FeedbackModal onFeedback={(rating)=>{setChannel(val=>({...val!,rating}))}} channel_id={channel.id} isOpen={showFeedbackModal} onClose={()=>setShowFeedbackModal(false)} />
 
             <MessageFileModal />

@@ -83,7 +83,7 @@ const ChatSheetItem:FC<ChatItemProps> = ({message,type,channel,onReply,hasClicke
         }
     },[input,isEditing]);
 
-    console.log(message.system_message);
+    // console.log(message.system_message);
 
     return (
         <div className='relative group flex items-center hover:bg-neutral-50 dark:hover:bg-neutral-900 p-3.5 transition w-full rounded hover:shadow'>
@@ -170,9 +170,12 @@ const ChatSheetItem:FC<ChatItemProps> = ({message,type,channel,onReply,hasClicke
                     }
                     {
                         (message.system_message?.menus||[]).map((menu)=>(
+                            menu.replies.menus.length > 0?
                             <div key={menu.id} className='flex items-center gap-x-1.5 mt-1.5'>
                                 <Button onClick={()=>onClick(menu.name,menu.sys_message_reply_id)} size='sm' variant='outline'>{menu.name}</Button>
                             </div>
+                            :
+                            <></>
                         ))
                     }
                 </div>

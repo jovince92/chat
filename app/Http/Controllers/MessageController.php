@@ -16,9 +16,9 @@ class MessageController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index($server_id,$channel_id)
+    public function index($server_id, $channel_id)
     {
-        return Message::withTrashed()->with(['user'])->where('channel_id',$channel_id)->orderBy('created_at','desc')->paginate(10);
+        return Message::withTrashed()->with(['user'])->where('channel_id', $channel_id)->orderBy('created_at', 'desc')->paginate(10);
     }
 
     /**
@@ -32,53 +32,64 @@ class MessageController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request,$server_id,$channel_id)
+    public function store(Request $request, $server_id, $channel_id)
     {
         $request->validate([
             'image' => 'mimes:jpeg,png,jpg,webp,pdf'
         ]);
         //dd([$request,'channel_id'=>$channel_id,'server_id'=>$server_id]);
-        $new_msg=Message::create([
-            'user_id'=>Auth::id(),
-            'channel_id'=>$channel_id,
-            'content'=>$request->message??"",
-            
-            
+        $new_msg = Message::create([
+            'user_id' => Auth::id(),
+            'channel_id' => $channel_id,
+            'content' => $request->message ?? "",
+
+
         ]);
 
-        $image = $request->file('image') ;
-        if($image){
-            $image_name=$new_msg->id.'_'.$image->getClientOriginalName();
-            $location='uploads/chat_images/server_'.strval($server_id).'/';
-            $path=public_path($location);
+        $image = $request->file('image');
+        if ($image) {
+            $image_name = $new_msg->id . '_' . $image->getClientOriginalName();
+            $location = 'uploads/chat_images/server_' . strval($server_id) . '/';
+            $path = public_path($location);
             if (!file_exists($path)) {
-                File::makeDirectory($path,0777,true);
+                File::makeDirectory($path, 0777, true);
             }
-            $new_image = $location.$image_name;
+            $new_image = $location . $image_name;
             $request->file('image')->move($path, $new_image);
             $new_msg->update([
-                'file'=>$new_image
+                'file' => $new_image
             ]);
         }
 
-        
-        
+
+
         broadcast(new NewChatMessageEvent($new_msg->load(['user'])));
         sleep(1);
-        $response = SystemMenu::where('name',$request->message)->first();
-        if($response){
-            $response_reply=SystemMessage::find($response->sys_message_reply_id);
-            
-            
+        $response = SystemMenu::where('name', $request->message)->first();
+        if ($response) {
+            $response_reply = SystemMessage::find($response->sys_message_reply_id);
+
+
             $response_reply->message;
 
-            $response_msg=Message::create([
-                'is_system_msg'=>1,
-                'user_id'=>1,
-                'channel_id'=>$channel_id,
-                'content'=>$response_reply->message,
-                'system_message_id'=>$request->system_message_id,
+            // $response_msg = Message::create([
+            //     'is_system_msg' => 1,
+            //     'user_id' => 1,
+            //     'channel_id' => $channel_id,
+            //     'content' => $response_reply->message == null ? "" : $response_reply->message,
+            //     'system_message_id' => $request->system_message_id,
+            // ]);
+
+            $response_msg = Message::create([
+                'is_system_msg' => 1,
+                'user_id' => 1,
+                'channel_id' => $channel_id,
+                'content' => $response_reply->message,
             ]);
+            @$response_msg->update([
+                'system_message_id' => $request->system_message_id,
+            ]);
+
             broadcast(new NewChatMessageEvent($response_msg->load(['user'])));
         }
         return $new_msg->load(['user']);
@@ -103,13 +114,13 @@ class MessageController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request,$server_id,$channel_id)
+    public function update(Request $request, $server_id, $channel_id)
     {
-        
-        $msg=Message::find($request->message_id);
-        
+
+        $msg = Message::find($request->message_id);
+
         $msg->update([
-            'content'=>$request->message??"",
+            'content' => $request->message ?? "",
         ]);
         broadcast(new MessageUpdateEvent($msg->load(['user'])));
     }
@@ -117,18 +128,19 @@ class MessageController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy( $server_id,$channel_id,$message_id,)
+    public function destroy($server_id, $channel_id, $message_id,)
     {
-    
-        
-        $msg=Message::find($message_id);
-        
+
+
+        $msg = Message::find($message_id);
+
         @unlink(public_path($msg->getAttributes()['file']));
         $msg->delete();
-        broadcast(new MessageUpdateEvent(Message::with(['user'])->withTrashed()->where('id',$message_id)->first()));
+        broadcast(new MessageUpdateEvent(Message::with(['user'])->withTrashed()->where('id', $message_id)->first()));
     }
 
-    public function test(Request $request){
-        return ['messages'=>Message::with(['user'])->orderBy('id','desc')->paginate(2)];
+    public function test(Request $request)
+    {
+        return ['messages' => Message::with(['user'])->orderBy('id', 'desc')->paginate(2)];
     }
 }
