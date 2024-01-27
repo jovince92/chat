@@ -6,6 +6,7 @@ use App\Http\Controllers\LiveKitController;
 use App\Http\Controllers\MemberController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\RepliesController;
 use App\Http\Controllers\ServerController;
 use App\Http\Controllers\SupportController;
 use App\Http\Controllers\SystemMessageController;
@@ -101,6 +102,19 @@ Route::prefix('backend')->middleware(['auth'])->group(function () {
         Route::post('/role_change', [MemberController::class, 'role_change'])->name('role_change');
         Route::post('/kick', [MemberController::class, 'kick'])->name('kick');
         Route::post('/register', [MemberController::class, 'register'])->name('register');
+    });
+
+
+    Route::prefix('system_replies')->name('system_replies.')->group(function () {
+        Route::get('/', [RepliesController::class, 'index'])->name('index');        
+        Route::post('/update', [RepliesController::class, 'update'])->name('update');    
+        Route::post('/store', [RepliesController::class, 'store'])->name('store');
+                
+        Route::prefix('menus')->name('menus.')->group(function () { 
+            Route::post('/store', [RepliesController::class, 'menus_store'])->name('store');
+            Route::post('/update', [RepliesController::class, 'menus_update'])->name('update');
+            Route::post('/destroy', [RepliesController::class, 'menus_destroy'])->name('destroy');
+        });
     });
 });
 
