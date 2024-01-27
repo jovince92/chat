@@ -42,6 +42,8 @@ class MessageController extends Controller
             'user_id'=>Auth::id(),
             'channel_id'=>$channel_id,
             'content'=>$request->message??"",
+            
+            
         ]);
 
         $image = $request->file('image') ;
@@ -75,6 +77,7 @@ class MessageController extends Controller
                 'user_id'=>1,
                 'channel_id'=>$channel_id,
                 'content'=>$response_reply->message,
+                'system_message_id'=>$request->system_message_id,
             ]);
             broadcast(new NewChatMessageEvent($response_msg->load(['user'])));
         }

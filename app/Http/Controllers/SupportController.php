@@ -45,7 +45,7 @@ class SupportController extends Controller
         $new_msg = Message::create([
             'user_id' => 1,
             'channel_id' => $channel->id,
-            'content' => SystemMessage::find(1)->message ??  'Hi! How Can We Help You?',
+            'content' => SystemMessage::where('system_type', 0)->where('parent_id', null)->first()->message ??  'Hi! How Can We Help You?',
             'is_system_msg' => 1
         ]);
 

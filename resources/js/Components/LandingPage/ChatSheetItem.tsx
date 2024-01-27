@@ -17,7 +17,7 @@ interface ChatItemProps{
     message:Message;
     type:"Channel"|"Conversation";
     channel:Channel;
-    onReply?:(reply:string)=>void;
+    onReply?:(reply:string,system_message_id:number)=>void;
     hasClickedReply?:boolean;
     isLastMsg?:boolean;
 }
@@ -73,8 +73,8 @@ const ChatSheetItem:FC<ChatItemProps> = ({message,type,channel,onReply,hasClicke
 
 
 
-    const onClick = (reply:string) =>{
-        if(onReply) onReply(reply);
+    const onClick = (reply:string,system_message_id:number) =>{
+        if(onReply) onReply(reply,system_message_id);
     }
 
     useEffect(()=>{
@@ -82,6 +82,8 @@ const ChatSheetItem:FC<ChatItemProps> = ({message,type,channel,onReply,hasClicke
             input.current.focus();
         }
     },[input,isEditing]);
+
+    console.log(message.system_message);
 
     return (
         <div className='relative group flex items-center hover:bg-neutral-50 dark:hover:bg-neutral-900 p-3.5 transition w-full rounded hover:shadow'>
@@ -161,10 +163,17 @@ const ChatSheetItem:FC<ChatItemProps> = ({message,type,channel,onReply,hasClicke
                         (message.is_system_msg===1 && !hasClickedReply && channel.is_closed!==1 && isLastMsg) && (
                             <div className='w-2/3 flex flex-col'>
                                 {
-                                    replies.map((reply,idx)=><Button key={`reply_${idx.toString()}`} variant='outline' size='sm' onClick={()=>onClick(reply)}>{reply}</Button>)
+                                    replies.map((reply)=><Button key={reply.id} variant='outline' size='sm' onClick={()=>onClick(reply.name,reply.sys_message_reply_id)}>{reply.name} </Button>)
                                 }
                             </div>
                         )
+                    }
+                    {
+                        (message.system_message?.menus||[]).map((menu)=>(
+                            <div key={menu.id} className='flex items-center gap-x-1.5 mt-1.5'>
+                                <Button onClick={()=>onClick(menu.name,menu.sys_message_reply_id)} size='sm' variant='outline'>{menu.name}</Button>
+                            </div>
+                        ))
                     }
                 </div>
             </div>

@@ -24,6 +24,7 @@ export interface SystemMenu {
     id: number;
     name: string;
     replies: SystemMessage;
+    sys_message_reply_id: number;
 }
 
 export interface Server{
@@ -65,6 +66,8 @@ export interface Message{
     deleted_at:string;
     is_system_msg:number;
     menus:SystemMenu[];
+    system_message_id:number|null;
+    system_message?:SystemMessage;
 }
 
 export interface Conversation{
@@ -84,7 +87,7 @@ export type PageProps<T extends Record<string, unknown> = Record<string, unknown
     current_channel?:Channel;
     current_conversation?:Conversation;
     base_url:string;
-    replies:string[];
+    replies:SystemMenu[];
     system_message:SystemMessage[];
     app_name:string;
 };

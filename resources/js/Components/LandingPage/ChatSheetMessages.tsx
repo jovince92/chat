@@ -13,7 +13,7 @@ import { Label } from '../ui/label';
 interface Props{
     channel:Channel;
     getMsgsRoute:string;
-    onReply?:(reply:string)=>void;
+    onReply?:(reply:string,system_message_id:number)=>void;
     hasClickedReply?:boolean;
     isScrollToView:boolean;
 }
@@ -32,9 +32,9 @@ const ChatSheetMessages:FC<Props> = ({channel,getMsgsRoute,onReply,hasClickedRep
         fetchNextPage();
     }
 
-    const handleReply = (reply:string) =>{
+    const handleReply = (reply:string,system_message_id:number) =>{
         scrollToBottom();
-        if(!!onReply) onReply(reply);
+        if(!!onReply) onReply(reply,system_message_id);
     }
 
     useEffect(() => {

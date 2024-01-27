@@ -1,6 +1,6 @@
 import React, { FC, ReactNode, useEffect, useMemo, useState } from 'react'
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from '@/Components/ui/sheet';
-import { Channel, Message, PageProps, PaginatedMessage, User, SystemMessage } from '@/types';
+import { Channel, Message, PageProps, PaginatedMessage, User, SystemMessage, SystemMenu } from '@/types';
 import ChatMessages from '../Chat/ChatMessages';
 import ChatInput from '../Chat/ChatInput';
 import { QueryClientProvider, useQueryClient } from '@tanstack/react-query';
@@ -31,11 +31,10 @@ const ChatSheet:FC<Props> = ({isOpen,channel:OriginalChannel,onClose,user}) => {
     const {app_name, system_message} = usePage<PageProps>().props;
 
     const [sysMessageState, setSysMessageState] = useState<SystemMessage[]>(system_message);
-    const [subMenusState, setSubMenusState] = useState<any>(null);
+    const [subMenusState, setSubMenusState] = useState<SystemMenu[]>([]);
 
     const [channel,setChannel] = useState(OriginalChannel);
     const [hasClickedReply,setHasClickedReply]   = useState(false);
-    const {replies} = usePage<PageProps>().props;
     const apiRoute=useMemo(()=>
         route('server.channel.message.store',{server_id:channel?.server_id||"",channel_id:channel?.id||""})
     ,[channel]);
@@ -48,11 +47,12 @@ const ChatSheet:FC<Props> = ({isOpen,channel:OriginalChannel,onClose,user}) => {
 
     const [showFeedbackModal,setShowFeedbackModal] = useState(false);
 
-    const onReply = (reply:string)=>{
+    const onReply = (reply:string,system_message_id:number)=>{
         doScrollToView(true);
         setHasClickedReply(true);
         axios.post(apiRoute,{
             message:reply,
+            system_message_id
         })
         .catch(()=>{
             toast({title:'Internal Error',description:`Can't send message. Please try again!`});
@@ -144,9 +144,9 @@ const ChatSheet:FC<Props> = ({isOpen,channel:OriginalChannel,onClose,user}) => {
                                     <div className='mb-2 pb-2 overflow-y-auto w-full'>
                                         <div className='py-2 space-x-2 w-max overflow-y-auto'>
                                             {subMenusState?
-                                                subMenusState.map((m:any)=>
-                                                        <button key={m.id} onClick={()=>onReply(m.name)} className='px-4 py-1 border rounded-lg
-                                                            hover:bg-neutral-100 hover:shadow dark:hover:bg-neutral-900'>{m.name}</button>
+                                                subMenusState.map(menu=>
+                                                        <button key={menu.id} onClick={()=>onReply(menu.name,menu.id)} className='px-4 py-1 border rounded-lg
+                                                            hover:bg-neutral-100 hover:shadow dark:hover:bg-neutral-900'>{menu.name}</button>
                                                     )
                                                 :
                                                 <></>
@@ -183,59 +183,7 @@ const ChatSheet:FC<Props> = ({isOpen,channel:OriginalChannel,onClose,user}) => {
                     </div>
                 </AlertDialogContent>
             </AlertDialog>
-            {/* <Sheet  open={isOpen}>
-                <SheetContent className='w-full sm:w-[420px] h-full flex flex-col overflow-y-hidden space-y-2'>
-                    <SheetHeader className='h-auto'>
-                        <SheetTitle>
-                            <div className='flex items-center'>
-                                <p>Welcome to {app_name}</p>
-                                <div className='ml-auto'>
-                                    <ModeToggle/>
-                                </div>
-                            </div>
-                        </SheetTitle>
-                        <SheetDescription>
-                            You Are Now Connected to Chat Support. Please be patient while we assign an agent
-                        </SheetDescription>
-                    </SheetHeader>
-                    <hr />
-                    <div className='flex-1 flex flex-col overflow-y-hidden'>
-                        <div className='flex-1 mb-2 overflow-auto'>
-                            <ChatSheetMessages hasClickedReply={hasClickedReply} onReply={onReply} getMsgsRoute={getMsgsRoute} channel={channel} />
-                        </div>
-                    </div>
-                    <div className='h-auto'>
-                        {
-                            channel.is_closed!==1?<ChatInput getMsgsRoute={getMsgsRoute} apiRoute={apiRoute} type='Channel' name='Chat Support' />:(
-                                <>
-                                    <Separator />
-                                    <p className='font-semibold text-lg tracking-tight'>
-                                        This Case Has Been Closed. You Can Not Reply To This Thread Anymore
-                                    </p>
-                                    {
-                                        (channel.rating<0||!channel?.rating)&&(
-                                            <>
-                                                <p className='font-semibold text-lg tracking-tight'>
-                                                    Would You Like To Give a Feedback?
-                                                </p>
-
-                                                <Button onClick={()=>setShowFeedbackModal(true)}>Give Feedback</Button>
-                                            </>
-                                        )
-                                    }
-                                    {
-                                        channel.rating>-1&&(
-                                            <p className='font-semibold text-lg tracking-tight'>Thank You For Your Feedback</p>
-                                        )
-                                    }
-
-                                </>
-                            )
-
-                        }
-                    </div>
-                </SheetContent>
-            </Sheet> */}
+        
             <FeedbackModal onFeedback={(rating)=>{setChannel(val=>({...val!,rating}))}} channel_id={channel.id} isOpen={showFeedbackModal} onClose={()=>setShowFeedbackModal(false)} />
 
             <MessageFileModal />
