@@ -63,6 +63,10 @@ const ChatSheet:FC<Props> = ({isOpen,channel:OriginalChannel,onClose,user}) => {
         .finally(()=>doScrollToView(false));
     }
 
+    useEffect(()=> {
+        console.log(subMenusState)
+    },[subMenusState])
+
     useEffect(()=>{
         if (sysMessageState.length > 0){
             axios
@@ -143,15 +147,16 @@ const ChatSheet:FC<Props> = ({isOpen,channel:OriginalChannel,onClose,user}) => {
                             channel.is_closed!==1?
                                 <>
                                     {/* FOR SUB MENUS */}
-                                    <div className='mb-2 pb-2 overflow-y-auto w-full'>
-                                        <div className='py-2 space-x-2 w-max overflow-y-auto'>
+                                    <div className='mb-2 pb-2'>
+                                        <div className='py-2 space-x-2 space-y-2'>
                                             {subMenusState?
                                                 subMenusState.map(menu=>
-                                                        menu.replies.menus.length?
-                                                        <button key={menu.id} onClick={()=>onReply(menu.name,menu.replies.id)} className='px-4 py-1 border rounded-lg
-                                                            hover:bg-neutral-100 hover:shadow dark:hover:bg-neutral-900'>{menu.name}</button>
-                                                        :
+                                                    menu.replies.message==""||menu.replies.message==null?
                                                         <></>
+                                                            :
+                                                        <button key={menu.id} onClick={()=>onReply(menu.name,menu.replies.id)}
+                                                        className='text-sm px-4 py-1 border rounded-lg dark:border-2 dark:border-neutral-950
+                                                        hover:bg-neutral-100 hover:shadow dark:hover:bg-neutral-900'>{menu.name}</button>
                                                     )
                                                 :
                                                 <></>
