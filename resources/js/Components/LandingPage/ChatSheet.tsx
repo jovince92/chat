@@ -54,9 +54,10 @@ const ChatSheet:FC<Props> = ({isOpen,channel:OriginalChannel,onClose,user}) => {
             message:reply,
             system_message_id
         })
-        .catch(()=>{
+        .catch((err)=>{
             // toast({title:'Internal Error',description:`Can't send message. Please try again!`});
             console.log("Internal Error.Can't send message. Please try again!");
+            console.log(err);
             setHasClickedReply(false);
         })
         .finally(()=>doScrollToView(false));
@@ -147,7 +148,7 @@ const ChatSheet:FC<Props> = ({isOpen,channel:OriginalChannel,onClose,user}) => {
                                             {subMenusState?
                                                 subMenusState.map(menu=>
                                                         menu.replies.menus.length?
-                                                        <button key={menu.id} onClick={()=>onReply(menu.name,menu.id)} className='px-4 py-1 border rounded-lg
+                                                        <button key={menu.id} onClick={()=>onReply(menu.name,menu.replies.id)} className='px-4 py-1 border rounded-lg
                                                             hover:bg-neutral-100 hover:shadow dark:hover:bg-neutral-900'>{menu.name}</button>
                                                         :
                                                         <></>
